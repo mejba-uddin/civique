@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Examen Civique CSP – Révision complète & Quiz officiel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, 'Noto Sans Bengali', system-ui, sans-serif;
+            background: #f4f7fc;
+            color: #1e2a3a;
+            padding: 20px;
+            line-height: 1.5;
+        }
+        .container { max-width: 1300px; margin: 0 auto; }
+        .header {
+            background: linear-gradient(135deg, #003366, #1e4a76);
+            color: white;
+            padding: 1.5rem 1.8rem;
+            border-radius: 32px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .header-left { flex: 1; }
+        .header-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+        .marianne-img {
+            width: 70px;
+            height: auto;
+            background: rgba(255,255,240,0.2);
+            border-radius: 50%;
+            padding: 5px;
+        }
+        .social-links {
+            display: flex;
+            gap: 12px;
+            font-size: 1.2rem;
+        }
+        .social-links a {
+            color: #ffcd3c;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .social-links a:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .badge { background: #ffcd3c; color: #003366; padding: 5px 12px; border-radius: 40px; font-size: 0.8rem; font-weight: bold; text-decoration: none; }
+        .mode-buttons { display: flex; gap: 16px; margin: 20px 0 15px; flex-wrap: wrap; }
+        .btn {
+            border: none; padding: 12px 28px; font-size: 1rem; font-weight: 600;
+            border-radius: 60px; cursor: pointer; transition: 0.2s;
+            background: white; color: #003366; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .btn-primary { background: #ffcd3c; color: #003366; }
+        .btn-primary:hover { background: #ffc107; transform: scale(1.02); }
+        .panel { background: white; border-radius: 32px; padding: 1.8rem; margin-bottom: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
+        .section-title { font-size: 1.6rem; border-left: 6px solid #ffcd3c; padding-left: 18px; margin-bottom: 1.5rem; font-weight: 600; }
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .tab-btn {
+            background: #eef2ff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1e2a3a;
+        }
+        .tab-btn.active {
+            background: #003366;
+            color: white;
+        }
+        .study-card { background: #fff; border-radius: 24px; margin-bottom: 1.2rem; padding: 1.2rem 1.5rem; border: 1px solid #e2e8f0; }
+        .study-question { font-weight: 700; font-size: 1.1rem; color: #003366; margin-bottom: 0.5rem; }
+        .pronounce { font-family: 'Noto Sans Bengali', sans-serif; background: #f0f4f9; display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.85rem; margin: 6px 0; color: #2c5282; }
+        .study-answer { background: #f8fafc; padding: 0.8rem 1rem; border-radius: 20px; margin-top: 10px; border-left: 4px solid #ffcd3c; }
+        .lang-fr { font-weight: 500; color: #1e40af; }
+        .lang-bn { font-family: 'Noto Sans Bengali', sans-serif; color: #2c3e4e; margin-top: 6px; font-size: 0.95rem; }
+        .quiz-header { display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 1rem 1.5rem; border-radius: 60px; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px; }
+        .timer { font-size: 1.6rem; font-weight: bold; background: #003366; color: white; padding: 6px 18px; border-radius: 60px; font-family: monospace; }
+        .quiz-question-card { background: white; border-radius: 28px; padding: 1.8rem; margin-bottom: 1.5rem; border: 1px solid #e2e8f0; }
+        .quiz-question-text { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .options-list { display: flex; flex-direction: column; gap: 12px; margin: 25px 0; }
+        .option { background: #f1f5f9; border-radius: 100px; padding: 12px 20px; cursor: pointer; border: 1px solid #cbd5e1; transition: 0.1s; }
+        .option.selected { background: #d9eff7; border-color: #003366; font-weight: 500; }
+        .quiz-nav { display: flex; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 10px; }
+        footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #5a6874; padding: 1rem; border-top: 1px solid #ddd; }
+        .footer-social { margin-top: 10px; display: flex; justify-content: center; gap: 20px; }
+        .footer-social a { color: #003366; text-decoration: none; font-weight: 500; }
+        @media (max-width: 700px) { body { padding: 12px; } .quiz-question-text { font-size: 1.1rem; } .header { flex-direction: column; text-align: center; } .header-right { align-items: center; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <h1>📘 Préparation officielle CSP <span style="font-family: 'Noto Sans Bengali';">(সিভিক পরীক্ষা)</span>
+                <span class="badge">🇫🇷 + 🇧🇩 উচ্চারণ সহ</span>
+            </h1>
+            <p>Toutes les questions officielles – révision complète + quiz aléatoire (40 Q / 10 min) avec 4 options valides.</p>
+            <div class="mode-buttons">
+                <button id="studyModeBtn" class="btn btn-primary">📖 Mode étude (révision complète)</button>
+                <button id="quizModeBtn" class="btn btn-primary">✅ Mode quiz (40 Q / 10 min)</button>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="marianne-img.png" alt="marianne-img" class="marianne-img">
+            <div class="social-links">
+                <a href="https://www.facebook.com/mejbabhai" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
+                <a href="#" target="_blank">🐦 Twitter</a>
+                <a href="#" target="_blank">📸 Instagram</a>
+            </div>
+        </div>
+    </div>
+    <div id="mainContent"></div>
+    <footer>
+        <p>Examen civique – d'après la liste officielle. Les questions de mise en situation ne sont pas incluses.</p>
+        <div class="footer-social">
+            <a href="https://www.facebook.com/mejbabhai" target="_blank" rel="noopener noreferrer">Facebook (Mejba ddin Jihad)</a> |
+            <a href="#" target="_blank">Twitter</a> |
+            <a href="#" target="_blank">Instagram</a>
+        </div>
+        <p style="margin-top:10px;">Made By <a href="http://facebook.com/mejbabhai" class="badge" style=" font-weight: bold; text-decoration: none; text-transform: uppercase;" target="_blank" rel="noopener noreferrer">Mejba ddin Jihad</a></p>
+    </footer>
+</div>
+<script>
+    // ============================================================
+    // DONNÉES COMPLÈTES : toutes les questions officielles
+    // Chaque objet : cat, qFr, qBn, qPronounce, aFr, aBn, aPronounce
+    // ============================================================
+    const fullQuestions = [
+        // PRINCIPES ET VALEURS (37 questions officielles)
+        { cat:"🇫🇷 Principes & valeurs", qFr:"À quoi correspond la date du 14 juillet ?", qBn:"১৪ জুলাই তারিখটি কীসের সাথে সম্পর্কিত?", qPronounce:"আ কোয়া কোরেসপোঁ লা দাত দু কাতোর্জুইয়ে ?", aFr:"À la Fête nationale (prise de la Bastille en 1789).", aBn:"জাতীয় দিবস (১৭৮৯ সালে বাস্তিল দুর্গ দখল)।", aPronounce:"আ লা ফেত নাসিওনাল (প্রিজ দ্য লা বাস্তিল আঁ মিল সেপ সাঁক সঁকান্ত নোঁফ) ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel est l’un des symboles de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের একটি প্রতীক কী?", qPronounce:"কেল এ লাঁ দে সাঁবোল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Le drapeau tricolore.", aBn:"ত্রিবর্ণ পতাকা।", aPronounce:"ল্য দ্রাপো ত্রিকোলোর।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Le principe d’égalité signifie que :", qBn:"সাম্যের নীতিটির অর্থ কী?", qPronounce:"ল্য প্রাঁসিপ দেগালিতে সিনিফিয়ে কে ?", aFr:"Tous les citoyens sont égaux devant la loi.", aBn:"আইনের চোখে সবাই সমান।", aPronounce:"তু লে সিতোয়েঁ সোঁ এগো দ্যেভাঁ লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"'Liberté, égalité, fraternité', c’est :", qBn:"'স্বাধীনতা, সাম্য, ভ্রাতৃত্ব' এটি কী?", qPronounce:"লিবেরতে, এগালিতে, ফ্রাতের্নিতে, সে ?", aFr:"La devise de la République française.", aBn:"ফরাসি প্রজাতন্ত্রের মূলমন্ত্র।", aPronounce:"লা দ্যাভিজ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"A-t-on le droit d'insulter publiquement quelqu’un parce qu’il est différent (handicap, apparence physique, sexe…) ?", qBn:"কাউকে ভিন্ন (প্রতিবন্ধী, চেহারা, লিঙ্গ) বলে প্রকাশ্যে অপমান করার অধিকার কি আছে?", qPronounce:"আ-তোঁ ল্য দ্রোয়া দাঁস্যুলতে পুব্লিকমঁ কেলক্যাঁ পার্সকিেল এ দিফেরঁ ?", aFr:"Non, c’est interdit par la loi.", aBn:"না, এটি আইনত নিষিদ্ধ।", aPronounce:"নোঁ, সে তাঁতের্দি পার লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Certains métiers peuvent-ils être réservés aux hommes ?", qBn:"কিছু পেশা কি শুধু পুরুষদের জন্য সংরক্ষিত হতে পারে?", qPronounce:"সার্তাঁ মেতিয়ে প্যুভঁ-তিল জেত্র রেজেরভে ওজোম ?", aFr:"Non, l’égalité hommes-femmes est un principe fondamental.", aBn:"না, নারী-পুরুষ সমান অধিকারভুক্ত।", aPronounce:"নোঁ, লেগালিতে ওম-ফাম এ তাঁ প্রাঁসিপ ফোঁদামঁতাল।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"De quand date la Constitution de la Ve République ?", qBn:"পঞ্চম প্রজাতন্ত্রের সংবিধান কবে থেকে কার্যকর?", qPronounce:"দ্য কঁ দাত লা কোঁস্তিত্যুসিওঁ দ্য লা সাঁকিয়েম রেপ্যুব্লিক ?", aFr:"1958.", aBn:"১৯৫৮ সাল।", aPronounce:"মিল নেফ সাঁক সঁকান্ত।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Le régime de la France est :", qBn:"ফ্রান্সের শাসনব্যবস্থা কী?", qPronounce:"ল্য রেজিম দ্য লা ফ্রঁস এ ?", aFr:"Une République démocratique.", aBn:"একটি গণতান্ত্রিক প্রজাতন্ত্র।", aPronounce:"উন রেপ্যুব্লিক দেমোক্রাতিক।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Lequel de ces symboles représente officiellement la République française ?", qBn:"এই প্রতীকগুলোর মধ্যে কোনটি ফরাসি প্রজাতন্ত্রের সরকারি প্রতীক?", qPronounce:"লেকেল দ্য সে সাঁবোল রেপ্রেজঁত অফিসিয়ালমঁ লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Marianne.", aBn:"ম্যারিয়ান প্রজাতন্ত্রের প্রতীক।", aPronounce:"ম্যারিয়ান।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Où peut-on voir la devise de la République ?", qBn:"প্রজাতন্ত্রের মূলমন্ত্র কোথায় দেখা যায়?", qPronounce:"উ প্যু-তোঁ ভোয়ার লা দ্যাভিজ দ্য লা রেপ্যুব্লিক ?", aFr:"Sur les bâtiments publics (mairies, écoles).", aBn:"সরকারি ভবনে (মেয়র অফিস, স্কুল)।", aPronounce:"স্যুর লে বাতিমঁ প্যুব্লিক (মেরি, একোল)।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quels sont des symboles officiels de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের সরকারি প্রতীকগুলো কী কী?", qPronounce:"কেল সোঁ দে সাঁবোল অফিসিয়েল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Le drapeau tricolore, Marianne, l’hymne national et la devise.", aBn:"ত্রিবর্ণ পতাকা, ম্যারিয়ান, জাতীয় সংগীত ও মূলমন্ত্র।", aPronounce:"ল্য দ্রাপো ত্রিকোলোর, ম্যারিয়ান, লিম্ন নাসিওনাল এ লা দ্যাভিজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu’est-ce que l’égalité ?", qBn:"সাম্য কী?", qPronounce:"কেস্কে লেগালিতে ?", aFr:"Le fait que tous sont traités de la même manière par la loi.", aBn:"আইনের কাছে সমান আচরণ।", aPronounce:"ল্য ফে কে তু সোঁ ত্রেতে দ্য লা মেম মানিয়ের পার লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Que signifie la liberté ?", qBn:"স্বাধীনতা বলতে কী বোঝায়?", qPronounce:"কে সিনিফিয়ে লা লিবেরতে ?", aFr:"Pouvoir faire des choix dans le respect de la loi.", aBn:"আইন মেনে স্বাধীনভাবে সিদ্ধান্ত নেওয়া।", aPronounce:"পুভোয়ার ফেয়ার দে শোয়া দাঁ ল্য রেস্পেক দ্য লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Que signifie le mot 'fraternité' dans la devise française ?", qBn:"ফরাসি মূলমন্ত্রে 'ভ্রাতৃত্ব' শব্দটির অর্থ কী?", qPronounce:"কে সিনিফিয়ে ল্য মো 'ফ্রাতের্নিতে' দাঁ লা দ্যাভিজ ফ্রঁসেজ ?", aFr:"Solidarité et entraide entre les citoyens.", aBn:"ভ্রাতৃত্ব, সহমর্মিতা ও সহযোগিতা।", aPronounce:"সলিদারিতে এ আঁত্রেদ আঁত্র লে সিতোয়েঁ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel animal est un symbole de la France ?", qBn:"ফ্রান্সের প্রতীক কোন প্রাণী?", qPronounce:"কেল আনিমাল এ তাঁ সাঁবোল দ্য লা ফ্রঁস ?", aFr:"Le coq gaulois.", aBn:"গালীয় মোরগ।", aPronounce:"ল্য কক গলোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel est l’un des rôles des associations ?", qBn:"অ্যাসোসিয়েশনগুলোর একটি ভূমিকা কী?", qPronounce:"কেল এ লাঁ দে রোল দে জ়াসোসিয়াসিওঁ ?", aFr:"Mener des actions solidaires ou culturelles.", aBn:"সামাজিক বা সাংস্কৃতিক কাজ করা।", aPronounce:"মেনে দে জ়াক্সিওঁ সোলিদের উ কুলত্যুরেল।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel est le nom de l'hymne national ?", qBn:"জাতীয় সংগীতের নাম কী?", qPronounce:"কেল এ ল্য নোঁ দ্য লিম্ন নাসিওনাল ?", aFr:"La Marseillaise.", aBn:"লা মার্সেইয়েজ।", aPronounce:"লা মার্সেইয়েজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel symbole de la République française est tricolore ?", qBn:"ফরাসি প্রজাতন্ত্রের কোন প্রতীকটি ত্রিবর্ণ?", qPronounce:"কেল সাঁবোল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ এ ত্রিকোলোর ?", aFr:"Le drapeau bleu, blanc, rouge.", aBn:"নীল, সাদা, লাল পতাকা।", aPronounce:"ল্য দ্রাপো ব্লো, ব্লঁ, রুজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la date de la fête nationale française ?", qBn:"ফরাসি জাতীয় দিবসের তারিখ কত?", qPronounce:"কেল এ লা দাত দ্য লা ফেত নাসিওনাল ফ্রঁসেজ ?", aFr:"Le 14 juillet.", aBn:"১৪ জুলাই।", aPronounce:"ল্য কাতোর্জুইয়ে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la devise de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের মূলমন্ত্র কী?", qPronounce:"কেল এ লা দ্যাভিজ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Liberté, Égalité, Fraternité.", aBn:"স্বাধীনতা, সাম্য, ভ্রাতৃত্ব।", aPronounce:"লিবেরতে, এগালিতে, ফ্রাতের্নিতে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la langue officielle de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের সরকারি ভাষা কী?", qPronounce:"কেল এ লা লাঁগ অফিসিয়েল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Le français.", aBn:"ফরাসি ভাষা।", aPronounce:"ল্য ফ্রঁসে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la place de la langue française dans la République ?", qBn:"প্রজাতন্ত্রে ফরাসি ভাষার স্থান কী?", qPronounce:"কেল এ লা প্লাস দ্য লা লাঁগ ফ্রঁসেজ দাঁ লা রেপ্যুব্লিক ?", aFr:"Elle est la langue officielle de l’État.", aBn:"এটি রাষ্ট্রের সরকারি ভাষা।", aPronounce:"এল এ লা লাঁগ অফিসিয়েল দ্য লেতা।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle liberté permet à chacun d’exprimer ses idées ?", qBn:"কোন স্বাধীনতা প্রত্যেককে তার মতামত প্রকাশের অনুমতি দেয়?", qPronounce:"কেল লিবেরতে পার্মে আ শাক্যাঁ দেক্সপ্রিমে সে জিদে ?", aFr:"La liberté d’expression.", aBn:"মতপ্রকাশের স্বাধীনতা।", aPronounce:"লা লিবেরতে দেক্সপ্রেসিওঁ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle proposition est correcte ? La liberté d'expression :", qBn:"কোন প্রস্তাবটি সঠিক? মতপ্রকাশের স্বাধীনতা:", qPronounce:"কেল প্রোপোজিসিওঁ এ কোরেক্ত ? লা লিবেরতে দেক্সপ্রেসিওঁ :", aFr:"Est garantie par la loi mais a des limites (respect d’autrui).", aBn:"আইনে সুরক্ষিত, তবে সীমাবদ্ধতা আছে।", aPronounce:"এ গারঁতি পার লা লোয়া মে আ দে লিমিত (রেস্পেক দোত্রুই)।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelles sont les couleurs du drapeau français ?", qBn:"ফরাসি পতাকার রংগুলো কী কী?", qPronounce:"কেল সোঁ লে কুল্যোর দ্যু দ্রাপো ফ্রঁসে ?", aFr:"Bleu, blanc, rouge.", aBn:"নীল, সাদা, লাল।", aPronounce:"ব্লো, ব্লঁ, রুজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu'est-ce que la Marseillaise ?", qBn:"লা মার্সেইয়েজ কী?", qPronounce:"কেস্কে লা মার্সেইয়েজ ?", aFr:"L’hymne national français.", aBn:"এটি ফ্রান্সের জাতীয় সংগীত।", aPronounce:"লিম্ন নাসিওনাল ফ্রঁসে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu'est ce qui est traditionnellement organisé sur les Champs Élysées le 14 juillet pour célébrer la fête nationale ?", qBn:"১৪ জুলাই জাতীয় দিবস উপলক্ষে শঁজ-এলিজে কী আয়োজন করা হয়?", qPronounce:"কেস্কি এ ত্রাদিসিওনেলমঁ অর্গানিজে স্যুর লে শঁজ এলিজে ল্য কাতোর্জুইয়ে পুর সেলেব্রে লা ফেত নাসিওনাল ?", aFr:"Un défilé militaire.", aBn:"সামরিক কুচকাওয়াজ।", aPronounce:"আঁ দেফিলে মিলিতের।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qui est Marianne ?", qBn:"ম্যারিয়ান কে?", qPronounce:"কি এ ম্যারিয়ান ?", aFr:"Le symbole féminin de la République française.", aBn:"প্রজাতন্ত্রের নারীমূর্তি প্রতীক।", aPronounce:"ল্য সাঁবোল ফেমিনাঁ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Une personne peut-elle changer librement de religion ?", qBn:"একজন ব্যক্তি কি অবাধে ধর্ম পরিবর্তন করতে পারেন?", qPronounce:"উন পের্সোন প্যু-তেল শঁজে লিব্রেমঁ দ্য রেলিজিওঁ ?", aFr:"Oui.", aBn:"হ্যাঁ, পারেন।", aPronounce:"উই।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"La France est une République indivisible, ..., démocratique et sociale. Complétez cette phrase extraite de l'article 1er de la Constitution :", qBn:"'ফ্রান্স একটি অবিভাজ্য, ..., গণতান্ত্রিক ও সামাজিক প্রজাতন্ত্র'। সংবিধানের ১ নং অনুচ্ছেদের বাক্যটি সম্পূর্ণ করুন:", qPronounce:"লা ফ্রঁস এ উন রেপ্যুব্লিক এঁদিভিজিবল, ..., দেমোক্রাতিক এ সোসিয়াল। কোঁপ্লেতে সেত ফ্রাজ এক্সত্রেত দ্য লার্তিকল প্রিমিয়ে দ্য লা কোঁস্তিত্যুসিওঁ :", aFr:"Laïque.", aBn:"ধর্মনিরপেক্ষ।", aPronounce:"লাইক।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"En quelle année la loi de séparation des Églises et de l'État a-t-elle été votée ?", qBn:"গির্জা ও রাষ্ট্র বিচ্ছেদের আইন কত সালে পাস হয়?", qPronounce:"আ কেল আনে লা লোয়া দ্য সেপারাসিওঁ দেজ এগ্লিজ এ দ্য লেতা আ-তেল এতে ভোতে ?", aFr:"1905.", aBn:"১৯০৫ সালে।", aPronounce:"মিল নেফ সাঁক।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Que permet le principe de laïcité ?", qBn:"ধর্মনিরপেক্ষতার নীতি কী করার অনুমতি দেয়?", qPronounce:"কে পার্মে ল্য প্রাঁসিপ দ্য লাসিতে ?", aFr:"La liberté de conscience et la neutralité de l’État.", aBn:"বিবেকের স্বাধীনতা ও রাষ্ট্রের নিরপেক্ষতা।", aPronounce:"লা লিবেরতে দ্য কোঁসিয়াস এ লা নোত্রালিতে দ্য লেতা।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel droit est garanti par la laïcité ?", qBn:"ধর্মনিরপেক্ষতা কোন অধিকার নিশ্চিত করে?", qPronounce:"কেল দ্রোয়া এ গারঁতি পার লা লাসিতে ?", aFr:"Le droit de croire ou de ne pas croire.", aBn:"বিশ্বাস করা বা না করার অধিকার।", aPronounce:"ল্য দ্রোয়া দ্য ক্রোয়ার উ দ্য নে পা ক্রোয়ার।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Pourquoi le principe de laïcité doit-il être respecté à l'école ?", qBn:"স্কুলে ধর্মনিরপেক্ষতার নীতি কেন মেনে চলা উচিত?", qPronounce:"পুরকোয়া ল্য প্রাঁসিপ দ্য লাসিতে দোয়া-তিল জেত্র রেস্পেকতে আ লেকোল ?", aFr:"Pour garantir la neutralité et l’égalité entre les élèves.", aBn:"নিরপেক্ষতা ও সমতা বজায় রাখতে।", aPronounce:"পুর গারঁতি লা নোত্রালিতে এ লেগালিতে আঁত্র লে জেলেভ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu'est-ce que la laïcité ?", qBn:"ধর্মনিরপেক্ষতা কী?", qPronounce:"কেস্কে লা লাসিতে ?", aFr:"La séparation des religions et de l’État.", aBn:"ধর্ম ও রাষ্ট্রের পৃথকীকরণ।", aPronounce:"লা সেপারাসিওঁ দে রেলিজিওঁ এ দ্য লেতা।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Un enfant peut-il refuser d’aller à l’école pour une raison religieuse ?", qBn:"একজন শিশু কি ধর্মীয় কারণে স্কুলে যেতে অস্বীকার করতে পারে?", qPronounce:"আ নঁফা প্যু-তিল রেফ্যুজে দালে আ লেকোল পুর উন রেজোঁ রেলিজিয়োজ ?", aFr:"Non, l’école est obligatoire.", aBn:"না, স্কুল বাধ্যতামূলক।", aPronounce:"নোঁ, লেকোল এত ওব্লিগাতোয়ার।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Une personne a-t-elle le droit de ne pas croire en une religion ?", qBn:"একজন ব্যক্তির কি কোনো ধর্মে না বিশ্বাস করার অধিকার আছে?", qPronounce:"উন পের্সোন আ-তেল ল্য দ্রোয়া দ্য নে পা ক্রোয়ার আন উন রেলিজিওঁ ?", aFr:"Oui, c’est un droit garanti par la laïcité.", aBn:"হ্যাঁ, এটি আইনে সুরক্ষিত অধিকার।", aPronounce:"উই, সে তাঁ দ্রোয়া গারঁতি পার লা লাসিতে।" },
+
+        // SYSTÈME INSTITUTIONNEL ET POLITIQUE (48 questions officielles)
+        { cat:"🏛️ Institutions", qFr:"Qui nomme le Premier ministre ?", qBn:"প্রধানমন্ত্রী কে নিয়োগ দেন?", qPronounce:"কি নোম ল্য প্রেমিয়ে মিনিস্ত্র ?", aFr:"Le Président de la République.", aBn:"প্রধানমন্ত্রীকে রাষ্ট্রপতি নিয়োগ করেন।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক।" },
+        { cat:"🏛️ Institutions", qFr:"Le Parlement est composé :", qBn:"সংসদ গঠিত:", qPronounce:"ল্য পার্ল্যমঁ এ কোঁপোজে :", aFr:"De l’Assemblée nationale et du Sénat.", aBn:"পালামঁ গঠিত জাতীয় পরিষদ ও সিনেট নিয়ে।", aPronounce:"দ্য লাসঁব্লে নাসিওনাল এ দ্যু সেনা।" },
+        { cat:"🏛️ Institutions", qFr:"Qu'est-ce que le pouvoir exécutif ? Le pouvoir :", qBn:"নির্বাহী ক্ষমতা কী?", qPronounce:"কেস্কে ল্য পুভোয়ার এগজেক্যুতিফ ? ল্য পুভোয়ার :", aFr:"Qui applique les lois et dirige le gouvernement.", aBn:"আইন বাস্তবায়ন ও সরকার পরিচালনার ক্ষমতা।", aPronounce:"কি আপ্লিক লে লোয়া এ দিরিজ ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Les dirigeants sont élus par les citoyens dans :", qBn:"নেতারা নাগরিকদের দ্বারা নির্বাচিত হন:", qPronounce:"লে দিরিজাঁ সোঁ এলু পার লে সিতোয়েঁ দাঁ :", aFr:"Une démocratie.", aBn:"গণতন্ত্রে।", aPronounce:"উন দেমোক্রাসি।" },
+        { cat:"🏛️ Institutions", qFr:"A-t-on le droit de ne pas respecter une loi ?", qBn:"কোনো আইন না মানার অধিকার কি আছে?", qPronounce:"আ-তোঁ ল্য দ্রোয়া দ্য নে পা রেস্পেকতে উন লোয়া ?", aFr:"Non.", aBn:"না।", aPronounce:"নোঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui doit respecter la loi ?", qBn:"কাকে আইন মেনে চলতে হবে?", qPronounce:"কি দোয়া রেস্পেকতে লা লোয়া ?", aFr:"Tout le monde (citoyens et dirigeants).", aBn:"সবাইকে আইন মানতে হবে।", aPronounce:"তু ল্য মোঁদ (সিতোয়েঁ এ দিরিজাঁ)।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le rôle de l'autorité judiciaire ?", qBn:"বিচার বিভাগের ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্য লোতোরিতে জুদিসিয়ের ?", aFr:"Faire respecter la loi et juger les infractions.", aBn:"আইন প্রয়োগ ও অপরাধের বিচার করা।", aPronounce:"ফেয়ার রেস্পেকতে লা লোয়া এ জ্যুজে লে জাঁফ্রাক্সিওঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel pouvoir détient un juge ? Le pouvoir :", qBn:"একজন বিচারকের কোন ক্ষমতা থাকে?", qPronounce:"কেল পুভোয়ার দেতিয়াঁ আন জ্যুজ ? ল্য পুভোয়ার :", aFr:"Judiciaire.", aBn:"বিচারিক ক্ষমতা।", aPronounce:"জুদিসিয়ের।" },
+        { cat:"🏛️ Institutions", qFr:"L'autorité judiciaire est exercée par :", qBn:"বিচার বিভাগ কাদের দ্বারা পরিচালিত হয়?", qPronounce:"লোতোরিতে জুদিসিয়ের এত এগজের্সে পার :", aFr:"Les juges et les tribunaux.", aBn:"বিচারক ও আদালত।", aPronounce:"লে জ্যুজ এ লে ত্রিব্যুনো।" },
+        { cat:"🏛️ Institutions", qFr:"Que se passe-t-il si un ministre ne respecte pas la loi ?", qBn:"কোনো মন্ত্রী যদি আইন না মানেন তাহলে কী হয়?", qPronounce:"ক্য স্য পাস-তিল সি আন মিনিস্ত্র ন্য রেস্পেক্তে পা লা লোয়া ?", aFr:"Il peut être jugé et sanctionné.", aBn:"তাকে বিচার ও শাস্তি দেওয়া হতে পারে।", aPronounce:"ইল প্যু জেত্র জ্যুজে এ সাঁক্সিওনে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est élu lors des élections législatives ?", qBn:"আইনসভা নির্বাচনে কে নির্বাচিত হন?", qPronounce:"কি এত এলু লোর দেজ এলেক্সিওঁ লেজিস্লাতিভ ?", aFr:"Les députés.", aBn:"সংসদ সদস্য (দেপুতি) নির্বাচিত হন।", aPronounce:"লে দেপ্যুতে।" },
+        { cat:"🏛️ Institutions", qFr:"Combien de députés composent l’Assemblée nationale ?", qBn:"জাতীয় পরিষদে কতজন সংসদ সদস্য থাকেন?", qPronounce:"কোঁবিয়াঁ দ্য দেপ্যুতে কোঁপোজ লাসঁব্লে নাসিওনাল ?", aFr:"577 députés.", aBn:"৫৭৭ জন দেপুতি।", aPronounce:"সাঁক সঁ সোয়াসঁত দিজ সেপ্ত দেপ্যুতে।" },
+        { cat:"🏛️ Institutions", qFr:"Quand sont élus les sénateurs ?", qBn:"সিনেটররা কখন নির্বাচিত হন?", qPronounce:"কাঁ সোঁ এলু লে সেনাতোর ?", aFr:"Tous les 6 ans (renouvellement partiel).", aBn:"প্রতি ৬ বছরে (আংশিক নবায়ন)।", aPronounce:"তু লে সিজ আঁ (র্যুভেল্যমঁ পার্তিয়েল)।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est élu lors des élections municipales ?", qBn:"পৌর নির্বাচনে কে নির্বাচিত হন?", qPronounce:"কি এত এলু লোর দেজ এলেক্সিওঁ মিউনিসিপাল ?", aFr:"Les conseillers municipaux.", aBn:"পৌর কাউন্সিল সদস্যরা।", aPronounce:"লে কোঁসেয়ে মিউনিসিপো।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est élu lors des élections présidentielles ?", qBn:"রাষ্ট্রপতি নির্বাচনে কে নির্বাচিত হন?", qPronounce:"কি এত এলু লোর দেজ এলেক্সিওঁ প্রেজিদাঁসিয়েল ?", aFr:"Le Président de la République.", aBn:"রাষ্ট্রপতি নির্বাচিত হন।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক।" },
+        { cat:"🏛️ Institutions", qFr:"À partir de quel âge a-t-on le droit de voter ?", qBn:"কত বছর বয়স থেকে ভোট দেওয়ার অধিকার পাওয়া যায়?", qPronounce:"আ পার্তির দ্য কেল আজ আ-তোঁ ল্য দ্রোয়া দ্য ভোতে ?", aFr:"18 ans.", aBn:"১৮ বছর থেকে।", aPronounce:"দিজ উইত আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Pour combien de temps est élu le président de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের রাষ্ট্রপতি কত বছরের জন্য নির্বাচিত হন?", qPronounce:"পুর কোঁবিয়াঁ দ্য তঁ এত এলু ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"5 ans.", aBn:"৫ বছরের জন্য।", aPronounce:"সাঁক আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Pour combien de temps sont élus les députés ?", qBn:"সংসদ সদস্যরা (দেপুতি) কত বছরের জন্য নির্বাচিত হন?", qPronounce:"পুর কোঁবিয়াঁ দ্য তঁ সোঁ এলু লে দেপ্যুতে ?", aFr:"5 ans.", aBn:"৫ বছরের জন্য।", aPronounce:"সাঁক আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Pour combien de temps sont élus les sénateurs ?", qBn:"সিনেটররা কত বছরের জন্য নির্বাচিত হন?", qPronounce:"পুর কোঁবিয়াঁ দ্য তঁ সোঁ এলু লে সেনাতোর ?", aFr:"6 ans.", aBn:"৬ বছরের জন্য।", aPronounce:"সিজ আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui possède le pouvoir exécutif ?", qBn:"নির্বাহী ক্ষমতা কার কাছে থাকে?", qPronounce:"কি পোসেদ ল্য পুভোয়ার এগজেক্যুতিফ ?", aFr:"Le Président de la République et le Gouvernement.", aBn:"রাষ্ট্রপতি ও সরকার।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক এ ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quelle condition est nécessaire pour voter aux élections ?", qBn:"নির্বাচনে ভোট দেওয়ার জন্য কী কী শর্ত প্রয়োজন?", qPronounce:"কেল কোঁদিসিওঁ এ নেসেসের পুর ভোতে ও এলেক্সিওঁ ?", aFr:"Être majeur (18 ans) et inscrit sur les listes électorales.", aBn:"প্রাপ্তবয়স্ক ও ভোটার তালিকায় নিবন্ধিত হতে হবে।", aPronounce:"এত্র মাজ্যোর (দিজ উইত আঁ) এ এঁস্ক্রি স্যুর লে লিস্ত এলেক্তোরাল।" },
+        { cat:"🏛️ Institutions", qFr:"Qui peut voter aux élections en France ?", qBn:"ফ্রান্সে নির্বাচনে কারা ভোট দিতে পারেন?", qPronounce:"কি প্যু ভোতে ও এলেক্সিওঁ আ ফ্রঁস ?", aFr:"Les citoyens français majeurs.", aBn:"প্রাপ্তবয়স্ক ফরাসি নাগরিকরা।", aPronounce:"লে সিতোয়েঁ ফ্রঁসে মাজ্যোর।" },
+        { cat:"🏛️ Institutions", qFr:"Que signifie « suffrage universel » ?", qBn:"'সার্বজনীন ভোটাধিকার' বলতে কী বোঝায়?", qPronounce:"কে সিনিফিয়ে 'স্যুফ্রাজ ইউনির্ভার্সেল' ?", aFr:"Le droit de vote pour tous les citoyens majeurs.", aBn:"সকল প্রাপ্তবয়স্ক নাগরিকের ভোটাধিকার।", aPronounce:"ল্য দ্রোয়া দ্য ভোতে পুর তু লে সিতোয়েঁ মাজ্যোর।" },
+        { cat:"🏛️ Institutions", qFr:"Concernant les partis politiques, quelle proposition est correcte ?", qBn:"রাজনৈতিক দল সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লে পার্তি পোলিতিক, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Ils participent à la vie démocratique.", aBn:"তারা গণতান্ত্রিক জীবনে অংশগ্রহণ করে।", aPronounce:"ইল পার্তিসিপ আ লা ভি দেমোক্রাতিক।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le rôle des députés ?", qBn:"সংসদ সদস্যদের (দেপুতি) ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দে দেপ্যুতে ?", aFr:"Voter les lois et contrôler le gouvernement.", aBn:"আইন প্রণয়ন ও সরকারকে নিয়ন্ত্রণ করা।", aPronounce:"ভোতে লে লোয়া এ কোঁত্রোলে ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"La séparation des pouvoirs est un principe fondamental. Quels sont les trois pouvoirs concernés ?", qBn:"ক্ষমতা পৃথকীকরণ একটি মৌলিক নীতি। জড়িত তিনটি ক্ষমতা কী কী?", qPronounce:"লা সেপারাসিওঁ দে পুভোয়ার এত আঁ প্রাঁসিপ ফোঁদামঁতাল। কেল সোঁ লে ত্রোয়া পুভোয়ার কোঁসের্নে ?", aFr:"Exécutif, législatif et judiciaire.", aBn:"নির্বাহী, আইনসভা ও বিচার বিভাগ।", aPronounce:"এগজেক্যুতিফ, লেজিস্লাতিফ এ জুদিসিয়ের।" },
+        { cat:"🏛️ Institutions", qFr:"Qui possède le pouvoir législatif ?", qBn:"আইন প্রণয়ন ক্ষমতা কার কাছে থাকে?", qPronounce:"কি পোসেদ ল্য পুভোয়ার লেজিস্লাতিফ ?", aFr:"Le Parlement.", aBn:"পালামঁ।", aPronounce:"ল্য পার্ল্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui sanctionne l'auteur d'un vol ?", qBn:"চোরকে কে শাস্তি দেন?", qPronounce:"কি সাঁক্সিওন লোতোর দাঁ ভোল ?", aFr:"Le juge.", aBn:"বিচারক শাস্তি দেন।", aPronounce:"ল্য জ্যুজ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui élit les députés ?", qBn:"সংসদ সদস্যদের (দেপুতি) কে নির্বাচিত করেন?", qPronounce:"কি এলি লে দেপ্যুতে ?", aFr:"Les citoyens français.", aBn:"ফরাসি নাগরিকরা।", aPronounce:"লে সিতোয়েঁ ফ্রঁসে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui vote les lois ?", qBn:"আইন কে পাস করেন?", qPronounce:"কি ভোত লে লোয়া ?", aFr:"Le Parlement.", aBn:"পালামঁ আইন পাস করে।", aPronounce:"ল্য পার্ল্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui réside au palais de l'Élysée ?", qBn:"এলিজে প্রাসাদে কে থাকেন?", qPronounce:"কি রেজিদ ও পালে দ্য লেলিজে ?", aFr:"Le Président de la République française.", aBn:"ফ্রান্সের রাষ্ট্রপতি।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ।" },
+        { cat:"🏛️ Institutions", qFr:"Combien y a-t-il de départements en France ?", qBn:"ফ্রান্সে কয়টি ডিপার্টমেন্ট আছে?", qPronounce:"কোঁবিয়াঁ ইয়া-তিল দ্য দেপার্ত্যমঁ আ ফ্রঁস ?", aFr:"101 départements.", aBn:"১০১টি বিভাগ।", aPronounce:"সাঁ উন দেপার্ত্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui représente l'État dans un département ?", qBn:"একটি ডিপার্টমেন্টে রাষ্ট্রের প্রতিনিধি কে?", qPronounce:"কি রেপ্রেজঁত লেতা দাঁ জাঁ দেপার্ত্যমঁ ?", aFr:"Le préfet.", aBn:"প্রেফ (রাষ্ট্রের প্রতিনিধি)।", aPronounce:"ল্য প্রেফে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui dirige la commune ?", qBn:"কম্যুন কে পরিচালনা করেন?", qPronounce:"কি দিরিজ লা কোম্যুন ?", aFr:"Le maire.", aBn:"মেয়র।", aPronounce:"ল্য মের।" },
+        { cat:"🏛️ Institutions", qFr:"Est-ce que le président de la République a tous les pouvoirs ?", qBn:"প্রজাতন্ত্রের রাষ্ট্রপতির কি সব ক্ষমতা আছে?", qPronounce:"এস-কে ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক আ তু লে পুভোয়ার ?", aFr:"Non, les pouvoirs sont séparés.", aBn:"না, ক্ষমতার বিভাজন আছে।", aPronounce:"নোঁ, লে পুভোয়ার সোঁ সেপারে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est le préfet ?", qBn:"প্রেফ কে?", qPronounce:"কি এ ল্য প্রেফে ?", aFr:"Le représentant de l’État dans un département.", aBn:"বিভাগে রাষ্ট্রের প্রতিনিধি।", aPronounce:"ল্য রেপ্রেজঁতাঁ দ্য লেতা দাঁ জাঁ দেপার্ত্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le rôle du Parlement ?", qBn:"পালামঁর ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্যু পার্ল্যমঁ ?", aFr:"Voter les lois et contrôler le gouvernement.", aBn:"আইন প্রণয়ন ও সরকার নিয়ন্ত্রণ।", aPronounce:"ভোতে লে লোয়া এ কোঁত্রোলে ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le régime politique de la France aujourd'hui ?", qBn:"আজ ফ্রান্সের রাজনৈতিক শাসনব্যবস্থা কী?", qPronounce:"কেল এ ল্য রেজিম পোলিতিক দ্য লা ফ্রঁস ওজুরদুই ?", aFr:"Une République démocratique.", aBn:"একটি গণতান্ত্রিক প্রজাতন্ত্র।", aPronounce:"উন রেপ্যুব্লিক দেমোক্রাতিক।" },
+        { cat:"🏛️ Institutions", qFr:"Combien d'États font partie de l'Union européenne au 1er janvier 2025 ?", qBn:"২০২৫ সালের ১ জানুয়ারি পর্যন্ত ইউরোপীয় ইউনিয়নে কয়টি রাষ্ট্র আছে?", qPronounce:"কোঁবিয়াঁ দেতা ফোঁ পার্তি দ্য ল্যুনিওঁ ইয়ুরোপিয়েন ও প্রেমিয়ে জাঁভিয়ে দ্য মিল নেফ সাঁক ভাঁ ?", aFr:"27 États.", aBn:"২৭টি দেশ।", aPronounce:"ভাঁ সেপ্ত এতা।" },
+        { cat:"🏛️ Institutions", qFr:"Quel État n'est pas membre de l'Union européenne ?", qBn:"কোন রাষ্ট্রটি ইউরোপীয় ইউনিয়নের সদস্য নয়?", qPronounce:"কেল এতা নে পা মঁব্র দ্য ল্যুনিওঁ ইয়ুরোপিয়েন ?", aFr:"Suisse.", aBn:"সুইজারল্যান্ড।", aPronounce:"স্যুইস।" },
+        { cat:"🏛️ Institutions", qFr:"Quelle condition est nécessaire pour voter aux élections européennes ?", qBn:"ইউরোপীয় নির্বাচনে ভোট দেওয়ার জন্য কী শর্ত প্রয়োজন?", qPronounce:"কেল কোঁদিসিওঁ এ নেসেসের পুর ভোতে ও এলেক্সিওঁ ইয়ুরোপিয়েন ?", aFr:"Être citoyen européen et inscrit sur les listes électorales.", aBn:"ইউরোপীয় নাগরিক ও ভোটার তালিকায় নিবন্ধিত হতে হবে।", aPronounce:"এত্র সিতোয়েঁ ইয়ুরোপিয়েন এ এঁস্ক্রি স্যুর লে লিস্ত এলেক্তোরাল।" },
+        { cat:"🏛️ Institutions", qFr:"À quelle fréquence les élections européennes sont-elles organisées ?", qBn:"ইউরোপীয় নির্বাচন কত বছর পর পর অনুষ্ঠিত হয়?", qPronounce:"আ কেল ফ্রেকঁস লেজ এলেক্সিওঁ ইয়ুরোপিয়েন সোঁ-তেল অর্গানিজে ?", aFr:"Tous les 5 ans.", aBn:"প্রতি ৫ বছরে।", aPronounce:"তু লে সাঁক আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel pays est un pays fondateur de l'Union européenne ?", qBn:"কোন দেশটি ইউরোপীয় ইউনিয়নের প্রতিষ্ঠাতা দেশ?", qPronounce:"কেল পেই এত আঁ পেই ফোঁদাতোর দ্য ল্যুনিওঁ ইয়ুরোপিয়েন ?", aFr:"France.", aBn:"ফ্রান্স।", aPronounce:"ফ্রঁস।" },
+        { cat:"🏛️ Institutions", qFr:"Quelle est la monnaie utilisée en France ?", qBn:"ফ্রান্সে কোন মুদ্রা ব্যবহার করা হয়?", qPronounce:"কেল এ লা মোনে ইয়ুতিলিজে আ ফ্রঁস ?", aFr:"L’euro (€).", aBn:"ইউরো।", aPronounce:"ল্যুরো।" },
+        { cat:"🏛️ Institutions", qFr:"Qui élit les députés européens ?", qBn:"ইউরোপীয় সংসদ সদস্যদের কে নির্বাচিত করেন?", qPronounce:"কি এলি লে দেপ্যুতে ইয়ুরোপিয়েন ?", aFr:"Les citoyens des États membres de l’Union européenne.", aBn:"ইউরোপীয় ইউনিয়নের নাগরিকরা।", aPronounce:"লে সিতোয়েঁ দে জেতা মঁব্র দ্য ল্যুনিওঁ ইয়ুরোপিয়েন।" },
+        { cat:"🏛️ Institutions", qFr:"Quand célèbre-t-on la journée de l'Europe ?", qBn:"ইউরোপ দিবস কবে পালন করা হয়?", qPronounce:"কাঁ সেলেব্র-তোঁ লা জুর্নে দ্য ল্যুরোপ ?", aFr:"Le 9 mai.", aBn:"৯ মে।", aPronounce:"ল্য ন্যুফ মে।" },
+
+        // DROITS ET DEVOIRS (30 questions officielles)
+        { cat:"⚖️ Droits & devoirs", qFr:"Comment s’appelle la Constitution actuelle de la France ?", qBn:"ফ্রান্সের বর্তমান সংবিধানের নাম কী?", qPronounce:"কোঁমঁ সাপেল লা কোঁস্তিত্যুসিওঁ আক্তুয়েল দ্য লা ফ্রঁস ?", aFr:"La Constitution de la Ve République (1958).", aBn:"পঞ্চম প্রজাতন্ত্রের সংবিধান (১৯৫৮)।", aPronounce:"লা কোঁস্তিত্যুসিওঁ দ্য লা সাঁকিয়েম রেপ্যুব্লিক (মিল নেফ সাঁক সঁকান্ত) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Comment s'appelle le texte qui énonce les droits et devoirs des personnes résidant en France ?", qBn:"ফ্রান্সে বসবাসকারী ব্যক্তিদের অধিকার ও কর্তব্য যে দলিলে উল্লেখ করা হয়েছে তার নাম কী?", qPronounce:"কোঁমঁ সাপেল ল্য তেক্স্ত কি এনোঁস লে দ্রোয়া এ দ্যুভোয়ার দে পের্সোন রেজিদাঁ আ ফ্রঁস ?", aFr:"La Constitution française.", aBn:"ফ্রান্সের সংবিধান।", aPronounce:"লা কোঁস্তিত্যুসিওঁ ফ্রঁসেজ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Concernant les droits individuels, quelle proposition est correcte ?", qBn:"ব্যক্তিগত অধিকার সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লে দ্রোয়া এঁদিভিদুয়েল, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Les droits individuels s’appliquent à toutes les personnes vivant en France.", aBn:"ব্যক্তিগত অধিকার ফ্রান্সে বসবাসকারী সকল মানুষের জন্য প্রযোজ্য।", aPronounce:"লে দ্রোয়া এঁদিভিদুয়েল সাপ্লিক আ তুত লে পের্সোন ভিভাঁ আ ফ্রঁস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"De quelle année date la Déclaration des droits de l’homme et du citoyen ?", qBn:"মানব ও নাগরিক অধিকারের ঘোষণাটি কত সালের?", qPronounce:"দ্য কেল আনে দাত লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ ?", aFr:"1789.", aBn:"১৭৮৯ সালের।", aPronounce:"মিল সেপ সাঁক সঁকান্ত নোঁফ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Lequel de ces droits est un droit fondamental ?", qBn:"এই অধিকারগুলোর মধ্যে কোনটি একটি মৌলিক অধিকার?", qPronounce:"লেকেল দ্য সে দ্রোয়া এত আঁ দ্রোয়া ফোঁদামঁতাল ?", aFr:"La liberté d’expression.", aBn:"মত প্রকাশের স্বাধীনতা একটি মৌলিক অধিকার।", aPronounce:"লা লিবেরতে দেক্সপ্রেসিওঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Parmi ces textes, lequel garantit les droits et libertés en France ?", qBn:"এই দলিলগুলোর মধ্যে কোনটি ফ্রান্সে অধিকার ও স্বাধীনতা নিশ্চিত করে?", qPronounce:"পার্মি সে তেক্স্ত, লেকেল গারঁতি লে দ্রোয়া এ লিবেরতে আ ফ্রঁস ?", aFr:"La Constitution et la Déclaration des droits de l’homme et du citoyen (1789).", aBn:"সংবিধান ও ১৭৮৯ সালের মানবাধিকার ঘোষণা।", aPronounce:"লা কোঁস্তিত্যুসিওঁ এ লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Qu’est-ce que la liberté d’expression ?", qBn:"মত প্রকাশের স্বাধীনতা কী?", qPronounce:"কেস্কে লা লিবেরতে দেক্সপ্রেসিওঁ ?", aFr:"Le droit d’exprimer ses opinions librement dans le respect de la loi.", aBn:"আইনের প্রতি সম্মান রেখে নিজের মত প্রকাশের অধিকার।", aPronounce:"ল্য দ্রোয়া দেক্সপ্রিমে সে জোপিনিওঁ লিব্রেমঁ দাঁ ল্য রেস্পেক দ্য লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel droit permet à une personne de se défendre devant la justice ?", qBn:"কোন অধিকার একজন ব্যক্তিকে আদালতে নিজের পক্ষে যুক্তি উপস্থাপনের অনুমতি দেয়?", qPronounce:"কেল দ্রোয়া পার্মে আ উন পের্সোন দ্য স্য দেফঁদ্র দ্যেভাঁ লা জুস্তিস ?", aFr:"Le droit à la défense.", aBn:"আত্মপক্ষ সমর্থনের অধিকার।", aPronounce:"ল্য দ্রোয়া আ লা দেফঁস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel est le texte fondateur établissant en France les droits et les devoirs de chaque citoyen ?", qBn:"ফ্রান্সে প্রতিটি নাগরিকের অধিকার ও কর্তব্য প্রতিষ্ঠাকারী ভিত্তিমূলক দলিল কোনটি?", qPronounce:"কেল এ ল্য তেক্স্ত ফোঁদাতোর এতাব্লিসঁ আ ফ্রঁস লে দ্রোয়া এ লে দ্যুভোয়ার দ্য শাক সিতোয়েঁ ?", aFr:"La Déclaration des droits de l’homme et du citoyen (1789).", aBn:"১৭৮৯ সালের মানব ও নাগরিক অধিকারের ঘোষণা।", aPronounce:"লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel texte a été adopté pendant la Révolution française ?", qBn:"ফরাসি বিপ্লবের সময় কোন দলিলটি গৃহীত হয়েছিল?", qPronounce:"কেল তেক্স্ত আ এতে আদোপ্তে পঁদা লা রেভোল্যুসিওঁ ফ্রঁসেজ ?", aFr:"La Déclaration des droits de l’homme et du citoyen (1789).", aBn:"১৭৮৯ সালের মানবাধিকার ঘোষণা।", aPronounce:"লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quelle liberté permet à une personne de ne pas avoir de religion ?", qBn:"কোন স্বাধীনতা একজন ব্যক্তিকে কোনো ধর্ম না থাকার অনুমতি দেয়?", qPronounce:"কেল লিবেরতে পার্মে আ উন পের্সোন দ্য নে পা জাভোয়ার দ্য রেলিজিওঁ ?", aFr:"La liberté de conscience.", aBn:"বিবেকের স্বাধীনতা।", aPronounce:"লা লিবেরতে দ্য কোঁসিয়াস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Une femme peut avorter :", qBn:"একজন নারী কি গর্ভপাত করাতে পারেন?", qPronounce:"উন ফাম প্যু আভোর্তে :", aFr:"Oui, dans le cadre prévu par la loi.", aBn:"হ্যাঁ, আইনের নির্ধারিত সীমার মধ্যে।", aPronounce:"উই, দাঁ ল্য কাদ্র প্রেভ্যু পার লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Est-il toujours possible de divorcer ?", qBn:"কি সবসময়েই ডিভোর্স করা সম্ভব?", qPronounce:"এ-তিল তুজুর পোসিবল দ্য দিভোর্সে ?", aFr:"Oui, le divorce est autorisé par la loi.", aBn:"হ্যাঁ, আইন অনুযায়ী বিবাহ বিচ্ছেদ সম্ভব।", aPronounce:"উই, ল্য দিভোর্স এত ওতোইজে পার লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"La peine de mort est :", qBn:"মৃত্যুদণ্ড:", qPronounce:"লা পেন দ্য মোর এ :", aFr:"Interdite en France.", aBn:"ফ্রান্সে মৃত্যুদণ্ড নিষিদ্ধ।", aPronounce:"এঁতের্দিত আ ফ্রঁস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Concernant les limites aux libertés individuelles, quelle proposition est correcte ?", qBn:"ব্যক্তিগত স্বাধীনতার সীমাবদ্ধতা সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লে লিমিত ও লিবেরতে এঁদিভিদুয়েল, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Les libertés peuvent être limitées pour protéger l’ordre public et les droits des autres.", aBn:"অন্যদের অধিকার ও জনশৃঙ্খলা রক্ষার জন্য স্বাধীনতা সীমিত হতে পারে।", aPronounce:"লে লিবেরতে প্যুভঁ জেত্র লিমিতে পুর প্রোতেজে লোরদ্র প্যুব্লিক এ লে দ্রোয়া দে জোত্র।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"En France, est-ce légal d'être marié à plusieurs personnes en même temps ?", qBn:"ফ্রান্সে, একই সময়ে একাধিক ব্যক্তির সাথে বিবাহবন্ধনে আবদ্ধ হওয়া কি আইনসম্মত?", qPronounce:"আ ফ্রঁস, এস-কে লেগাল দেত্র মারিয়ে আ প্ল্যুজিয়োর পের্সোন আ মেম তঁ ?", aFr:"Non, c’est interdit (polygamie interdite).", aBn:"না, একাধিক বিয়ে করা অবৈধ।", aPronounce:"নোঁ, সে তাঁতের্দি (পোলিগামি এঁতের্দিত) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Faut-il réduire ses déchets ?", qBn:"নিজের বর্জ্য কি কমানো উচিত?", qPronounce:"ফো-তিল রেদ্যুইর সে দেশে ?", aFr:"Oui, pour protéger l’environnement.", aBn:"হ্যাঁ, পরিবেশ রক্ষার জন্য বর্জ্য কমাতে হবে।", aPronounce:"উই, পুর প্রোতেজে লাঁভিরন্যমঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Jeter une bouteille dans la rue est :", qBn:"রাস্তায় বোতল ফেলা:", qPronounce:"জেতে উন বুতেই দাঁ লা র্যু এ :", aFr:"Interdit et passible d’une amende.", aBn:"নিষিদ্ধ এবং জরিমানা হতে পারে।", aPronounce:"এঁতের্দি এ পাসিবল দ্যুন আমঁদ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Pourquoi les libertés individuelles peuvent-elles être limitées ?", qBn:"কেন ব্যক্তিগত স্বাধীনতা সীমিত করা হতে পারে?", qPronounce:"পুরকোয়া লে লিবেরতে এঁদিভিদুয়েল প্যুভঁ-এল জেত্র লিমিতে ?", aFr:"Pour garantir la sécurité et les droits de tous.", aBn:"সবার নিরাপত্তা ও অধিকার নিশ্চিত করতে।", aPronounce:"পুর গারঁতি লা সেক্যুরিতে এ লে দ্রোয়া দ্য তু।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que doit faire une personne en cas d’accident ?", qBn:"দুর্ঘটনার ক্ষেত্রে একজন ব্যক্তির কী করা উচিত?", qPronounce:"ক্য দোয়া ফেয়ার উন পের্সোন আ কা দাক্সিদাঁ ?", aFr:"Porter assistance et appeler les secours (15, 17, 18, 112).", aBn:"সাহায্য করতে হবে এবং জরুরি নম্বরে ফোন করতে হবে।", aPronounce:"পোর্তে আসিস্তাস এ আপেলে লে সেকুর (কাঁজ, দিজ সেপ্ত, দিজ উইত, সাঁ দুজ) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que permet la citoyenneté française ?", qBn:"ফরাসি নাগরিকত্ব কী করার অনুমতি দেয়?", qPronounce:"কে পার্মে লা সিতোয়েনেতে ফ্রঁসেজ ?", aFr:"Le droit de vote et de participer à la vie démocratique.", aBn:"ভোটাধিকার ও গণতান্ত্রিক অংশগ্রহণের অধিকার।", aPronounce:"ল্য দ্রোয়া দ্য ভোতে এ দ্য পার্তিসিপে আ লা ভি দেমোক্রাতিক।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que risque une personne qui ne respecte pas la loi ?", qBn:"যে ব্যক্তি আইন মানে না তার কী শাস্তি হতে পারে?", qPronounce:"কে রিস্ক উন পের্সোন কি নে রেস্পেক্তে পা লা লোয়া ?", aFr:"Une sanction (amende ou prison).", aBn:"শাস্তি (জরিমানা বা কারাদণ্ড)।", aPronounce:"উন সাঁক্সিওঁ (আমঁদ উ প্রিজ়োঁ) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel est le rôle de la gendarmerie ?", qBn:"জেন্ডারমেরির ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্য লা জাঁদার্মরি ?", aFr:"Assurer la sécurité publique, surtout en zone rurale.", aBn:"বিশেষ করে গ্রামীণ এলাকায় নিরাপত্তা নিশ্চিত করা।", aPronounce:"আস্যুরে লা সেক্যুরিতে প্যুব্লিক, স্যুর্তু আ জোন র্যুরাল।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel est le rôle de la police ?", qBn:"পুলিশের ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্য লা পোলিস ?", aFr:"Assurer la sécurité et maintenir l’ordre public en ville.", aBn:"শহরে নিরাপত্তা ও শৃঙ্খলা বজায় রাখা।", aPronounce:"আস্যুরে লা সেক্যুরিতে এ মাঁতনির লোরদ্র প্যুব্লিক আ ভিল।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Qu'est-ce qu'une infraction ?", qBn:"অপরাধ (ইনফ্রাক্সিওঁ) কী?", qPronounce:"কেস্ক্যুন এঁফ্রাক্সিওঁ ?", aFr:"Un acte interdit par la loi.", aBn:"আইন দ্বারা নিষিদ্ধ কাজ।", aPronounce:"আঁ নাক্তে এঁতের্দি পার লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Comment peut-on réduire ses déchets ?", qBn:"কীভাবে বর্জ্য কমানো যায়?", qPronounce:"কোঁমঁ প্যু-তোঁ রেদ্যুইর সে দেশে ?", aFr:"Trier, recycler, réutiliser et consommer moins.", aBn:"বাছাই করা, পুনর্ব্যবহার করা ও কম ব্যবহার করা।", aPronounce:"ত্রিয়ে, রেসিকলে, রেউতিলিজে এ কোঁসোমে মোঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Déposer une machine à laver cassée sur le trottoir est :", qBn:"ফুটপাতে ভাঙা ওয়াশিং মেশিন ফেলা:", qPronounce:"দেপোজে উন মাশিন আ লাভে কাসে স্যুর ল্য ত্রোতোয়ার এ :", aFr:"Interdit.", aBn:"অবৈধ।", aPronounce:"এঁতের্দি।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"En quoi consiste la traite des êtres humains ?", qBn:"মানব পাচার বলতে কী বোঝায়?", qPronounce:"আ কোয়া কোঁসিস্ত লা ত্রেত দে জেত্র জ্যুমাঁ ?", aFr:"Exploiter des personnes par la force ou la tromperie.", aBn:"জোর বা প্রতারণার মাধ্যমে মানুষের শোষণ।", aPronounce:"এক্সপ্লোতে দে পের্সোন পার লা ফোর্স উ লা ত্রোম্পরি।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que doit faire une victime de violences ?", qBn:"সহিংসতার শিকার ব্যক্তির কী করা উচিত?", qPronounce:"ক্য দোয়া ফেয়ার উন ভিক্তিম দ্য ভিওলঁস ?", aFr:"Porter plainte et contacter les autorités (17 ou 3919).", aBn:"অভিযোগ করতে হবে এবং কর্তৃপক্ষের সাথে যোগাযোগ করতে হবে।", aPronounce:"পোর্তে প্ল্যাঁত এ কোঁতাক্তে লে জোতোরিতে (দিজ সেপ্ত উ ত্রোয়া মিল নেফ সাঁক দিজ ন্যুফ) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quelle est l'infraction la plus grave ?", qBn:"সবচেয়ে গুরুতর অপরাধটি কোনটি?", qPronounce:"কেল এ লাঁফ্রাক্সিওঁ লা প্লু গ্রাভ ?", aFr:"Le crime.", aBn:"ক্রাইম (গুরুতর অপরাধ)।", aPronounce:"ল্য ক্রিম।" },
+
+        // HISTOIRE – GÉOGRAPHIE – CULTURE (47 questions officielles)
+        { cat:"📜 Histoire & culture", qFr:"En quelle année a débuté la Révolution française ?", qBn:"ফরাসি বিপ্লব কোন সালে শুরু হয়?", qPronounce:"আ কেল আনে আ দেব্যুতে লা রেভোল্যুসিওঁ ফ্রঁসেজ ?", aFr:"En 1789.", aBn:"১৭৮৯ সালে।", aPronounce:"আ মিল সেপ সাঁক সঁকান্ত নোঁফ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Napoléon Ier ?", qBn:"নাপোলিয়ন প্রথম কে ছিলেন?", qPronounce:"কি এতে নাপোলেওঁ প্রিমিয়ে ?", aFr:"Napoléon Bonaparte était empereur des Français.", aBn:"নাপোলিয়ন বোনাপার্ট ছিলেন ফরাসিদের সম্রাট।", aPronounce:"নাপোলেওঁ বোনাপার্ত এতে আঁপ্রের দে ফ্রঁসে।" },
+        { cat:"📜 Histoire & culture", qFr:"Lequel de ces personnages historiques est français ?", qBn:"এই ঐতিহাসিক ব্যক্তিত্বদের মধ্যে কে ফরাসি?", qPronounce:"লেকেল দ্য সে পের্সোনাজ ইস্তোরিক এত ফ্রঁসে ?", aFr:"Charles de Gaulle.", aBn:"শার্ল দ্য গোল।", aPronounce:"শার্ল দ্য গোল।" },
+        { cat:"📜 Histoire & culture", qFr:"Dans quelle République est-on aujourd'hui ?", qBn:"এখন আমরা কোন প্রজাতন্ত্রে আছি?", qPronounce:"দাঁ কেল রেপ্যুব্লিক এ-তোঁ ওজুরদুই ?", aFr:"La Ve République.", aBn:"পঞ্চম প্রজাতন্ত্র।", aPronounce:"লা সাঁকিয়েম রেপ্যুব্লিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Qu'est-ce que la Shoah ?", qBn:"শোয়া (হলোকাস্ট) কী?", qPronounce:"কেস্কে লা শোয়া ?", aFr:"L’extermination des Juifs d’Europe par les nazis pendant la Seconde Guerre mondiale.", aBn:"দ্বিতীয় বিশ্বযুদ্ধের সময় নাৎসিদের দ্বারা ইহুদিদের গণহত্যা।", aPronounce:"লেক্সতের্মিনাসিওঁ দে জুইফ দ্যুরোপ পার লে নাজি পঁদা লা সেকোঁদ গের মোঁদিয়াল।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel pays ou région du monde a été colonisé par la France ?", qBn:"বিশ্বের কোন দেশ বা অঞ্চল ফ্রান্স দ্বারা উপনিবেশিত হয়েছিল?", qPronounce:"কেল পেই উ রেজিওঁ দ্যু মোঁদ আ এতে কোলোনিজে পার লা ফ্রঁস ?", aFr:"Algérie.", aBn:"আলজেরিয়া।", aPronounce:"আলজেরি।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui a rendu l’école gratuite, laïque et obligatoire ?", qBn:"কে শিক্ষাকে বিনামূল্যে, ধর্মনিরপেক্ষ ও বাধ্যতামূলক করেন?", qPronounce:"কি আ রঁদু লেকোল গ্রাতুইত, লাইক এ ওব্লিগাতোয়ার ?", aFr:"Jules Ferry.", aBn:"জুল ফেরি।", aPronounce:"জ্যুল ফেরি।" },
+        { cat:"📜 Histoire & culture", qFr:"Quand a eu lieu la Seconde Guerre mondiale ?", qBn:"দ্বিতীয় বিশ্বযুদ্ধ কখন সংঘটিত হয়েছিল?", qPronounce:"কাঁ আ ইু ল্যো লা সেকোঁদ গের মোঁদিয়াল ?", aFr:"De 1939 à 1945.", aBn:"১৯৩৯ থেকে ১৯৪৫ সাল।", aPronounce:"দ্য মিল নেফ সাঁক সঁকান্ত নোঁফ আ মিল নেফ সাঁক সঁকান্ত সাঁক।" },
+        { cat:"📜 Histoire & culture", qFr:"Quand a eu lieu la Première Guerre mondiale ?", qBn:"প্রথম বিশ্বযুদ্ধ কখন সংঘটিত হয়েছিল?", qPronounce:"কাঁ আ ইু ল্যো লা প্রেমিয়ের গের মোঁদিয়াল ?", aFr:"De 1914 à 1918.", aBn:"১৯১৪ থেকে ১৯১৮ সাল।", aPronounce:"দ্য মিল নেফ সাঁক কাতোর্জ আ মিল নেফ সাঁক দিজ উইত।" },
+        { cat:"📜 Histoire & culture", qFr:"En quelle année a été créée la Communauté Économique Européenne (CEE) ?", qBn:"ইউরোপীয় অর্থনৈতিক সম্প্রদায় (ইইসি) কোন সালে প্রতিষ্ঠিত হয়েছিল?", qPronounce:"আ কেল আনে আ এতে ক্রেয়ে লা কোম্যুনতে একোনোমিক ইয়ুরোপিয়েন ?", aFr:"En 1957.", aBn:"১৯৫৭ সালে।", aPronounce:"আ মিল নেফ সাঁক সঁকান্ত সেপ্ত।" },
+        { cat:"📜 Histoire & culture", qFr:"Le 11 novembre est un jour férié. À quoi correspond cette date ?", qBn:"১১ নভেম্বর একটি ছুটির দিন। এই তারিখটি কীসের সাথে সম্পর্কিত?", qPronounce:"ল্য ওঁজ নভঁব্র এত আঁ জুর ফেরিয়ে। আ কোয়া কোরেস্পোঁ সেত দাত ?", aFr:"À l’armistice de 1918 (fin de la Première Guerre mondiale).", aBn:"১৯১৮ সালের যুদ্ধবিরতি দিবস।", aPronounce:"আ লার্মিস্তিস দ্য মিল নেফ সাঁক দিজ উইত (ফাঁ দ্য লা প্রেমিয়ের গের মোঁদিয়াল) ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui a été le premier Président élu sous la Ve République ?", qBn:"পঞ্চম প্রজাতন্ত্রের অধীনে নির্বাচিত প্রথম রাষ্ট্রপতি কে ছিলেন?", qPronounce:"কি আ এতে ল্য প্রেমিয়ে প্রেজিদাঁ এলু সু লা সাঁকিয়েম রেপ্যুব্লিক ?", aFr:"Charles de Gaulle.", aBn:"শার্ল দ্য গোল।", aPronounce:"শার্ল দ্য গোল।" },
+        { cat:"📜 Histoire & culture", qFr:"En quelle année l'esclavage a-t-il été aboli définitivement en France ?", qBn:"ফ্রান্সে দাসপ্রথা চিরতরে কোন সালে বিলুপ্ত করা হয়?", qPronounce:"আ কেল আনে লেস্কলাভাজ আ-তিল এতে আবোলি দেফিনিতিভমঁ আ ফ্রঁস ?", aFr:"En 1848.", aBn:"১৮৪৮ সালে।", aPronounce:"আ মিল উইত সঁক সঁকান্ত কারঁত উইত।" },
+        { cat:"📜 Histoire & culture", qFr:"Depuis quelle année l'école publique est-elle gratuite ?", qBn:"সরকারি স্কুল কত সাল থেকে বিনামূল্যে?", qPronounce:"দ্যাপুই কেল আনে লেকোল প্যুব্লিক এ-তেল গ্রাতুইত ?", aFr:"Depuis 1881.", aBn:"১৮৮১ সাল থেকে।", aPronounce:"দ্যাপুই মিল উইত সাঁক সঁকান্ত কারঁত উন।" },
+        { cat:"📜 Histoire & culture", qFr:"Combien y a-t-il eu de républiques en France ?", qBn:"ফ্রান্সে কয়টি প্রজাতন্ত্র হয়েছে?", qPronounce:"কোঁবিয়াঁ ইয়া-তিল ইু দ্য রেপ্যুব্লিক আ ফ্রঁস ?", aFr:"Cinq républiques.", aBn:"পাঁচটি প্রজাতন্ত্র।", aPronounce:"সাঁক রেপ্যুব্লিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était le roi de France au moment de la Révolution française ?", qBn:"ফরাসি বিপ্লবের সময় ফ্রান্সের রাজা কে ছিলেন?", qPronounce:"কি এতে ল্য রোয়া দ্য ফ্রঁস ও মোমঁ দ্য লা রেভোল্যুসিওঁ ফ্রঁসেজ ?", aFr:"Louis XVI.", aBn:"লুই ষোড়শ।", aPronounce:"লুই সেজ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui a fondé la Ve République ?", qBn:"কে পঞ্চম প্রজাতন্ত্র প্রতিষ্ঠা করেন?", qPronounce:"কি আ ফোঁদে লা সাঁকিয়েম রেপ্যুব্লিক ?", aFr:"Charles de Gaulle.", aBn:"শার্ল দ্য গোল।", aPronounce:"শার্ল দ্য গোল।" },
+        { cat:"📜 Histoire & culture", qFr:"Que célèbre-t-on le 14 juillet ?", qBn:"১৪ জুলাই কী পালন করা হয়?", qPronounce:"ক্য সেলেব্র-তোঁ ল্য কাতোর্জুইয়ে ?", aFr:"La Fête nationale (prise de la Bastille en 1789).", aBn:"জাতীয় দিবস (বাস্তিল দুর্গ দখল)।", aPronounce:"লা ফেত নাসিওনাল (প্রিজ দ্য লা বাস্তিল আঁ মিল সেপ সাঁক সঁকান্ত নোঁফ) ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle guerre a eu lieu entre 1914 et 1918 ?", qBn:"১৯১৪ থেকে ১৯১৮ সালের মধ্যে কোন যুদ্ধ সংঘটিত হয়েছিল?", qPronounce:"কেল গের আ ইু ল্যো আঁত্র মিল নেফ সাঁক কাতোর্জ এ মিল নেফ সাঁক দিজ উইত ?", aFr:"La Première Guerre mondiale.", aBn:"প্রথম বিশ্বযুদ্ধ।", aPronounce:"লা প্রেমিয়ের গের মোঁদিয়াল।" },
+        { cat:"📜 Histoire & culture", qFr:"Pourquoi l’année 1958 est importante pour la France ?", qBn:"কেন ১৯৫৮ সাল ফ্রান্সের জন্য গুরুত্বপূর্ণ?", qPronounce:"পুরকোয়া লানে মিল নেফ সাঁক সঁকান্ত এত অঁপোর্তঁত পুর লা ফ্রঁস ?", aFr:"Création de la Ve République.", aBn:"পঞ্চম প্রজাতন্ত্র প্রতিষ্ঠিত হয়।", aPronounce:"ক্রেয়াসিওঁ দ্য লা সাঁকিয়েম রেপ্যুব্লিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel fleuve coule en France ?", qBn:"ফ্রান্সে কোন নদী প্রবাহিত হয়?", qPronounce:"কেল ফ্ল্যুভ কুল আ ফ্রঁস ?", aFr:"La Seine.", aBn:"সেন নদী।", aPronounce:"লা সেন।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle ville est française ?", qBn:"কোন শহরটি ফরাসি?", qPronounce:"কেল ভিল এত ফ্রঁসেজ ?", aFr:"Lyon.", aBn:"লিওঁ।", aPronounce:"লিওঁ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel océan borde la côte ouest française ?", qBn:"কোন মহাসাগর ফ্রান্সের পশ্চিম উপকূলকে স্পর্শ করেছে?", qPronounce:"কেল ওসেয়াঁ বোর্দ লা কোত উয়েস্ত ফ্রঁসেজ ?", aFr:"L’océan Atlantique.", aBn:"আটলান্টিক মহাসাগর।", aPronounce:"লোসেয়াঁ আতলাঁতিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Qu'est-ce que Paris ?", qBn:"প্যারিস কী?", qPronounce:"কেস্কে পারি ?", aFr:"Paris est la capitale de la France.", aBn:"প্যারিস ফ্রান্সের রাজধানী।", aPronounce:"পারি এ লা কাপিতাল দ্য লা ফ্রঁস।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle est la capitale de la France ?", qBn:"ফ্রান্সের রাজধানীর নাম কী?", qPronounce:"কেল এ লা কাপিতাল দ্য লা ফ্রঁস ?", aFr:"Paris.", aBn:"প্যারিস।", aPronounce:"পারি।" },
+        { cat:"📜 Histoire & culture", qFr:"Sur quel continent se situe la France métropolitaine ?", qBn:"মূল ভূখণ্ড ফ্রান্স কোন মহাদেশে অবস্থিত?", qPronounce:"স্যুর কেল কোঁতিনাঁ স্য সিতু লা ফ্রঁস মেত্রোপোলিতেন ?", aFr:"En Europe.", aBn:"ইউরোপ মহাদেশে।", aPronounce:"আঁ ন্যুরোপ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle île est un département d'outre-mer français ?", qBn:"কোন দ্বীপটি একটি ফরাসি সামুদ্রিক বিভাগ?", qPronounce:"কেল ইল এত আঁ দেপার্ত্যমঁ দুত্র-মের ফ্রঁসে ?", aFr:"La Réunion.", aBn:"লা রেউনিওঁ।", aPronounce:"লা রেউনিওঁ।" },
+        { cat:"📜 Histoire & culture", qFr:"Combien y a-t-il de régions en France métropolitaine ?", qBn:"মূল ভূখণ্ড ফ্রান্সে কয়টি অঞ্চল আছে?", qPronounce:"কোঁবিয়াঁ ইয়া-তিল দ্য রেজিওঁ আ ফ্রঁস মেত্রোপোলিতেন ?", aFr:"13 régions.", aBn:"১৩টি অঞ্চল।", aPronounce:"ত্রেজ রেজিওঁ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle ville est un grand port maritime ?", qBn:"কোন শহরটি একটি বড় সামুদ্রিক বন্দর?", qPronounce:"কেল ভিল এত আঁ গ্রা পোর মারিতিম ?", aFr:"Marseille.", aBn:"মার্সেই।", aPronounce:"মার্সেই।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle est la mer au sud de la France métropolitaine ?", qBn:"মূল ভূখণ্ড ফ্রান্সের দক্ষিণে কোন সাগর অবস্থিত?", qPronounce:"কেল এ লা মের ও স্যুদ দ্য লা ফ্রঁস মেত্রোপোলিতেন ?", aFr:"La mer Méditerranée.", aBn:"ভূমধ্যসাগর।", aPronounce:"লা মের মেদিতেরানে।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle ville est située au bord de la mer Méditerranée ?", qBn:"ভূমধ্যসাগরের তীরে কোন শহর অবস্থিত?", qPronounce:"কেল ভিল এ সিতুয়ে ও বোর্দ দ্য লা মের মেদিতেরানে ?", aFr:"Nice.", aBn:"নিস।", aPronounce:"নিস।" },
+        { cat:"📜 Histoire & culture", qFr:"Où se situe la Corse ?", qBn:"কোর্স কোথায় অবস্থিত?", qPronounce:"উ স্য সিতু লা কোরস ?", aFr:"Corse se situe en mer Méditerranée.", aBn:"কোর্সিকা ভূমধ্যসাগরে অবস্থিত।", aPronounce:"কোরস স্য সিতু আ মের মেদিতেরানে।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle chaîne de montagnes est située entre la France et l'Italie ?", qBn:"ফ্রান্স এবং ইতালির মধ্যে কোন পর্বতমালা অবস্থিত?", qPronounce:"কেল শেন দ্য মোঁতান এ সিতুয়ে আঁত্র লা ফ্রঁস এ লিতালি ?", aFr:"Les Alpes.", aBn:"আল্পস পর্বতমালা।", aPronounce:"লে জ়াল্প।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Molière ?", qBn:"মলিয়ের কে ছিলেন?", qPronounce:"কি এতে মোলিয়ের ?", aFr:"Molière était un dramaturge français.", aBn:"মলিয়ের ছিলেন একজন ফরাসি নাট্যকার।", aPronounce:"মোলিয়ের এতে আঁ দ্রামাত্যুর্জ ফ্রঁসে।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Charles Baudelaire ?", qBn:"শার্ল বোদলেয়ার কে ছিলেন?", qPronounce:"কি এতে শার্ল বোদলেয়ার ?", aFr:"Charles Baudelaire était un poète français.", aBn:"শার্ল বোদলেয়ার ছিলেন ফরাসি কবি।", aPronounce:"শার্ল বোদলেয়ার এতে আঁ পোয়েত ফ্রঁসে।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était George Sand ?", qBn:"জর্জ সাঁ কে ছিলেন?", qPronounce:"কি এতে জর্জ সাঁদ ?", aFr:"George Sand était une écrivaine française.", aBn:"জর্জ সাঁ ছিলেন একজন ফরাসি লেখিকা।", aPronounce:"জর্জ সাঁ এতে উন এক্রিভেন ফ্রঁসেজ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Simone de Beauvoir ?", qBn:"সিমোন দ্য বোভোয়ার কে ছিলেন?", qPronounce:"কি এতে সিমোন দ্য বোভোয়ার ?", aFr:"Simone de Beauvoir était philosophe et écrivaine.", aBn:"সিমোন দ্য বোভোয়ার ছিলেন দার্শনিক ও লেখিকা।", aPronounce:"সিমোন দ্য বোভোয়ার এতে ফিলোজ়ফ এ এক্রিভেন।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Albert Camus ?", qBn:"আলবের কাম্যু কে ছিলেন?", qPronounce:"কি এতে আলবের কাম্যু ?", aFr:"Albert Camus était écrivain et philosophe.", aBn:"আলবের কাম্যু ছিলেন লেখক ও দার্শনিক।", aPronounce:"আলবের কাম্যু এতে এক্রিভ্যাঁ এ ফিলোজ়ফ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Paul Cézanne ?", qBn:"পল সেজান কে ছিলেন?", qPronounce:"কি এতে পোল সেজান ?", aFr:"Paul Cézanne était peintre.", aBn:"পল সেজান ছিলেন চিত্রশিল্পী।", aPronounce:"পোল সেজান এতে প্যাঁত্র।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Marc Chagall ?", qBn:"মার্ক শাগাল কে ছিলেন?", qPronounce:"কি এতে মার্ক শাগাল ?", aFr:"Marc Chagall était artiste peintre.", aBn:"মার্ক শাগাল ছিলেন শিল্পী।", aPronounce:"মার্ক শাগাল এতে আর্তিস্ত প্যাঁত্র।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Joséphine Baker ?", qBn:"জোজেফিন বাকের কে ছিলেন?", qPronounce:"কি এতে জোজেফিন বাকের ?", aFr:"Joséphine Baker était chanteuse et résistante.", aBn:"জোজেফিন বাকের ছিলেন গায়িকা ও প্রতিরোধ আন্দোলনের সদস্য।", aPronounce:"জোজেফিন বাকের এতে শাঁতোজ এ রেজিস্তাঁত।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était une chanteuse française célèbre ?", qBn:"কে একজন বিখ্যাত ফরাসি গায়িকা ছিলেন?", qPronounce:"কি এতে উন শঁতোজ ফ্রঁসেজ সেলেব্র ?", aFr:"Édith Piaf.", aBn:"এদিত পিয়াফ।", aPronounce:"এদিত পিয়াফ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qu'est-ce que le Louvre ?", qBn:"লুভ্র কী?", qPronounce:"কেস্কে ল্য লুভ্র ?", aFr:"Musée du Louvre est un grand musée à Paris.", aBn:"লুভ্র মিউজিয়াম প্যারিসের একটি বিখ্যাত জাদুঘর।", aPronounce:"ম্যুযে দ্যু লুভ্র এত আঁ গ্রা ম্যুযে আ পারি।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Jean de la Fontaine ?", qBn:"জঁ দ্য লা ফোঁতেন কে ছিলেন?", qPronounce:"কি এতে জঁ দ্য লা ফোঁতেন ?", aFr:"Jean de La Fontaine était écrivain et fabuliste.", aBn:"জঁ দ্য লা ফোঁতেন ছিলেন লেখক।", aPronounce:"জঁ দ্য লা ফোঁতেন এতে এক্রিভ্যাঁ এ ফাব্যুলিস্ত।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel écrivain est français ?", qBn:"কোন লেখক ফরাসি?", qPronounce:"কেল এক্রিভ্যাঁ এ ফ্রঁসে ?", aFr:"Victor Hugo.", aBn:"ভিক্টর হুগো।", aPronounce:"ভিক্তর ইয়ুগো।" },
+        { cat:"📜 Histoire & culture", qFr:"Dans quelle ville se trouve la tour Eiffel ?", qBn:"আইফেল টাওয়ার কোন শহরে অবস্থিত?", qPronounce:"দাঁ কেল ভিল স্য ত্রুভ লা তুর এফেল ?", aFr:"À Paris.", aBn:"প্যারিসে।", aPronounce:"আ পারি।" },
+        { cat:"📜 Histoire & culture", qFr:"Quand célèbre-t-on Noël ?", qBn:"বড়দিন (নোয়েল) কখন পালন করা হয়?", qPronounce:"কাঁ সেলেব্র-তোঁ নোয়েল ?", aFr:"Le 25 décembre.", aBn:"২৫ ডিসেম্বর।", aPronounce:"ল্য ভাঁ সাঁক দেসাম্ব্র।" },
+
+        // VIVRE DANS LA SOCIÉTÉ FRANÇAISE (31 questions officielles)
+        { cat:"🏠 Vivre en France", qFr:"Quel numéro d'urgence permet d'appeler le SAMU ?", qBn:"কোন জরুরি নম্বরে ফোন করলে সামু (SAMU) পাওয়া যায়?", qPronounce:"কেল নুমেরো দ্যুর্জঁস পার্মে দাপেলে ল্য সামু ?", aFr:"Le 15.", aBn:"১৫ নম্বরে ফোন করলে SAMU পাওয়া যায়।", aPronounce:"ল্য কাঁজ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel numéro d'urgence permet d'appeler les pompiers ?", qBn:"কোন জরুরি নম্বরে ফোন করলে দমকল বাহিনী আসে?", qPronounce:"কেল নুমেরো দ্যুর্জঁস পার্মে দাপেলে লে পোঁপিয়ে ?", aFr:"Le 18.", aBn:"১৮ নম্বরে ফোন করলে দমকল বাহিনী আসে।", aPronounce:"ল্য দিজ উইত।" },
+        { cat:"🏠 Vivre en France", qFr:"Après avoir obtenu le permis de conduire, que faut-il faire pour pouvoir conduire sa voiture ?", qBn:"ড্রাইভিং লাইসেন্স পাওয়ার পর, গাড়ি চালানোর জন্য কী করতে হবে?", qPronounce:"আপ্রে জাভোয়ার ওব্তন্যু ল্য পার্মি দ্য কোঁদুইর, ক্য ফো-তিল ফেয়ার পুর পুভোয়ার কোঁদুইর সা ভোয়াত্যুর ?", aFr:"Assurer la voiture (avoir une assurance).", aBn:"গাড়ি চালানোর আগে বীমা করতে হবে।", aPronounce:"আস্যুরে লা ভোয়াত্যুর (আভোয়ার উন আস্যুরাস) ।" },
+        { cat:"🏠 Vivre en France", qFr:"À quelles conditions un mariage est-il reconnu juridiquement ?", qBn:"কোন শর্তে একটি বিবাহ আইনগতভাবে স্বীকৃত হয়?", qPronounce:"আ কেল কোঁদিসিওঁ আঁ মারিয়াজ এ-তিল রেকোন্যু জ্যুরিদিকমঁ ?", aFr:"S’il est célébré à la mairie (mariage civil).", aBn:"মেয়র অফিসে (সিভিল ম্যারেজ) হলে তা আইনগতভাবে স্বীকৃত।", aPronounce:"সিল এ সেলেব্রে আ লা মেরি (মারিয়াজ সিভিল) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quand faut-il déclarer son enfant au service d'état civil de la mairie ?", qBn:"মেয়র অফিসের সিভিল রেজিস্ট্রেশন বিভাগে কখন সন্তানের জন্ম নিবন্ধন করাতে হবে?", qPronounce:"কাঁ ফো-তিল দেক্লারে সোঁ নঁফা ও সের্ভিস দেতা সিভিল দ্য লা মেরি ?", aFr:"Dans les 5 jours après la naissance.", aBn:"জন্মের ৫ দিনের মধ্যে ঘোষণা করতে হবে।", aPronounce:"দাঁ লে সাঁক জুর আপ্রে লা নেসঁস।" },
+        { cat:"🏠 Vivre en France", qFr:"Le travail non déclaré est :", qBn:"অনিবন্ধিত কাজ:", qPronounce:"ল্য ত্রাভাই নোঁ দেক্লারে এ :", aFr:"Interdit et illégal.", aBn:"অবৈধ।", aPronounce:"এঁতের্দি এ ইলেগাল।" },
+        { cat:"🏠 Vivre en France", qFr:"Que doit faire un employeur pour fixer un salaire ?", qBn:"বেতন নির্ধারণের জন্য একজন নিয়োগকর্তার কী করা উচিত?", qPronounce:"ক্য দোয়া ফেয়ার আঁ নঁপ্লোয়ের পুর ফিক্সে আঁ সালের ?", aFr:"Respecter la loi et le SMIC minimum.", aBn:"আইন ও ন্যূনতম মজুরি মানতে হবে।", aPronounce:"রেস্পেকতে লা লোয়া এ ল্য স্মিক মিনিমাম।" },
+        { cat:"🏠 Vivre en France", qFr:"Qu'est-ce que le SMIC ?", qBn:"স্মিক (SMIC) কী?", qPronounce:"কেস্কে ল্য স্মিক ?", aFr:"Le Salaire Minimum Interprofessionnel de Croissance (salaire minimum légal).", aBn:"আইনগত ন্যূনতম বেতন।", aPronounce:"ল্য সালের মিনিমাম এঁতেরপ্রোফেসিওনেল দ্য ক্রোয়াস ( সালের মিনিমাম লেগাল) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quelle est la première démarche à réaliser pour chercher un emploi ?", qBn:"চাকরি খোঁজার জন্য প্রথম পদক্ষেপ কী?", qPronounce:"কেল এ লা প্রেমিয়ের দেমার্শ আ রেয়ালিজে পুর শেরশে আঁ নঁপ্লোয়া ?", aFr:"S’inscrire à France Travail.", aBn:"France Travail-এ নিবন্ধন করা।", aPronounce:"সাঁস্ক্রির আ ফ্রঁস ত্রাভাই।" },
+        { cat:"🏠 Vivre en France", qFr:"Quelle est la durée légale du temps de travail par semaine ?", qBn:"সপ্তাহে কাজের আইনি সময় কত?", qPronounce:"কেল এ লা দ্যুরে লেগাল দ্যু তঁ দ্য ত্রাভাই পার স্যমেন ?", aFr:"35 heures par semaine.", aBn:"সপ্তাহে ৩৫ ঘণ্টা।", aPronounce:"ত্রঁত সাঁক জোর পার স্যমেন।" },
+        { cat:"🏠 Vivre en France", qFr:"Qui est aidé par France Travail ?", qBn:"France Travail কাদের সাহায্য করে?", qPronounce:"কি এত এদে পার ফ্রঁস ত্রাভাই ?", aFr:"Les personnes à la recherche d’un emploi.", aBn:"যারা চাকরি খুঁজছেন।", aPronounce:"লে পের্সোন আ লা রেশেরশ দ্যাঁ নঁপ্লোয়া।" },
+        { cat:"🏠 Vivre en France", qFr:"Une personne étrangère en situation régulière peut créer son entreprise :", qBn:"নিয়মিত অবস্থায় থাকা একজন বিদেশী ব্যক্তি কি তার নিজের ব্যবসা প্রতিষ্ঠা করতে পারেন?", qPronounce:"উন পের্সোনেত্রাঁজের আঁ সিতুয়াসিওঁ রেগ্যুলিয়ের প্যু ক্রেয়ে সোঁ আঁত্রপ্রিজ :", aFr:"Oui, si elle respecte la loi.", aBn:"হ্যাঁ, আইন মেনে চললে পারেন।", aPronounce:"উই, সি এল রেস্পেক্ত লা লোয়া।" },
+        { cat:"🏠 Vivre en France", qFr:"Une femme peut-elle créer son entreprise ?", qBn:"একজন নারী কি তার নিজের ব্যবসা প্রতিষ্ঠা করতে পারেন?", qPronounce:"উন ফাম প্যু-তেল ক্রেয়ে সোঁ আঁত্রপ্রিজ ?", aFr:"Oui, bien sûr.", aBn:"হ্যাঁ, অবশ্যই পারেন।", aPronounce:"উই, বিয়েঁ স্যুর।" },
+        { cat:"🏠 Vivre en France", qFr:"À partir de quel âge un mineur peut-il travailler ?", qBn:"কত বছর বয়স থেকে একজন অপ্রাপ্তবয়স্ক কাজ করতে পারে?", qPronounce:"আ পার্তির দ্য কেল আজ আঁ মিন্যোর প্যু-তিল ত্রাভাইয়ে ?", aFr:"À partir de 16 ans (avec conditions).", aBn:"১৬ বছর থেকে (শর্ত সাপেক্ষে)।", aPronounce:"আ পার্তির দ্য সেজ আঁ (আভেক কোঁদিসিওঁ) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Auprès de quel organisme faut-il demander le remboursement des frais de santé ?", qBn:"স্বাস্থ্য ব্যয়ের ফেরতের জন্য কোন সংস্থার কাছে আবেদন করতে হবে?", qPronounce:"ওপ্রে দ্য কেল অর্গানিজম ফো-তিল দ্যমঁদে ল্য রঁবুর্স্যমঁ দে ফ্রে দ্য সঁতে ?", aFr:"À l’Assurance Maladie.", aBn:"Assurance Maladie-এর কাছে।", aPronounce:"আ লাস্যুরাস মালাদি।" },
+        { cat:"🏠 Vivre en France", qFr:"Qu’est-ce qu’un numéro d’urgence ?", qBn:"জরুরি নম্বর কী?", qPronounce:"কেস্ক্যাঁ নুমেরো দ্যুর্জঁস ?", aFr:"Un numéro gratuit pour appeler les secours rapidement.", aBn:"জরুরি সহায়তার জন্য বিনামূল্যের নম্বর।", aPronounce:"আঁ নুমেরো গ্রাতুই পুর আপেলে লে সেকুর রাপিদমঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Concernant l'accès aux soins, quelle proposition est correcte ?", qBn:"স্বাস্থ্যসেবা প্রাপ্তি সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লাক্সেস ও সোঁ, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Toute personne a droit aux soins en France.", aBn:"ফ্রান্সে প্রত্যেকের চিকিৎসার অধিকার আছে।", aPronounce:"তুত পের্সোন আ দ্রোয়া ও সোঁ আ ফ্রঁস।" },
+        { cat:"🏠 Vivre en France", qFr:"En cas de problème de santé non urgent, à qui faut-il s’adresser en premier ?", qBn:"জরুরি না হলে, স্বাস্থ্য সমস্যায় প্রথমে কার সাথে যোগাযোগ করতে হবে?", qPronounce:"আ কা দ্য প্রোব্লেম দ্য সঁতে নোঁ ন্যুর্জঁ, আ কি ফো-তিল সাদ্রেসে আঁ প্রেমিয়ে ?", aFr:"À son médecin traitant.", aBn:"নিজের পারিবারিক ডাক্তারের কাছে যেতে হবে।", aPronounce:"আ সোঁ মেদ্সাঁ ত্রেতাঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel est le rôle du médecin traitant ?", qBn:"পারিবারিক ডাক্তারের ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্যু মেদ্সাঁ ত্রেতাঁ ?", aFr:"Suivre le patient et orienter vers un spécialiste si nécessaire.", aBn:"রোগীর চিকিৎসা তদারকি করা এবং প্রয়োজন হলে বিশেষজ্ঞের কাছে পাঠানো।", aPronounce:"স্যুইভ্র ল্য পাসিয়াঁ এ ওরিয়ঁতে ভের্স জঁ স্পেসিয়ালিস্ত সি নেসেসের।" },
+        { cat:"🏠 Vivre en France", qFr:"Dans quelles situations doit-on se rendre aux urgences de l'hôpital ?", qBn:"কোন পরিস্থিতিতে হাসপাতালের জরুরি বিভাগে যেতে হবে?", qPronounce:"দাঁ কেল সিতুয়াসিওঁ দোয়া-তোঁ স্য রঁদ্র ও জ্যুর্জঁস দ্য লোপিতাল ?", aFr:"En cas de danger grave ou immédiat.", aBn:"গুরুতর বা তাৎক্ষণিক বিপদের ক্ষেত্রে।", aPronounce:"আ কা দ্য দাঞ্জে গ্রাভ উ ইমেদিয়া।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel est l’objectif des vaccinations obligatoires ?", qBn:"বাধ্যতামূলক টিকাদানের উদ্দেশ্য কী?", qPronounce:"কেল এ লব্জেক্তিফ দে ভাক্সিনাসিওঁ ওব্লিগাতোয়ার ?", aFr:"Protéger la santé individuelle et collective.", aBn:"ব্যক্তিগত ও সামষ্টিক স্বাস্থ্য রক্ষা করা।", aPronounce:"প্রোতেজে লা সঁতে এঁদিভিদুয়েল এ কোলেক্তিভ।" },
+        { cat:"🏠 Vivre en France", qFr:"À quoi sert la carte Vitale ?", qBn:"ভিতাল কার্ডের কাজ কী?", qPronounce:"আ কোয়া সের লা কার্ত ভিতাল ?", aFr:"À faciliter le remboursement des soins par l’Assurance Maladie.", aBn:"চিকিৎসা খরচ ফেরত পেতে সাহায্য করে।", aPronounce:"আ ফাসিলিতে ল্য রঁবুর্স্যমঁ দে সোঁ পার লাস্যুরাস মালাদি।" },
+        { cat:"🏠 Vivre en France", qFr:"À quoi sert une mutuelle santé ?", qBn:"মিউচুয়েল (স্বাস্থ্য বীমা) কী কাজে লাগে?", qPronounce:"আ কোয়া সের উন ম্যুত্যুয়েল সঁতে ?", aFr:"À compléter le remboursement des frais de santé.", aBn:"অতিরিক্ত চিকিৎসা ব্যয় কভার করে।", aPronounce:"আ কোঁপ্লেতে ল্য রঁবুর্স্যমঁ দে ফ্রে দ্য সঁতে।" },
+        { cat:"🏠 Vivre en France", qFr:"Jusqu'à quel âge l'école est-elle obligatoire ?", qBn:"কত বছর বয়স পর্যন্ত স্কুল বাধ্যতামূলক?", qPronounce:"জ্যুস্কা কেল আজ লেকোল এ-তেল ওব্লিগাতোয়ার ?", aFr:"Jusqu’à 16 ans.", aBn:"১৬ বছর পর্যন্ত।", aPronounce:"জ্যুস্কা সেজ আঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"L'autorité parentale prévoit l'obligation :", qBn:"অভিভাবকত্ব কর্তব্য নির্ধারণ করে:", qPronounce:"লোতোরিতে পারঁতাল প্রেভোয়া লোব্লিগাসিওঁ :", aFr:"De protéger, éduquer et entretenir l’enfant.", aBn:"সন্তানের সুরক্ষা, শিক্ষা ও লালন-পালনের দায়িত্ব।", aPronounce:"দ্য প্রোতেজে, এদ্যুকে এ আঁত্রনির লঁফা।" },
+        { cat:"🏠 Vivre en France", qFr:"Pour qui l'école est-elle obligatoire ?", qBn:"কার জন্য স্কুল বাধ্যতামূলক?", qPronounce:"পুর কি লেকোল এ-তেল ওব্লিগাতোয়ার ?", aFr:"Pour tous les enfants de 3 à 16 ans vivant en France.", aBn:"ফ্রান্সে বসবাসকারী ৩ থেকে ১৬ বছর বয়সী সকল শিশুর জন্য।", aPronounce:"পুর তু লে জঁফা দ্য ত্রোয়া আ সেজ আঁ ভিভাঁ আ ফ্রঁস।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel diplôme obtient-on à la fin du lycée ?", qBn:"লিসে (উচ্চ মাধ্যমিক) শেষে কোন ডিপ্লোমা পাওয়া যায়?", qPronounce:"কেল দিপ্লোম ওবতিয়ে-তোঁ আ লা ফাঁ দ্যু লিসে ?", aFr:"Le baccalauréat (le bac).", aBn:"ব্যাকালোরিয়া (বাক)।", aPronounce:"ল্য বাকালোরেয়া (ল্য বাক) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Dans quels établissements scolaires vont les élèves après l'école élémentaire ?", qBn:"প্রাথমিক স্কুলের পরে ছাত্ররা কোন শিক্ষাপ্রতিষ্ঠানে যায়?", qPronounce:"দাঁ কেল জেতাব্লিস্মঁ স্কোলের ভোঁ লে জেলেভ আপ্রে লেকোল এলেমঁতের ?", aFr:"Au collège.", aBn:"কলেজ (মাধ্যমিক বিদ্যালয়)।", aPronounce:"ও কোলেজ।" },
+        { cat:"🏠 Vivre en France", qFr:"Pour qui l'école est elle obligatoire ?", qBn:"কার জন্য স্কুল বাধ্যতামূলক?", qPronounce:"পুর কি লেকোল এ-তেল ওব্লিগাতোয়ার ?", aFr:"Pour tous les enfants de 3 à 16 ans.", aBn:"৩ থেকে ১৬ বছর বয়সী সকল শিশুর জন্য।", aPronounce:"পুর তু লে জঁফা দ্য ত্রোয়া আ সেজ আঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Un enfant inscrit à l'école :", qBn:"স্কুলে নিবন্ধিত একটি শিশু:", qPronounce:"আ নঁফা এঁস্ক্রি আ লেকোল :", aFr:"Doit assister aux cours régulièrement.", aBn:"নিয়মিত ক্লাসে উপস্থিত থাকতে হবে।", aPronounce:"দোয়া আসিস্তে ও কুর রেগ্যুলিয়েরমঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Les enfants qui ne parlent pas français :", qBn:"যে সব শিশু ফরাসি বলে না:", qPronounce:"লে জঁফা কি নে পার্ল পা ফ্রঁসে :", aFr:"Ont droit à un soutien pour apprendre le français.", aBn:"ফরাসি না জানলে শেখার জন্য সহায়তা পায়।", aPronounce:"ওঁ দ্রোয়া আ আঁ সুতিয়াঁ পুর আপ্রঁদ্র ল্য ফ্রঁসে।" }
+    ];
+
+    // Helper : generate 4 options for quiz (1 correct + 3 distinct distractors)
+    function getOptionsForQuiz(question, allQuestions) {
+        const correct = question.aFr;
+        let candidates = allQuestions.filter(q => q.aFr !== correct).map(q => q.aFr);
+        candidates = [...new Set(candidates)]; // unique
+        let shuffled = candidates.sort(() => 0.5 - Math.random());
+        let distractors = shuffled.slice(0, 3);
+        // fallback if not enough distinct (very unlikely with 200+ questions)
+        const fallbacks = ["La liberté d'expression", "Le drapeau tricolore", "Le Président de la République"];
+        while(distractors.length < 3) {
+            for(let fb of fallbacks) {
+                if(fb !== correct && !distractors.includes(fb)) {
+                    distractors.push(fb);
+                    break;
+                }
+            }
+        }
+        let options = [correct, ...distractors];
+        return options.sort(() => 0.5 - Math.random());
+    }
+
+    // DOM elements
+    let currentMode = "study";
+    let quizQuestions = [];
+    let userAnswers = [];
+    let currentQIndex = 0;
+    let timerInterval = null;
+    let timeLeft = 600; // 10 minutes
+
+    function renderStudyMode() {
+        currentMode = "study";
+        if(timerInterval) clearInterval(timerInterval);
+        const cats = [...new Map(fullQuestions.map(q => [q.cat, q.cat])).values()];
+        let html = `<div class="panel"><div class="section-title">📚 Révision complète (${fullQuestions.length} questions officielles)</div>`;
+        for(let cat of cats) {
+            let qs = fullQuestions.filter(q => q.cat === cat);
+            html += `<div style="margin-top:1.8rem;"><h3 style="background:#eef2ff; padding:8px 16px; border-radius:50px;">${cat}</h3>`;
+            qs.forEach(q => {
+                html += `<div class="study-card">
+                            <div class="study-question">🇫🇷 ${q.qFr}<br><div class="pronounce">🔊 উচ্চারণ: ${q.qPronounce}</div> <br><span class="lang-bn">🇧🇩 ${q.qBn}</span>`;
+                html += `</div><div class="study-answer">
+                            <div class="lang-fr">✔️ ${q.aFr}</div>
+                            <div class="pronounce">🔊 উচ্চারণ: ${q.aPronounce}</div>
+                            <div class="lang-bn">✔️ ${q.aBn}</div>`;
+                // if(q.aPronounce) html += `<div class="pronounce">🔊 উচ্চারণ: ${q.aPronounce}</div>`;
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+        }
+        html += `</div>`;
+        document.getElementById('mainContent').innerHTML = html;
+    }
+
+    function startQuiz() {
+        if(timerInterval) clearInterval(timerInterval);
+        // pick 40 random questions from full set
+        let shuffled = [...fullQuestions].sort(() => 0.5 - Math.random());
+        quizQuestions = shuffled.slice(0, 40);
+        userAnswers = new Array(40).fill(null);
+        currentQIndex = 0;
+        timeLeft = 600;
+        currentMode = "quiz";
+        renderQuizQuestion();
+        startTimer();
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            if(currentMode !== "quiz") return;
+            if(timeLeft <= 1) {
+                clearInterval(timerInterval);
+                submitQuiz();
+            } else {
+                timeLeft--;
+                updateTimerDisplay();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+        let timerElem = document.getElementById('quizTimer');
+        if(timerElem) timerElem.innerText = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    }
+
+    function renderQuizQuestion() {
+        if(currentMode !== "quiz") return;
+        if(currentQIndex >= quizQuestions.length) {
+            submitQuiz();
+            return;
+        }
+        const q = quizQuestions[currentQIndex];
+        const options = getOptionsForQuiz(q, fullQuestions);
+        const saved = userAnswers[currentQIndex];
+        let html = `<div class="panel"><div class="quiz-header">
+                        <span>Question ${currentQIndex+1} / ${quizQuestions.length}</span>
+                        <span class="timer" id="quizTimer">${Math.floor(timeLeft/60).toString().padStart(2,'0')}:${(timeLeft%60).toString().padStart(2,'0')}</span>
+                    </div>
+                    <div class="quiz-question-card">
+                        <div class="quiz-question-text">🇫🇷 ${q.qFr}
+                            <!-- <br><span class="lang-bn">🇧🇩 ${q.qBn}</span> -->
+                            </div>
+                        <div class="options-list" id="optionsList">`;
+        options.forEach(opt => {
+            let isSel = (saved === opt);
+            html += `<div class="option ${isSel ? 'selected' : ''}" data-value="${opt.replace(/"/g, '&quot;')}">${opt}</div>`;
+        });
+        html += `</div><div class="quiz-nav">
+                    <button id="prevQuiz" class="btn" ${currentQIndex===0?'disabled':''}>◀ Précédent</button>
+                    <button id="nextQuiz" class="btn btn-primary">Suivant ▶</button>
+                    <button id="submitQuiz" class="btn">🏁 Terminer</button>
+                 </div></div></div>`;
+        document.getElementById('mainContent').innerHTML = html;
+
+        document.querySelectorAll('.option').forEach(optDiv => {
+            optDiv.addEventListener('click', () => {
+                let val = optDiv.getAttribute('data-value');
+                userAnswers[currentQIndex] = val;
+                renderQuizQuestion();
+            });
+        });
+        document.getElementById('prevQuiz')?.addEventListener('click', () => { if(currentQIndex>0) { currentQIndex--; renderQuizQuestion(); } });
+        document.getElementById('nextQuiz')?.addEventListener('click', () => { if(currentQIndex<quizQuestions.length-1) { currentQIndex++; renderQuizQuestion(); } else { submitQuiz(); } });
+        document.getElementById('submitQuiz')?.addEventListener('click', () => submitQuiz());
+        updateTimerDisplay();
+    }
+
+    function submitQuiz() {
+        clearInterval(timerInterval);
+        let score = 0;
+        let details = [];
+        for(let i=0; i<quizQuestions.length; i++) {
+            let correct = quizQuestions[i].aFr;
+            let user = userAnswers[i];
+            let isOk = (user === correct);
+            if(isOk) score++;
+            details.push({q: quizQuestions[i].qFr, correct, user: user || "(pas répondu)", ok: isOk});
+        }
+        let percent = Math.round((score/quizQuestions.length)*100);
+        let resultHtml = `<div class="panel"><div class="section-title">📊 Résultat du quiz</div>
+        <div class="score-area"><strong>Score : ${score} / ${quizQuestions.length} (${percent}%)</strong><br>
+        ${percent>=70 ? '✅ Félicitations !' : '📚 Révisez davantage.'}</div>
+        <button id="restartQuizBtn" class="btn btn-primary">🔄 Nouveau quiz (40 questions)</button>
+        <button id="backToStudyBtn" class="btn">📖 Retour à l'étude</button>
+        <div style="margin-top:20px;">`;
+        details.forEach(d => {
+            resultHtml += `<div class="study-card" style="border-left:5px solid ${d.ok?'#2ecc71':'#e74c3c'}">
+            <div><strong>❓ ${d.q}</strong></div>
+            <div>✔️ Bonne réponse : ${d.correct}</div>
+            <div>📝 Votre réponse : ${d.user}</div></div>`;
+        });
+        resultHtml += `</div></div>`;
+        document.getElementById('mainContent').innerHTML = resultHtml;
+        document.getElementById('restartQuizBtn')?.addEventListener('click', startQuiz);
+        document.getElementById('backToStudyBtn')?.addEventListener('click', renderStudyMode);
+        currentMode = "study";
+    }
+
+    // attach buttons
+    document.getElementById('studyModeBtn').addEventListener('click', renderStudyMode);
+    document.getElementById('quizModeBtn').addEventListener('click', startQuiz);
+    renderStudyMode();
+</script>
+</body>
+</html>
