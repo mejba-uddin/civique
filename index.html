@@ -28,19 +28,104 @@
             gap: 20px;
         }
         .header-left { flex: 1; }
-        .header-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 8px;
-        }
-        .marianne-img {
-            width: 70px;
-            height: auto;
-            background: rgba(255,255,240,0.2);
-            border-radius: 50%;
-            padding: 5px;
-        }
+        /* Modern header-right styles */
+.header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.marianne-modern {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+    transition: transform 0.3s ease;
+}
+
+.marianne-modern:hover {
+    transform: scale(1.05);
+}
+
+.marianne-modern svg {
+    width: 70px;
+    height: 70px;
+}
+
+.social-links-modern {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+}
+
+.social-icon svg {
+    width: 22px;
+    height: 22px;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.social-icon:hover {
+    background: #ffcd3c;
+    transform: translateY(-3px);
+}
+
+.social-icon:hover svg {
+    color: #003366;
+    transform: scale(1.1);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 700px) {
+    .header-right {
+        align-items: center;
+        margin-top: 0.5rem;
+    }
+    .marianne-modern {
+        width: 70px;
+        height: 70px;
+    }
+    .marianne-modern svg {
+        width: 60px;
+        height: 60px;
+    }
+    .social-icon {
+        width: 38px;
+        height: 38px;
+    }
+    .social-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+}
         .social-links {
             display: flex;
             gap: 12px;
@@ -123,13 +208,34 @@
             </div>
         </div>
         <div class="header-right">
-            <img src="marianne-img.png" alt="marianne-img" class="marianne-img">
-            <div class="social-links">
-                <a href="https://www.facebook.com/mejbabhai" target="_blank" rel="noopener noreferrer">📘 Facebook</a>
-                <a href="#" target="_blank">🐦 Twitter</a>
-                <a href="#" target="_blank">📸 Instagram</a>
-            </div>
-        </div>
+    <!-- Marianne illustration (modern minimalist) -->
+    <div class="marianne-modern">
+        <img src="marianne-img.png" alt="marianne-img">
+    </div>
+    <!-- Social links with modern icons -->
+    <div class="social-links-modern">
+        <a href="https://www.facebook.com/mejbabhai" target="_blank" rel="noopener noreferrer" class="social-icon facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879v-6.99h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.99C18.343 21.128 22 16.991 22 12z"/>
+            </svg>
+            <span class="sr-only">Facebook</span>
+        </a>
+        <a href="#" target="_blank" class="social-icon twitter">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            <span class="sr-only">Twitter</span>
+        </a>
+        <a href="#" target="_blank" class="social-icon instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.336 3.608 1.311.975.975 1.249 2.242 1.311 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.336 2.633-1.311 3.608-.975.975-2.242 1.249-3.608 1.311-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.336-3.608-1.311-.975-.975-1.249-2.242-1.311-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.336-2.633 1.311-3.608.975-.975 2.242-1.249 3.608-1.311 1.266-.058 1.646-.07 4.85-.07zM12 0C8.741 0 8.332.014 7.052.072 5.77.13 4.905.338 4.14.758c-.78.43-1.44 1.002-2.1 1.662-.66.66-1.232 1.32-1.662 2.1-.42.765-.628 1.63-.686 2.912C.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.058 1.282.266 2.147.686 2.912.43.78 1.002 1.44 1.662 2.1.66.66 1.32 1.232 2.1 1.662.765.42 1.63.628 2.912.686 1.28.058 1.689.072 4.948.072s3.668-.014 4.948-.072c1.282-.058 2.147-.266 2.912-.686.78-.43 1.44-1.002 2.1-1.662.66-.66 1.232-1.32 1.662-2.1.42-.765.628-1.63.686-2.912.058-1.28.072-1.689.072-4.948s-.014-3.668-.072-4.948c-.058-1.282-.266-2.147-.686-2.912-.43-.78-1.002-1.44-1.662-2.1-.66-.66-1.32-1.232-2.1-1.662-.765-.42-1.63-.628-2.912-.686C15.668.014 15.259 0 12 0z"/>
+                <path d="M12 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/>
+            </svg>
+            <span class="sr-only">Instagram</span>
+        </a>
+    </div>
+</div>
+        
     </div>
     <div id="mainContent"></div>
     <footer>
