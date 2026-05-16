@@ -5,248 +5,646 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Examen Civique CSP – Révision complète & Quiz officiel</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Roboto, 'Noto Sans Bengali', system-ui, sans-serif;
-            background: #f4f7fc;
-            color: #1e2a3a;
-            padding: 20px;
-            line-height: 1.5;
+        :root {
+            --bg: #f6f8fd;
+            --surface: #ffffff;
+            --surface-soft: #eff3ff;
+            --text: #172033;
+            --text-soft: #56627a;
+            --primary: #2457f5;
+            --primary-soft: #dbe4ff;
+            --accent: #14b8a6;
+            --danger: #ef4444;
+            --success: #16a34a;
+            --border: #dfe5f2;
+            --shadow: 0 8px 28px rgba(34, 55, 99, 0.08);
+            --radius-lg: 22px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
         }
-        .container { max-width: 1300px; margin: 0 auto; }
-        .header {
-            background: linear-gradient(135deg, #003366, #1e4a76);
-            color: white;
-            padding: 1.5rem 1.8rem;
-            border-radius: 32px;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1522;
+                --surface: #171f31;
+                --surface-soft: #1f2a42;
+                --text: #ecf1ff;
+                --text-soft: #b6c2df;
+                --primary: #7ea0ff;
+                --primary-soft: #273861;
+                --accent: #2dd4bf;
+                --danger: #f87171;
+                --success: #34d399;
+                --border: #2b3a5d;
+                --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        body[data-theme="light"] {
+            --bg: #f6f8fd;
+            --surface: #ffffff;
+            --surface-soft: #eff3ff;
+            --text: #172033;
+            --text-soft: #56627a;
+            --primary: #2457f5;
+            --primary-soft: #dbe4ff;
+            --accent: #14b8a6;
+            --danger: #ef4444;
+            --success: #16a34a;
+            --border: #dfe5f2;
+            --shadow: 0 8px 28px rgba(34, 55, 99, 0.08);
+        }
+
+        body[data-theme="dark"] {
+            --bg: #0f1522;
+            --surface: #171f31;
+            --surface-soft: #1f2a42;
+            --text: #ecf1ff;
+            --text-soft: #b6c2df;
+            --primary: #7ea0ff;
+            --primary-soft: #273861;
+            --accent: #2dd4bf;
+            --danger: #f87171;
+            --success: #34d399;
+            --border: #2b3a5d;
+            --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-height: 100%;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top right, rgba(36, 87, 245, 0.14), transparent 35%), var(--bg);
+            color: var(--text);
+            line-height: 1.45;
+            padding: 12px;
+        }
+
+        .app {
+            max-width: 860px;
+            margin: 0 auto;
+            display: grid;
+            gap: 12px;
+        }
+
+        .hero {
+            background: linear-gradient(140deg, var(--primary), #1f3da2);
+            color: #fff;
+            border-radius: 24px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            font-size: 1.15rem;
+            line-height: 1.25;
+            margin-bottom: 6px;
+        }
+
+        .hero p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .chip-row {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.13);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            min-height: 42px;
+        }
+
+        .toolbar {
+            position: sticky;
+            top: 6px;
+            z-index: 15;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .toolbar-main,
+        .toolbar-secondary {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            min-height: 46px;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .btn-soft {
+            background: var(--primary-soft);
+            border-color: transparent;
+        }
+
+        .btn.active {
+            background: var(--text);
+            color: var(--surface);
+            border-color: transparent;
+        }
+
+        .view {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 12px;
+            min-height: 280px;
+        }
+
+        .view-head {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .stat {
+            background: var(--surface-soft);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1rem;
+        }
+
+        .filters {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr;
+        }
+
+        input, select {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            border-radius: 12px;
+            min-height: 44px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+        }
+
+        .study-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .accordion {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--surface);
+        }
+
+        .accordion-top {
+            padding: 12px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .q-main {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .q-meta {
+            font-size: 0.83rem;
+            color: var(--text-soft);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .mini-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .accordion-body {
+            border-top: 1px solid var(--border);
+            padding: 12px;
+            display: none;
+            animation: fadeIn 0.25s ease;
+            background: var(--surface-soft);
+        }
+
+        .accordion.open .accordion-body {
+            display: block;
+        }
+
+        .answer {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .bn {
+            font-family: "Noto Sans Bengali", sans-serif;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+
+        .study-shell {
+            display: grid;
+            gap: 6px;
+        }
+
+        .study-compact-toolbar {
+            position: sticky;
+            top: 6px;
+            z-index: 12;
+            background: color-mix(in srgb, var(--surface) 94%, transparent);
+            border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+            border-radius: 10px;
+            padding: 4px;
+            display: grid;
+            gap: 4px;
+        }
+
+        .study-compact-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .study-chip-row {
+            display: flex;
+            gap: 4px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 1px;
+        }
+
+        .study-chip {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 4px 9px;
+            min-height: 30px;
+            font-size: 0.76rem;
+            font-weight: 400;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .study-chip.active {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .study-advanced {
+            display: none;
+            border-top: 1px dashed color-mix(in srgb, var(--border) 70%, transparent);
+            padding-top: 4px;
+            gap: 4px;
+        }
+
+        .study-advanced.open {
+            display: grid;
+        }
+
+        .study-count {
+            font-size: 0.76rem;
+            color: var(--text-soft);
+            padding-left: 2px;
+        }
+
+        .study-list.compact {
+            gap: 4px;
+        }
+
+        .study-compact-card {
+            border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+            border-radius: 8px;
+            padding: 6px 7px;
+            background: var(--surface);
+            display: grid;
+            gap: 2px;
+        }
+
+        .study-q {
+            font-size: 0.88rem;
+            line-height: 1.24;
+            font-weight: 400;
+        }
+
+        .study-a {
+            font-size: 0.84rem;
+            line-height: 1.22;
+            font-weight: 400;
+        }
+
+        .study-cue,
+        .study-warn {
+            font-size: 0.76rem;
+            color: var(--text-soft);
+            line-height: 1.18;
+        }
+
+        .study-bn-line {
+            font-size: 0.74rem;
+            color: color-mix(in srgb, var(--text-soft) 85%, transparent);
+            line-height: 1.16;
+        }
+
+        .quiz-top {
+            position: sticky;
+            top: 84px;
+            z-index: 14;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            margin-bottom: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--surface-soft);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            transition: width 0.28s ease;
+        }
+
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+            background: var(--surface);
+        }
+
+        .question-line {
+            font-size: 1.07rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .options {
+            margin-top: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .option {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            border-radius: 14px;
+            min-height: 52px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-        .header-left { flex: 1; }
-        /* Modern header-right styles */
-.header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 1rem;
-}
-
-.marianne-modern {
-    width: 80px;
-    height: 80px;
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 10%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    backdrop-filter: blur(4px);
-    transition: transform 0.3s ease;
-}
-
-.marianne-modern:hover {
-    transform: scale(1.05);
-}
-
-.marianne-modern img {
-    width: 70px;
-    height: 70px;
-}
-
-.social-links-modern {
-    display: flex;
-    gap: 1rem;
-}
-
-.social-icon {
-    width: 44px;
-    height: 44px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(4px);
-}
-
-.social-icon svg {
-    width: 22px;
-    height: 22px;
-    color: white;
-    transition: transform 0.2s ease;
-}
-
-.social-icon:hover {
-    background: #ffcd3c;
-    transform: translateY(-3px);
-}
-
-.social-icon:hover svg {
-    color: #003366;
-    transform: scale(1.1);
-}
-
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 700px) {
-    .header-right {
-        align-items: center;
-        margin-top: 0.5rem;
-    }
-    .marianne-modern {
-        width: 70px;
-        height: 70px;
-    }
-    .marianne-modern img {
-        width: 60px;
-        height: 60px;
-    }
-    .social-icon {
-        width: 38px;
-        height: 38px;
-    }
-    .social-icon svg {
-        width: 18px;
-        height: 18px;
-    }
-}
-        .social-links {
-            display: flex;
-            gap: 12px;
-            font-size: 1.2rem;
-        }
-        .social-links a {
-            color: #ffcd3c;
-            text-decoration: none;
-            transition: 0.2s;
-        }
-        .social-links a:hover {
-            color: white;
-            transform: scale(1.1);
-        }
-        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .badge { background: #ffcd3c; color: #003366; padding: 5px 12px; border-radius: 40px; font-size: 0.8rem; font-weight: bold; text-decoration: none; }
-        .mode-buttons { display: flex; gap: 16px; margin: 20px 0 15px; flex-wrap: wrap; }
-        .btn {
-            border: none; padding: 12px 28px; font-size: 1rem; font-weight: 600;
-            border-radius: 60px; cursor: pointer; transition: 0.2s;
-            background: white; color: #003366; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .btn-primary { background: #ffcd3c; color: #003366; }
-        .btn-primary:hover { background: #ffc107; transform: scale(1.02); }
-        .panel { background: white; border-radius: 32px; padding: 1.8rem; margin-bottom: 2rem; box-shadow: 0 8px 20px rgba(0,0,0,0.05); }
-        .section-title { font-size: 1.6rem; border-left: 6px solid #ffcd3c; padding-left: 18px; margin-bottom: 1.5rem; font-weight: 600; }
-        .category-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 1.5rem;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .tab-btn {
-            background: #eef2ff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-weight: 500;
+            text-align: left;
+            font-size: 0.95rem;
             cursor: pointer;
-            transition: 0.2s;
-            color: #1e2a3a;
+            transition: background 0.2s ease, border-color 0.2s ease;
         }
-        .tab-btn.active {
-            background: #003366;
-            color: white;
+
+        .option.selected {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            box-shadow: 0 0 0 2px rgba(36, 87, 245, 0.16) inset;
         }
-        .study-card { background: #fff; border-radius: 24px; margin-bottom: 1.2rem; padding: 1.2rem 1.5rem; border: 1px solid #e2e8f0; }
-        .study-question { font-weight: 700; font-size: 1.1rem; color: #003366; margin-bottom: 0.5rem; }
-        .pronounce { font-family: 'Noto Sans Bengali', sans-serif; background: #f0f4f9; display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.85rem; margin: 6px 0; color: #2c5282; }
-        .study-answer { background: #f8fafc; padding: 0.8rem 1rem; border-radius: 20px; margin-top: 10px; border-left: 4px solid #ffcd3c; }
-        .lang-fr { font-weight: 500; color: #1e40af; }
-        .lang-bn { font-family: 'Noto Sans Bengali', sans-serif; color: #2c3e4e; margin-top: 6px; font-size: 0.95rem; }
-        .quiz-header { display: flex; justify-content: space-between; align-items: center; background: #eef2ff; padding: 1rem 1.5rem; border-radius: 60px; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px; }
-        .timer { font-size: 1.6rem; font-weight: bold; background: #003366; color: white; padding: 6px 18px; border-radius: 60px; font-family: monospace; }
-        .quiz-question-card { background: white; border-radius: 28px; padding: 1.8rem; margin-bottom: 1.5rem; border: 1px solid #e2e8f0; }
-        .quiz-question-text { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
-        .options-list { display: flex; flex-direction: column; gap: 12px; margin: 25px 0; }
-        .option { background: #f1f5f9; border-radius: 100px; padding: 12px 20px; cursor: pointer; border: 1px solid #cbd5e1; transition: 0.1s; }
-        .option.selected { background: #d9eff7; border-color: #003366; font-weight: 500; }
-        .quiz-nav { display: flex; justify-content: space-between; margin-top: 20px; flex-wrap: wrap; gap: 10px; }
-        footer { text-align: center; margin-top: 2rem; font-size: 0.8rem; color: #5a6874; padding: 1rem; border-top: 1px solid #ddd; }
-        .footer-social { margin-top: 10px; display: flex; justify-content: center; gap: 20px; }
-        .footer-social a { color: #003366; text-decoration: none; font-weight: 500; }
-        @media (max-width: 700px) { body { padding: 12px; } .quiz-question-text { font-size: 1.1rem; } .header { flex-direction: column; text-align: center; } .header-right { align-items: center; } }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(22, 163, 74, 0.15);
+        }
+
+        .option.wrong {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .quiz-actions {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .review-pill {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 12px;
+            min-height: 42px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .review-pill.done {
+            background: rgba(22, 163, 74, 0.14);
+            border-color: var(--success);
+        }
+
+        .analytics {
+            display: grid;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: var(--surface-soft);
+            color: var(--text-soft);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .confetti {
+            position: fixed;
+            top: -12px;
+            width: 8px;
+            height: 14px;
+            opacity: 0.9;
+            animation: confettiDrop 2.4s linear forwards;
+            z-index: 999;
+        }
+
+        @keyframes confettiDrop {
+            to {
+                transform: translateY(105vh) rotate(540deg);
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 720px) {
+            body {
+                padding: 20px;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.55rem;
+            }
+
+            .filters {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+
+            .view {
+                padding: 16px;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="header-left">
-            <h1>📘 Préparation officielle CSP <span style="font-family: 'Noto Sans Bengali';">(সিভিক পরীক্ষা)</span>
-                <span class="badge">🇫🇷 + 🇧🇩 উচ্চারণ সহ</span>
-            </h1>
-            <p>Toutes les questions officielles – révision complète + quiz aléatoire (40 Q / 10 min) avec 4 options valides.</p>
-            <div class="mode-buttons">
-                <button id="studyModeBtn" class="btn btn-primary">📖 Mode étude (révision complète)</button>
-                <button id="quizModeBtn" class="btn btn-primary">✅ Mode quiz (40 Q / 10 min)</button>
-            </div>
+<div class="app" id="app">
+    <header class="hero">
+        <h1>Preparation officielle CSP <span style="font-family:'Noto Sans Bengali',sans-serif;">(সিভিক পরীক্ষা)</span></h1>
+        <p>Application de revision serieuse: mode etude, quiz intelligent, suivi de progression et prononciation.</p>
+        <div class="chip-row">
+            <span class="chip">Sans distraction</span>
+            <span class="chip">Mobile first</span>
+            <span class="chip">FR + BN + audio</span>
         </div>
-        <div class="header-right">
-    <!-- Marianne illustration (modern minimalist) -->
-    <div class="marianne-modern">
-        <img src="marianne-img.png" alt="marianne-img" >
-    </div>
-    <!-- Social links with modern icons -->
-    <div class="social-links-modern">
-        <a href="https://www.facebook.com/mejbabhai" target="_blank" rel="noopener noreferrer" class="social-icon facebook">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879v-6.99h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.99C18.343 21.128 22 16.991 22 12z"/>
-            </svg>
-            <span class="sr-only">Facebook</span>
-        </a>
-        <a href="https://x.com/official_mejba" target="_blank" class="social-icon twitter">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
-            <span class="sr-only">Twitter</span>
-        </a>
-        <a href="https://www.instagram.com/mejba_insta/" target="_blank" class="social-icon instagram">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.336 3.608 1.311.975.975 1.249 2.242 1.311 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.336 2.633-1.311 3.608-.975.975-2.242 1.249-3.608 1.311-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.336-3.608-1.311-.975-.975-1.249-2.242-1.311-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.336-2.633 1.311-3.608.975-.975 2.242-1.249 3.608-1.311 1.266-.058 1.646-.07 4.85-.07zM12 0C8.741 0 8.332.014 7.052.072 5.77.13 4.905.338 4.14.758c-.78.43-1.44 1.002-2.1 1.662-.66.66-1.232 1.32-1.662 2.1-.42.765-.628 1.63-.686 2.912C.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.058 1.282.266 2.147.686 2.912.43.78 1.002 1.44 1.662 2.1.66.66 1.32 1.232 2.1 1.662.765.42 1.63.628 2.912.686 1.28.058 1.689.072 4.948.072s3.668-.014 4.948-.072c1.282-.058 2.147-.266 2.912-.686.78-.43 1.44-1.002 2.1-1.662.66-.66 1.232-1.32 1.662-2.1.42-.765.628-1.63.686-2.912.058-1.28.072-1.689.072-4.948s-.014-3.668-.072-4.948c-.058-1.282-.266-2.147-.686-2.912-.43-.78-1.002-1.44-1.662-2.1-.66-.66-1.32-1.232-2.1-1.662-.765-.42-1.63-.628-2.912-.686C15.668.014 15.259 0 12 0z"/>
-                <path d="M12 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/>
-            </svg>
-            <span class="sr-only">Instagram</span>
-        </a>
-    </div>
-</div>
-        
-    </div>
-    <div id="mainContent"></div>
-    <footer>
-        <p>Examen civique – d'après la liste officielle. Les questions de mise en situation ne sont pas incluses.</p>
-        <div class="footer-social">
-            <a href="https://www.facebook.com/mejbabhai" target="_blank" rel="noopener noreferrer">Facebook (Mejba ddin Jihad)</a> |
-            <a href="https://x.com/official_mejba" target="_blank">Twitter</a> |
-            <a href="https://www.instagram.com/mejba_insta/" target="_blank">Instagram</a>
+    </header>
+
+    <section class="toolbar" aria-label="Actions principales">
+        <div class="toolbar-main">
+            <button id="navStudy" class="btn active" type="button">Etude</button>
+            <button id="navRandomQuiz" class="btn" type="button">Quiz aleatoire</button>
+            <button id="navCategoryQuiz" class="btn" type="button">Quiz categorie</button>
+            <button id="navDailyQuiz" class="btn" type="button">Pratique du jour</button>
+            <button id="navRetryWrong" class="btn" type="button">Reessayer erreurs</button>
         </div>
-        <p style="margin-top:10px;">Made By <a href="http://facebook.com/mejbabhai" class="badge" style=" font-weight: bold; text-decoration: none; text-transform: uppercase;" target="_blank" rel="noopener noreferrer">Mejba ddin Jihad</a></p>
-    </footer>
+        <div class="toolbar-secondary">
+            <button id="soundToggle" class="btn btn-soft" type="button" aria-pressed="true">Son ON</button>
+            <button id="speedToggle" class="btn btn-soft" type="button" aria-pressed="false">Prononciation lente OFF</button>
+            <button id="themeToggle" class="btn btn-soft" type="button">Theme auto</button>
+        </div>
+    </section>
+
+    <main id="mainContent" class="view" aria-live="polite"></main>
 </div>
 <script>
     // ============================================================
@@ -456,169 +854,1831 @@
         { cat:"🏠 Vivre en France", qFr:"Les enfants qui ne parlent pas français :", qBn:"যে সব শিশু ফরাসি বলে না:", qPronounce:"লে জঁফা কি নে পার্ল পা ফ্রঁসে :", aFr:"Ont droit à un soutien pour apprendre le français.", aBn:"ফরাসি না জানলে শেখার জন্য সহায়তা পায়।", aPronounce:"ওঁ দ্রোয়া আ আঁ সুতিয়াঁ পুর আপ্রঁদ্র ল্য ফ্রঁসে।" }
     ];
 
-    // Helper : generate 4 options for quiz (1 correct + 3 distinct distractors)
-    function getOptionsForQuiz(question, allQuestions) {
-        const correct = question.aFr;
-        let candidates = allQuestions.filter(q => q.aFr !== correct).map(q => q.aFr);
-        candidates = [...new Set(candidates)]; // unique
-        let shuffled = candidates.sort(() => 0.5 - Math.random());
-        let distractors = shuffled.slice(0, 3);
-        // fallback if not enough distinct (very unlikely with 200+ questions)
-        const fallbacks = ["La liberté d'expression", "Le drapeau tricolore", "Le Président de la République"];
-        while(distractors.length < 3) {
-            for(let fb of fallbacks) {
-                if(fb !== correct && !distractors.includes(fb)) {
-                    distractors.push(fb);
-                    break;
-                }
+    const STORAGE_KEY = "csp_exam_app_v3";
+    const ANSWER_TYPES = {
+        DATE: "date",
+        NUMBER: "number",
+        BOOLEAN: "boolean",
+        PERSON: "person",
+        SYMBOL: "symbol",
+        PLACE: "place",
+        INSTITUTION: "institution",
+        ACTION: "action",
+        OTHER: "other"
+    };
+
+    const REVIEW_INTERVALS = [1, 3, 7, 14, 30];
+
+    const appState = {
+        mode: "study",
+        soundEnabled: true,
+        slowSpeech: false,
+        theme: "auto",
+        difficultIds: new Set(),
+        favoriteIds: new Set(),
+        studiedIds: new Set(),
+        wrongIds: new Set(),
+        searchTerm: "",
+        selectedCategory: "all",
+        onlyDifficult: false,
+        quiz: null,
+        flashcard: null,
+        progress: {},
+        daily: {
+            target: 32,
+            history: {}
+        },
+        audio: {
+            autoPlay: false,
+            loop: false,
+            sequentialQA: false,
+            syllablePacing: false,
+            repeatAfterMe: false,
+            chunkPlayback: false
+        },
+        language: {
+            autoReduceBengali: true
+        },
+        stats: {
+            quizzesTaken: 0,
+            bestScore: 0,
+            lastScore: 0,
+            avgResponseSec: 0
+        }
+    };
+
+    const refs = {
+        main: document.getElementById("mainContent"),
+        navStudy: document.getElementById("navStudy"),
+        navRandomQuiz: document.getElementById("navRandomQuiz"),
+        navCategoryQuiz: document.getElementById("navCategoryQuiz"),
+        navDailyQuiz: document.getElementById("navDailyQuiz"),
+        navRetryWrong: document.getElementById("navRetryWrong"),
+        soundToggle: document.getElementById("soundToggle"),
+        speedToggle: document.getElementById("speedToggle"),
+        themeToggle: document.getElementById("themeToggle")
+    };
+
+    const speechState = {
+        currentText: "",
+        currentRate: 1,
+        activeBtn: null,
+        manualStop: false,
+        repeatedOnce: false
+    };
+
+    function getTodayKey() {
+        return new Date().toISOString().slice(0, 10);
+    }
+
+    function addDays(dateStr, days) {
+        const d = new Date(dateStr);
+        d.setDate(d.getDate() + days);
+        return d.toISOString().slice(0, 10);
+    }
+
+    function getDaysDiff(fromStr, toStr) {
+        const from = new Date(fromStr);
+        const to = new Date(toStr);
+        return Math.floor((to - from) / (1000 * 60 * 60 * 24));
+    }
+
+    function shuffle(list) {
+        const copy = [...list];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function unique(arr) {
+        return [...new Set(arr)];
+    }
+
+    function escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function classifyAnswerType(answer) {
+        const a = (answer || "").toLowerCase();
+        if (/\b(oui|non)\b/.test(a) && a.length < 36) return ANSWER_TYPES.BOOLEAN;
+        if (/\b\d{4}\b/.test(a) || /janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre/.test(a)) return ANSWER_TYPES.DATE;
+        if (/\b\d+\b/.test(a)) return ANSWER_TYPES.NUMBER;
+        if (/marianne|drapeau|devise|hymne|marseillaise|coq|symbole/.test(a)) return ANSWER_TYPES.SYMBOL;
+        if (/paris|lyon|marseille|nice|corse|algérie|france|union européenne|atlantique|méditerranée|seine|europe/.test(a)) return ANSWER_TYPES.PLACE;
+        if (/président|premier ministre|parlement|sénat|assemblée|juge|tribunal|gouvernement|maire|préfet/.test(a)) return ANSWER_TYPES.INSTITUTION;
+        if (/charles|napoléon|jules|molière|baudelaire|sand|beauvoir|camus|cézanne|chagall|baker|piaf|hugo|louis/.test(a)) return ANSWER_TYPES.PERSON;
+        if (/^à |^le |^la |^les |^une |^un /.test(a) && /er\b|ir\b|re\b|tion\b/.test(a)) return ANSWER_TYPES.ACTION;
+        return ANSWER_TYPES.OTHER;
+    }
+
+    function inferDifficulty(item) {
+        const text = `${item.qFr} ${item.aFr}`;
+        if (text.length > 150) return "hard";
+        if (text.length > 95) return "medium";
+        return "easy";
+    }
+
+    function inferTags(item) {
+        const text = `${item.qFr} ${item.aFr}`.toLowerCase();
+        const tags = [];
+        if (/laïc|religion/.test(text)) tags.push("laicite");
+        if (/république|constitution|parlement|président/.test(text)) tags.push("institutions");
+        if (/droits|liberté|égalité|fraternité|loi/.test(text)) tags.push("droits");
+        if (/guerre|révolution|1789|1914|1939|1945/.test(text)) tags.push("histoire");
+        if (/école|lycée|collège/.test(text)) tags.push("education");
+        if (/santé|médecin|urgence|vitale/.test(text)) tags.push("sante");
+        if (/élections|vote/.test(text)) tags.push("vote");
+        if (!tags.length) tags.push("general");
+        return tags;
+    }
+
+    function normalizeQuestions(legacy) {
+        return legacy.map((q, index) => ({
+            id: `Q${index + 1}`,
+            category: q.cat,
+            questionFr: q.qFr,
+            questionBn: q.qBn,
+            pronunciation: q.qPronounce,
+            correctAnswer: q.aFr,
+            options: [],
+            explanation: q.aBn || "",
+            answerPronunciation: q.aPronounce || "",
+            difficulty: inferDifficulty(q),
+            tags: inferTags(q),
+            answerType: classifyAnswerType(q.aFr)
+        }));
+    }
+
+    const questions = normalizeQuestions(fullQuestions);
+    const byCategory = questions.reduce((acc, q) => {
+        if (!acc[q.category]) acc[q.category] = [];
+        acc[q.category].push(q);
+        return acc;
+    }, {});
+
+    const QUESTION_INTELLIGENCE = {};
+
+    function setIntelByQuestionText(partialText, payload) {
+        const q = questions.find(item => item.questionFr.toLowerCase().includes(partialText.toLowerCase()));
+        if (q) QUESTION_INTELLIGENCE[q.id] = payload;
+    }
+
+    function getQuestionIntel(question) {
+        return QUESTION_INTELLIGENCE[question.id] || null;
+    }
+
+    // High-frequency handcrafted CSP intelligence layer.
+    setIntelByQuestionText("À quoi correspond la date du 14 juillet", {
+        microExplanationFr: "Le 14 juillet commemore la Bastille (1789), repere cle de la Revolution et de la liberte citoyenne.",
+        microExplanationBn: "১৪ জুলাই = ১৭৮৯ বাস্তিল দখল; ফরাসি বিপ্লব ও স্বাধীনতার প্রতীক।",
+        memoryHook: "14 juillet -> Bastille -> Revolution -> Liberte",
+        confusionWarning: "Ne pas confondre avec les dates des guerres mondiales.",
+        fastRecallCue: "1789 = Bastille",
+        weakLearnerHint: "Indice: on parle de fete nationale et d'un evenement de la Revolution.",
+        pronunciationFocus: "Bas-tille, Re-vo-lu-tion",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("'Liberté, égalité, fraternité', c’est", {
+        microExplanationFr: "C'est la devise officielle: 3 valeurs centrales de la Republique francaise.",
+        microExplanationBn: "এটি ফ্রান্সের অফিসিয়াল মূলমন্ত্র: ৩টি প্রজাতান্ত্রিক মূল্যবোধ।",
+        memoryHook: "Devise = 3 mots, 3 valeurs",
+        confusionWarning: "Ne pas confondre devise avec hymne ou drapeau.",
+        fastRecallCue: "Liberte-Egalite-Fraternite = devise",
+        weakLearnerHint: "Question sur un slogan officiel, pas une chanson.",
+        pronunciationFocus: "Li-ber-te, E-ga-li-te, Fra-ter-ni-te",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("Quel est le nom de l'hymne national", {
+        microExplanationFr: "L'hymne national est La Marseillaise, chant officiel de la Nation.",
+        microExplanationBn: "জাতীয় সংগীতের নাম La Marseillaise।",
+        memoryHook: "Hymne = chanson officielle",
+        confusionWarning: "Ne pas confondre hymne, devise et drapeau.",
+        fastRecallCue: "Hymne -> Marseillaise",
+        weakLearnerHint: "Cherchez le nom d'un chant, pas un symbole visuel.",
+        pronunciationFocus: "Mar-sei-llaise",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Quel est l’un des symboles de la République française", {
+        microExplanationFr: "Le drapeau tricolore est un symbole officiel immediatement reconnu de la Republique.",
+        microExplanationBn: "ত্রিবর্ণ পতাকা ফরাসি প্রজাতন্ত্রের অফিসিয়াল প্রতীক।",
+        memoryHook: "Bleu-Blanc-Rouge = Republique visible",
+        confusionWarning: "Ne pas melanger symbole visuel et symbole humain (Marianne).",
+        fastRecallCue: "BBR = drapeau",
+        weakLearnerHint: "Le mot 'symbole' ici renvoie a un element national officiel.",
+        pronunciationFocus: "Tri-co-lore",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Lequel de ces symboles représente officiellement la République française", {
+        microExplanationFr: "Marianne incarne la Republique: figure feminine officielle dans les mairies et institutions.",
+        microExplanationBn: "Marianne হলো প্রজাতন্ত্রের নারীমূর্তি প্রতীক।",
+        memoryHook: "Marianne = visage de la Republique",
+        confusionWarning: "Ne pas confondre Marianne (personnification) avec drapeau (embleme).",
+        fastRecallCue: "Marianne = Republique",
+        weakLearnerHint: "Cherchez une personne-symbole, pas un objet.",
+        pronunciationFocus: "Ma-ri-anne",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("De quand date la Constitution de la Ve République", {
+        microExplanationFr: "La Ve Republique commence avec la Constitution de 1958.",
+        microExplanationBn: "পঞ্চম প্রজাতন্ত্রের সংবিধান: ১৯৫৮।",
+        memoryHook: "Ve Republique -> 1958",
+        confusionWarning: "Ne pas confondre 1958 (Constitution) avec 1905 (laicite).",
+        fastRecallCue: "Ve = 1958",
+        weakLearnerHint: "Question chronologique institutionnelle.",
+        pronunciationFocus: "Cons-ti-tu-tion",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("En quelle année la loi de séparation des Églises et de l'État", {
+        microExplanationFr: "La loi de 1905 fixe la separation entre Etat et religions: base de la laicite.",
+        microExplanationBn: "১৯০৫ সালের আইন রাষ্ট্র ও ধর্মকে আলাদা করে।",
+        memoryHook: "1905 = separation Etat/Religions",
+        confusionWarning: "Ne pas confondre avec 1958 (Constitution).",
+        fastRecallCue: "1905 = laicite",
+        weakLearnerHint: "Pensez a la neutralite de l'Etat.",
+        pronunciationFocus: "La-i-ci-te",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Que permet le principe de laïcité", {
+        microExplanationFr: "La laicite garantit la liberte de conscience et la neutralite de l'Etat.",
+        microExplanationBn: "লাসিতে বিবেকের স্বাধীনতা ও রাষ্ট্রের নিরপেক্ষতা নিশ্চিত করে।",
+        memoryHook: "Laicite = liberte + neutralite",
+        confusionWarning: "La laicite n'interdit pas de croire; elle protege tous les choix.",
+        fastRecallCue: "Conscience + neutralite",
+        weakLearnerHint: "Question de principe republicain, pas de pratique religieuse.",
+        pronunciationFocus: "Neu-tra-li-te",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Le Parlement est composé", {
+        microExplanationFr: "Le Parlement reunit Assemblee nationale et Senat: les deux chambres legislatives.",
+        microExplanationBn: "সংসদ = জাতীয় পরিষদ + সিনেট।",
+        memoryHook: "Parlement = 2 chambres",
+        confusionWarning: "Ne pas confondre Parlement (legislatif) et Gouvernement (executif).",
+        fastRecallCue: "AN + Senat",
+        weakLearnerHint: "Question sur la structure du pouvoir legislatif.",
+        pronunciationFocus: "Par-le-ment, Se-nat",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("Qui vote les lois", {
+        microExplanationFr: "C'est le Parlement qui vote les lois, role central du pouvoir legislatif.",
+        microExplanationBn: "আইন পাস করে সংসদ (Parlement)।",
+        memoryHook: "Vote des lois = Parlement",
+        confusionWarning: "Le Gouvernement applique les lois, il ne les vote pas seul.",
+        fastRecallCue: "Lois -> Parlement",
+        weakLearnerHint: "Pensez separation des pouvoirs.",
+        pronunciationFocus: "Le-gis-la-tif",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("À partir de quel âge a-t-on le droit de voter", {
+        microExplanationFr: "Le droit de vote en France commence a 18 ans pour les citoyens inscrits.",
+        microExplanationBn: "ফ্রান্সে ভোটাধিকার ১৮ বছর থেকে।",
+        memoryHook: "Vote = 18 ans",
+        confusionWarning: "Ne pas oublier la condition d'inscription electorale.",
+        fastRecallCue: "18 = voter",
+        weakLearnerHint: "Question simple age + citoyennete.",
+        pronunciationFocus: "E-lec-to-ral",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("Que signifie « suffrage universel »", {
+        microExplanationFr: "Le suffrage universel signifie que tous les citoyens majeurs peuvent voter.",
+        microExplanationBn: "সার্বজনীন ভোটাধিকার = সব প্রাপ্তবয়স্ক নাগরিক ভোট দিতে পারে।",
+        memoryHook: "Universel = tous les majeurs",
+        confusionWarning: "Ne pas confondre avec droit reserve a une categorie.",
+        fastRecallCue: "Universel = tous",
+        weakLearnerHint: "Le mot-cle est 'tous'.",
+        pronunciationFocus: "Suf-frage u-ni-ver-sel",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("En quelle année a débuté la Révolution française", {
+        microExplanationFr: "La Revolution francaise debute en 1789, repere fondamental de l'histoire civique.",
+        microExplanationBn: "ফরাসি বিপ্লব শুরু ১৭৮৯ সালে।",
+        memoryHook: "1789 = Revolution",
+        confusionWarning: "Ne pas confondre avec 1848 (abolition esclavage) ou 1958.",
+        fastRecallCue: "Revolution = 1789",
+        weakLearnerHint: "Timeline historique CSP.",
+        pronunciationFocus: "Re-vo-lu-tion",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Quelle est la langue officielle de la République française", {
+        microExplanationFr: "La langue officielle de la Republique est le francais, mention constitutionnelle.",
+        microExplanationBn: "ফরাসি প্রজাতন্ত্রের সরকারি ভাষা: ফরাসি।",
+        memoryHook: "Langue officielle -> francais",
+        confusionWarning: "Ne pas confondre langue officielle et langues parlees a la maison.",
+        fastRecallCue: "Officielle = francais",
+        weakLearnerHint: "Question de base identitaire de l'Etat.",
+        pronunciationFocus: "Fran-cais",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("La France est une République indivisible", {
+        microExplanationFr: "La formule constitutionnelle inclut 'laique': neutralite religieuse de l'Etat.",
+        microExplanationBn: "সংবিধানের বাক্যে শূন্যস্থান: laïque।",
+        memoryHook: "Indivisible + laique + democratique + sociale",
+        confusionWarning: "Ne pas remplacer 'laique' par 'religieuse'.",
+        fastRecallCue: "Article 1 -> laique",
+        weakLearnerHint: "Rappelez la formule exacte de l'article 1.",
+        pronunciationFocus: "In-di-vi-sible, la-ique",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Quelle est la devise de la République française", {
+        microExplanationFr: "La devise officielle est Liberte, Egalite, Fraternite: triptyque des valeurs republicaines.",
+        microExplanationBn: "ফরাসি প্রজাতন্ত্রের মূলমন্ত্র: Liberté, Égalité, Fraternité।",
+        memoryHook: "3 valeurs = devise",
+        confusionWarning: "Ne pas confondre devise et hymne national.",
+        fastRecallCue: "LEF = devise",
+        weakLearnerHint: "Pensez aux 3 mots appris a l'ecole republicaine.",
+        pronunciationFocus: "Fra-ter-ni-te",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Quelles sont les couleurs du drapeau français", {
+        microExplanationFr: "Le drapeau national est bleu, blanc, rouge, symbole visuel central de la Nation.",
+        microExplanationBn: "ফরাসি পতাকার রং: নীল, সাদা, লাল।",
+        memoryHook: "BBR = drapeau",
+        confusionWarning: "Ne pas inverser avec d'autres drapeaux europeens.",
+        fastRecallCue: "Bleu-Blanc-Rouge",
+        weakLearnerHint: "Question couleur pure, tres frequente.",
+        pronunciationFocus: "Bleu, blanc, rouge",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("Que permet la citoyenneté française", {
+        microExplanationFr: "La citoyennete francaise donne le droit de vote et la participation democratique.",
+        microExplanationBn: "ফরাসি নাগরিকত্ব ভোটাধিকার ও গণতান্ত্রিক অংশগ্রহণ দেয়।",
+        memoryHook: "Citoyennete = vote + participation",
+        confusionWarning: "Ne pas reduire la citoyennete a un simple papier administratif.",
+        fastRecallCue: "Citoyennete -> voter",
+        weakLearnerHint: "Cherchez un droit politique fondamental.",
+        pronunciationFocus: "Ci-to-yen-ne-te",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Le principe d’égalité signifie que", {
+        microExplanationFr: "L'egalite signifie que la loi s'applique de la meme facon a tous les citoyens.",
+        microExplanationBn: "সাম্য মানে আইনের কাছে সবাই সমান।",
+        memoryHook: "Egalite = meme loi pour tous",
+        confusionWarning: "Egalite ne veut pas dire identite des situations, mais egalite devant la loi.",
+        fastRecallCue: "Meme loi",
+        weakLearnerHint: "Reperez l'expression 'devant la loi'.",
+        pronunciationFocus: "E-ga-li-te",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("Que signifie la liberté", {
+        microExplanationFr: "La liberte permet de choisir et d'agir dans le respect de la loi et d'autrui.",
+        microExplanationBn: "স্বাধীনতা মানে আইন মেনে নিজের সিদ্ধান্ত নেওয়া।",
+        memoryHook: "Liberte = choix + respect",
+        confusionWarning: "La liberte n'autorise pas d'enfreindre la loi.",
+        fastRecallCue: "Choisir dans la loi",
+        weakLearnerHint: "Cherchez l'equilibre entre droit individuel et regle commune.",
+        pronunciationFocus: "Li-ber-te",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Quel est le rôle des députés", {
+        microExplanationFr: "Les deputes votent les lois et controlent l'action du gouvernement.",
+        microExplanationBn: "দেপুতিরা আইন পাস করে এবং সরকারকে তদারকি করে।",
+        memoryHook: "Deputes = vote + controle",
+        confusionWarning: "Ne pas confondre deputes (AN) et senateurs (Senat).",
+        fastRecallCue: "Vote + controle",
+        weakLearnerHint: "Question role du legislatif.",
+        pronunciationFocus: "De-pu-te",
+        examTrap: "High-frequency CSP topic"
+    });
+
+    function defaultProgress() {
+        const today = getTodayKey();
+        return {
+            successCount: 0,
+            failCount: 0,
+            unsureCount: 0,
+            highConfidenceFailCount: 0,
+            slowRecallCount: 0,
+            confusionTrapCount: 0,
+            lastReviewed: "",
+            nextReview: today,
+            masteryScore: 0,
+            masteryLevel: "New",
+            avgSec: 0,
+            reviewCount: 0,
+            lastFailedAt: ""
+        };
+    }
+
+    function getProgress(questionId) {
+        if (!appState.progress[questionId]) appState.progress[questionId] = defaultProgress();
+        appState.progress[questionId] = { ...defaultProgress(), ...appState.progress[questionId] };
+        return appState.progress[questionId];
+    }
+
+    function masteryLevel(score) {
+        if (score >= 85) return "Mastered";
+        if (score >= 65) return "Strong";
+        if (score >= 45) return "Familiar";
+        if (score >= 20) return "Learning";
+        return "New";
+    }
+
+    function intervalFromMastery(score, isFail, confidence = "confident") {
+        if (isFail) return 1;
+        if (confidence === "unsure") {
+            if (score >= 85) return REVIEW_INTERVALS[2];
+            if (score >= 65) return REVIEW_INTERVALS[1];
+            return REVIEW_INTERVALS[0];
+        }
+        if (score >= 85) return REVIEW_INTERVALS[4];
+        if (score >= 65) return REVIEW_INTERVALS[3];
+        if (score >= 45) return REVIEW_INTERVALS[2];
+        if (score >= 20) return REVIEW_INTERVALS[1];
+        return REVIEW_INTERVALS[0];
+    }
+
+    function updateProgress(question, ok, responseSec, confidence = "confident") {
+        const p = getProgress(question.id);
+        const today = getTodayKey();
+        const intel = getQuestionIntel(question);
+        p.reviewCount += 1;
+        p.lastReviewed = today;
+        p.avgSec = p.avgSec ? Math.round(((p.avgSec * (p.reviewCount - 1)) + responseSec) / p.reviewCount) : Math.round(responseSec);
+        if (responseSec >= 12) p.slowRecallCount += 1;
+
+        if (ok) {
+            p.successCount += 1;
+            const gain = confidence === "unsure" ? 5 : (question.difficulty === "hard" ? 9 : 11);
+            p.masteryScore = Math.min(100, p.masteryScore + gain);
+            if (confidence === "unsure") p.unsureCount += 1;
+        } else {
+            p.failCount += 1;
+            p.lastFailedAt = today;
+            p.masteryScore = Math.max(0, p.masteryScore - 17);
+            if (confidence === "confident") p.highConfidenceFailCount += 1;
+            if (intel && /trap|confused|important/i.test(intel.examTrap || "")) p.confusionTrapCount += 1;
+        }
+
+        p.masteryLevel = masteryLevel(p.masteryScore);
+        const nextInterval = intervalFromMastery(p.masteryScore, !ok, confidence);
+        p.nextReview = addDays(today, nextInterval);
+    }
+
+    function getQuestionPriority(question) {
+        const p = getProgress(question.id);
+        const today = getTodayKey();
+        const daysUntilDue = getDaysDiff(today, p.nextReview || today);
+        let score = 0;
+
+        if (!p.lastReviewed) score += 22;
+        if (daysUntilDue <= 0) score += 34;
+        if (daysUntilDue > 0) score += Math.max(0, 8 - daysUntilDue);
+        score += p.failCount * 6;
+        score += p.unsureCount * 4;
+        score += appState.wrongIds.has(question.id) ? 15 : 0;
+        score += appState.difficultIds.has(question.id) ? 9 : 0;
+        score += question.difficulty === "hard" ? 5 : 0;
+        if (p.masteryScore >= 85) score -= 26;
+
+        const cat = categoryMetrics()[question.category];
+        if (cat && cat.mastery < 55) score += 8;
+
+        return score + Math.random() * 1.5;
+    }
+
+    function categoryMetrics() {
+        const out = {};
+        Object.keys(byCategory).forEach(cat => {
+            const items = byCategory[cat];
+            const reviewed = items.filter(q => !!getProgress(q.id).lastReviewed).length;
+            const masteryAvg = Math.round(items.reduce((sum, q) => sum + getProgress(q.id).masteryScore, 0) / items.length);
+            const weak = items.filter(q => getProgress(q.id).masteryScore < 45).length;
+            out[cat] = {
+                completion: Math.round((reviewed / items.length) * 100),
+                mastery: masteryAvg,
+                weak
+            };
+        });
+        return out;
+    }
+
+    function recordDailyActivity(questionsDelta, xpDelta, secondsDelta) {
+        const today = getTodayKey();
+        if (!appState.daily.history[today]) {
+            appState.daily.history[today] = { questions: 0, xp: 0, seconds: 0 };
+        }
+        appState.daily.history[today].questions += questionsDelta;
+        appState.daily.history[today].xp += xpDelta;
+        appState.daily.history[today].seconds += secondsDelta;
+    }
+
+    function streakCount() {
+        const keys = Object.keys(appState.daily.history).sort().reverse();
+        if (!keys.length) return 0;
+        let streak = 0;
+        let cursor = getTodayKey();
+        for (let i = 0; i < 365; i++) {
+            const entry = appState.daily.history[cursor];
+            if (entry && entry.questions > 0) {
+                streak += 1;
+                cursor = addDays(cursor, -1);
+            } else {
+                break;
             }
         }
-        let options = [correct, ...distractors];
-        return options.sort(() => 0.5 - Math.random());
+        return streak;
     }
 
-    // DOM elements
-    let currentMode = "study";
-    let quizQuestions = [];
-    let userAnswers = [];
-    let currentQIndex = 0;
-    let timerInterval = null;
-    let timeLeft = 600; // 10 minutes
+    function getTodaySummary() {
+        const today = appState.daily.history[getTodayKey()] || { questions: 0, xp: 0, seconds: 0 };
+        const catStats = categoryMetrics();
+        const weakTopic = Object.entries(catStats).sort((a, b) => a[1].mastery - b[1].mastery)[0];
+        return {
+            ...today,
+            minutes: Math.round(today.seconds / 60),
+            streak: streakCount(),
+            weakTopic: weakTopic ? weakTopic[0] : "-"
+        };
+    }
 
-    function renderStudyMode() {
-        currentMode = "study";
-        if(timerInterval) clearInterval(timerInterval);
-        const cats = [...new Map(fullQuestions.map(q => [q.cat, q.cat])).values()];
-        let html = `<div class="panel"><div class="section-title">📚 Révision complète (${fullQuestions.length} questions officielles)</div>`;
-        for(let cat of cats) {
-            let qs = fullQuestions.filter(q => q.cat === cat);
-            html += `<div style="margin-top:1.8rem;"><h3 style="background:#eef2ff; padding:8px 16px; border-radius:50px;">${cat}</h3>`;
-            qs.forEach(q => {
-                html += `<div class="study-card">
-                            <div class="study-question">🇫🇷 ${q.qFr}<br><div class="pronounce">🔊 উচ্চারণ: ${q.qPronounce}</div> <br><span class="lang-bn">🇧🇩 ${q.qBn}</span>`;
-                html += `</div><div class="study-answer">
-                            <div class="lang-fr">✔️ ${q.aFr}</div>
-                            <div class="pronounce">🔊 উচ্চারণ: ${q.aPronounce}</div>
-                            <div class="lang-bn">✔️ ${q.aBn}</div>`;
-                // if(q.aPronounce) html += `<div class="pronounce">🔊 উচ্চারণ: ${q.aPronounce}</div>`;
-                html += `</div></div>`;
-            });
-            html += `</div>`;
+    function languageVisibility(context, question = null, strictFlashcard = false) {
+        if (context === "study") {
+            if (!question || !appState.language.autoReduceBengali) return { fr: true, bn: true };
+            const mastery = getProgress(question.id).masteryScore;
+            return { fr: true, bn: mastery < 70 };
         }
-        html += `</div>`;
-        document.getElementById('mainContent').innerHTML = html;
+
+        if (context === "flashcard") {
+            if (strictFlashcard) return { fr: true, bn: false };
+            if (!question || !appState.language.autoReduceBengali) return { fr: true, bn: true };
+            const mastery = getProgress(question.id).masteryScore;
+            return { fr: true, bn: mastery < 80 };
+        }
+
+        // quiz / exam / conditioning / recall
+        return { fr: true, bn: false };
     }
 
-    function startQuiz() {
-        if(timerInterval) clearInterval(timerInterval);
-        // pick 40 random questions from full set
-        let shuffled = [...fullQuestions].sort(() => 0.5 - Math.random());
-        quizQuestions = shuffled.slice(0, 40);
-        userAnswers = new Array(40).fill(null);
-        currentQIndex = 0;
-        timeLeft = 600;
-        currentMode = "quiz";
-        renderQuizQuestion();
-        startTimer();
+    function keywordHighlights(text) {
+        const source = escapeHtml(text || "");
+        return source.replace(/(République|Constitution|laïcité|laicite|14 juillet|Marseillaise|Marianne|Parlement|Président|égalité|liberté|fraternité|élections|vote|école|Union européenne|UE|drapeau|Bastille)/gi, "<strong>$1</strong>");
     }
 
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            if(currentMode !== "quiz") return;
-            if(timeLeft <= 1) {
-                clearInterval(timerInterval);
-                submitQuiz();
+    function isWeakCategory(category) {
+        const metrics = categoryMetrics()[category];
+        return metrics ? metrics.mastery < 55 : false;
+    }
+
+    function explanationDepth(question) {
+        const p = getProgress(question.id);
+        if (p.failCount >= 2 || p.unsureCount >= 2 || isWeakCategory(question.category)) return "rich";
+        if (p.masteryScore >= 70) return "short";
+        return "medium";
+    }
+
+    const MICRO_PATTERNS = [
+        {
+            test: /14 juillet/i,
+            reasonFr: "Le 14 juillet commemore la prise de la Bastille (1789), symbole de la Revolution et de la liberte citoyenne.",
+            memoFr: "Memo: 14/07 = Bastille = debut symbolique de la Republique moderne.",
+            warnFr: "Ne pas confondre avec les dates des guerres mondiales.",
+            hookFr: "Image mentale: foule devant la Bastille, drapeau tricolore leve.",
+            reasonBn: "১৪ জুলাই = ১৭৮৯ সালের বাস্তিল দুর্গ দখল, বিপ্লব ও স্বাধীনতার প্রতীক।",
+            memoBn: "মনে রাখুন: 14/07 = Bastille = liberté.",
+            warnBn: "বিশ্বযুদ্ধের তারিখের সাথে গুলিয়ে ফেলবেন না।"
+        },
+        {
+            test: /devise|Liberté,?\s*Égalité,?\s*Fraternité/i,
+            reasonFr: "Cette formule est la devise officielle qui resume les valeurs cardinales de la Republique francaise.",
+            memoFr: "Memo 3 mots: Liberte (choisir), Egalite (meme loi), Fraternite (solidarite).",
+            warnFr: "Ne pas confondre la devise avec l'hymne national.",
+            hookFr: "Association 3-3: trois mots, trois valeurs, trois couleurs du drapeau.",
+            reasonBn: "এটি ফরাসি প্রজাতন্ত্রের অফিসিয়াল মূলমন্ত্র: স্বাধীনতা, সাম্য, ভ্রাতৃত্ব।",
+            memoBn: "৩ শব্দ = ৩ মূল্যবোধ।",
+            warnBn: "এটিকে জাতীয় সংগীতের সাথে মিলাবেন না।"
+        },
+        {
+            test: /Marseillaise|hymne national/i,
+            reasonFr: "La Marseillaise est l'hymne national: c'est le chant officiel de la Nation.",
+            memoFr: "Memo: Hymne = chanson officielle ; devise = formule de valeurs.",
+            warnFr: "Ne pas confondre avec la devise ou le drapeau.",
+            hookFr: "Indice sonore: imaginez une ceremonie officielle et l'hymne joue.",
+            reasonBn: "লা মার্সেইয়েজ হলো ফ্রান্সের জাতীয় সংগীত।",
+            memoBn: "Hymne = গান, Devise = মূলমন্ত্র।",
+            warnBn: "পতাকা বা মূলমন্ত্রের সাথে গুলিয়ে ফেলবেন না।"
+        },
+        {
+            test: /laïcité|laicite|1905|Églises et de l'État/i,
+            reasonFr: "La laicite separe l'Etat des religions et garantit la liberte de conscience de tous.",
+            memoFr: "Memo: 1905 = separation Etat/Religions.",
+            warnFr: "La laicite n'est pas anti-religion: elle garantit la neutralite publique.",
+            hookFr: "Comparaison: chacun croit librement, l'Etat reste neutre.",
+            reasonBn: "লাসিতে মানে রাষ্ট্র ও ধর্ম আলাদা; সবার বিবেকের স্বাধীনতা নিশ্চিত।",
+            memoBn: "মনে রাখুন: 1905 = séparation Etat/Religion.",
+            warnBn: "এটি ধর্মবিরোধী নয়; এটি রাষ্ট্রীয় নিরপেক্ষতা।"
+        },
+        {
+            test: /Président|Premier ministre|Parlement|Sénat|Assemblée/i,
+            reasonFr: "La bonne reponse depend de la separation des pouvoirs: qui decide, qui vote la loi, qui execute.",
+            memoFr: "Memo institutionnel: Parlement vote, Gouvernement execute, Justice juge.",
+            warnFr: "Ne pas melanger roles President/Premier ministre/Parlement.",
+            hookFr: "Schema mental en 3 blocs: legislatif, executif, judiciaire.",
+            reasonBn: "সঠিক উত্তরটি ক্ষমতার বিভাজনের ভিত্তিতে: কে আইন করে, কে কার্যকর করে, কে বিচার করে।",
+            memoBn: "Parlement=vote, Gouvernement=execute, Justice=juge.",
+            warnBn: "রাষ্ট্রপতি, প্রধানমন্ত্রী ও সংসদের কাজ এক নয়।"
+        },
+        {
+            test: /élections|vote|suffrage/i,
+            reasonFr: "Le droit de vote suit des conditions legales precises (age, inscription, citoyennete selon le scrutin).",
+            memoFr: "Memo vote: 18 ans + inscrit sur liste electorale.",
+            warnFr: "Ne pas oublier l'inscription electorale, condition frequemment piege.",
+            hookFr: "Question reflexe: Qui vote? A quel age? Pour quelle election?",
+            reasonBn: "ভোটাধিকার আইনি শর্তের উপর নির্ভর করে (বয়স, তালিকাভুক্তি, নাগরিকত্ব)।",
+            memoBn: "১৮ বছর + ভোটার তালিকা।",
+            warnBn: "ভোটার তালিকায় নিবন্ধন ভুলবেন না।"
+        }
+    ];
+
+    function microPatternFor(question) {
+        const text = `${question.questionFr} ${question.correctAnswer}`;
+        return MICRO_PATTERNS.find(p => p.test.test(text));
+    }
+
+    function generateHint(question) {
+        const intel = getQuestionIntel(question);
+        if (intel) {
+            return {
+                fr: intel.weakLearnerHint || `Indice: ${intel.fastRecallCue}`,
+                bn: `ইঙ্গিত: ${intel.fastRecallCue}`
+            };
+        }
+
+        const pat = microPatternFor(question);
+        if (pat) {
+            return {
+                fr: pat.warnFr.includes("Ne pas") ? pat.warnFr.replace("Ne pas confondre", "Indice") : `Indice: ${pat.hookFr}`,
+                bn: `ইঙ্গিত: ${pat.memoBn}`
+            };
+        }
+
+        const genericByTag = {
+            institutions: "Indice: cette question teste le role d'une institution precise.",
+            histoire: "Indice: cherchez un repere historique (date ou personnage).",
+            droits: "Indice: pensez au principe republicain protege par la loi.",
+            vote: "Indice: verifiez age, citoyennete et inscription.",
+            education: "Indice: reperez le niveau scolaire ou l'obligation legale.",
+            sante: "Indice: pensez au parcours de soin et aux services officiels."
+        };
+        const primaryTag = question.tags[0] || "general";
+        return {
+            fr: genericByTag[primaryTag] || "Indice: reliez la question a la categorie officielle.",
+            bn: "ইঙ্গিত: প্রশ্নের বিভাগের মূল ধারণা মনে করুন, সরাসরি উত্তর নয়।"
+        };
+    }
+
+    function explainQuestion(question, options = [], userAnswer = "") {
+        const depth = explanationDepth(question);
+        const intel = getQuestionIntel(question);
+        if (intel) {
+            const p = getProgress(question.id);
+            const weakMode = p.failCount >= 2 || p.unsureCount >= 2;
+            const wrongReasonsIntel = options
+                .filter(opt => opt !== question.correctAnswer)
+                .map(opt => {
+                    let reason = intel.confusionWarning || "Cette option est un piege frequent pour cette notion.";
+                    if (opt === userAnswer) {
+                        reason = `${reason} C'est le piege principal de cette question.`;
+                    }
+                    return { option: opt, reason };
+                });
+
+            return {
+                frShort: weakMode
+                    ? `${intel.microExplanationFr} | Indice simple: ${intel.weakLearnerHint}`
+                    : `${intel.microExplanationFr} 👉 ${intel.memoryHook} ⚠️ ${intel.confusionWarning}`,
+                bnShort: weakMode
+                    ? `${intel.microExplanationBn} | সহজ ইঙ্গিত: ${intel.weakLearnerHint}`
+                    : `${intel.microExplanationBn} 👉 ${intel.fastRecallCue} ⚠️ ${intel.confusionWarning}`,
+                wrongReasons: wrongReasonsIntel,
+                structure: {
+                    reasonFr: intel.microExplanationFr,
+                    memoFr: intel.memoryHook,
+                    warnFr: intel.confusionWarning,
+                    hookFr: intel.fastRecallCue,
+                    reasonBn: intel.microExplanationBn,
+                    memoBn: `মেমো: ${intel.fastRecallCue}`,
+                    warnBn: `সতর্কতা: ${intel.confusionWarning}`,
+                    trap: intel.examTrap || ""
+                }
+            };
+        }
+
+        const pat = microPatternFor(question);
+        const type = question.answerType;
+        const fallbackReasonFr = {
+            date: "La bonne reponse est le repere chronologique officiel attendu.",
+            person: "La bonne reponse est le personnage directement associe au fait demande.",
+            symbol: "La bonne reponse est un symbole institutionnel reconnu.",
+            institution: "La bonne reponse correspond a l'acteur institutionnel legalement competent.",
+            place: "La bonne reponse est le lieu exact attendu au programme.",
+            boolean: "La bonne reponse est conforme au droit et aux valeurs republicaines.",
+            number: "La bonne reponse est la valeur officielle attendue.",
+            action: "La bonne reponse decrit l'action legalement correcte.",
+            other: "La bonne reponse est celle de reference dans le corpus officiel CSP."
+        };
+
+        const reasonFr = pat ? pat.reasonFr : fallbackReasonFr[type] || fallbackReasonFr.other;
+        const memoFr = pat ? pat.memoFr : `Memo: ${question.category.replace(/🇫🇷|🏛️|⚖️|📜|🏠/g, "").trim()} -> ${question.correctAnswer}`;
+        const warnFr = pat ? pat.warnFr : "Attention au piege: l'option proche n'est pas toujours legalement exacte.";
+        const hookFr = pat ? pat.hookFr : "Hook memoire: associez la question a un mot-cle de sa categorie.";
+
+        const reasonBn = pat ? pat.reasonBn : `${question.explanation || "এই উত্তরটি অফিসিয়াল সিভিক তথ্য অনুযায়ী সঠিক।"}`;
+        const memoBn = pat ? pat.memoBn : `মেমো: ${question.correctAnswer}`;
+        const warnBn = pat ? pat.warnBn : "সতর্কতা: কাছাকাছি অপশনগুলো অনেক সময় ভুল হয়।";
+
+        const frShort = depth === "short"
+            ? `${reasonFr} Memo: ${question.correctAnswer}`
+            : `${reasonFr} 👉 ${memoFr} ⚠️ ${warnFr}`;
+        const bnShort = depth === "short"
+            ? `${reasonBn}`
+            : `${reasonBn} 👉 ${memoBn} ⚠️ ${warnBn}`;
+
+        const wrongReasons = options
+            .filter(opt => opt !== question.correctAnswer)
+            .map(opt => {
+                let reason = "Cette proposition ne correspond pas precisement a la question posee.";
+                if (type === ANSWER_TYPES.DATE && !/\d{4}|juillet|mai|novembre|décembre|decembre/.test(opt.toLowerCase())) {
+                    reason = "La question demande une date; cette option n'est pas une date historique attendue.";
+                } else if (type === ANSWER_TYPES.PERSON && !/^[A-ZÉÈÊÂÎÔÛÀÙÇ]/.test(opt)) {
+                    reason = "La question vise une personne; cette option est d'une autre nature.";
+                } else if (type === ANSWER_TYPES.SYMBOL && !/drapeau|marianne|devise|hymne|coq|marseillaise/i.test(opt)) {
+                    reason = "La question porte sur un symbole officiel; cette option ne correspond pas a ce type.";
+                }
+                if (opt === userAnswer) {
+                    reason = `${reason} C'est pourquoi votre choix etait incorrect ici.`;
+                }
+                return { option: opt, reason };
+            });
+
+        return {
+            frShort,
+            bnShort,
+            wrongReasons,
+            structure: {
+                reasonFr,
+                memoFr,
+                warnFr,
+                hookFr,
+                reasonBn,
+                memoBn,
+                warnBn
+            }
+        };
+    }
+
+    function buildSmartOptions(question, pool, prefilled = []) {
+        if (prefilled.length === 4 && prefilled.includes(question.correctAnswer)) {
+            return prefilled;
+        }
+
+        const correct = question.correctAnswer;
+        const sameCategorySameType = pool
+            .filter(q => q.id !== question.id && q.category === question.category && q.answerType === question.answerType)
+            .map(q => q.correctAnswer);
+
+        const sameType = pool
+            .filter(q => q.id !== question.id && q.answerType === question.answerType)
+            .map(q => q.correctAnswer);
+
+        const sameCategory = pool
+            .filter(q => q.id !== question.id && q.category === question.category)
+            .map(q => q.correctAnswer);
+
+        let distractors = unique([...shuffle(sameCategorySameType), ...shuffle(sameType), ...shuffle(sameCategory)])
+            .filter(a => a !== correct)
+            .slice(0, 3);
+
+        if (question.answerType === ANSWER_TYPES.DATE && distractors.length < 3) {
+            const yearMatch = correct.match(/\b(\d{4})\b/);
+            if (yearMatch) {
+                const year = Number(yearMatch[1]);
+                const synthetic = [year - 2, year + 3, year + 9, year - 11]
+                    .filter(y => y > 1500 && y < 2100)
+                    .map(y => String(y));
+                distractors = unique([...distractors, ...synthetic]).slice(0, 3);
+            }
+        }
+
+        if (distractors.length < 3) {
+            const fallback = unique(pool.map(q => q.correctAnswer).filter(a => a !== correct));
+            distractors = unique([...distractors, ...shuffle(fallback)]).slice(0, 3);
+        }
+
+        return shuffle([correct, ...distractors]);
+    }
+
+    function serializeState() {
+        return {
+            soundEnabled: appState.soundEnabled,
+            slowSpeech: appState.slowSpeech,
+            theme: appState.theme,
+            difficultIds: [...appState.difficultIds],
+            favoriteIds: [...appState.favoriteIds],
+            studiedIds: [...appState.studiedIds],
+            wrongIds: [...appState.wrongIds],
+            progress: appState.progress,
+            daily: appState.daily,
+            audio: appState.audio,
+            language: appState.language,
+            stats: appState.stats
+        };
+    }
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const parsed = JSON.parse(raw);
+            appState.soundEnabled = parsed.soundEnabled ?? true;
+            appState.slowSpeech = parsed.slowSpeech ?? false;
+            appState.theme = parsed.theme ?? "auto";
+            appState.difficultIds = new Set(parsed.difficultIds || []);
+            appState.favoriteIds = new Set(parsed.favoriteIds || []);
+            appState.studiedIds = new Set(parsed.studiedIds || []);
+            appState.wrongIds = new Set(parsed.wrongIds || []);
+            appState.progress = parsed.progress || {};
+            appState.daily = { ...appState.daily, ...(parsed.daily || {}) };
+            appState.audio = { ...appState.audio, ...(parsed.audio || {}) };
+            appState.language = { ...appState.language, ...(parsed.language || {}) };
+            appState.stats = parsed.stats || appState.stats;
+        } catch (_e) {
+            // ignore corrupted state
+        }
+    }
+
+    function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeState()));
+    }
+
+    function applyTheme() {
+        document.body.setAttribute("data-theme", appState.theme === "auto" ? "" : appState.theme);
+        refs.themeToggle.textContent = `Theme ${appState.theme}`;
+    }
+
+    function updateTopButtons(active) {
+        [refs.navStudy, refs.navRandomQuiz, refs.navCategoryQuiz, refs.navDailyQuiz, refs.navRetryWrong].forEach(btn => {
+            btn.classList.remove("active");
+        });
+        if (active) active.classList.add("active");
+        refs.soundToggle.textContent = appState.soundEnabled ? "Son ON" : "Son OFF";
+        refs.soundToggle.setAttribute("aria-pressed", String(appState.soundEnabled));
+        refs.speedToggle.textContent = appState.slowSpeech ? "Prononciation lente ON" : "Prononciation lente OFF";
+        refs.speedToggle.setAttribute("aria-pressed", String(appState.slowSpeech));
+    }
+
+    function getFrenchVoice() {
+        const voices = speechSynthesis.getVoices();
+        return voices.find(v => v.lang && v.lang.toLowerCase().startsWith("fr")) || null;
+    }
+
+    function stopSpeech() {
+        speechState.manualStop = true;
+        speechSynthesis.cancel();
+        if (speechState.activeBtn) {
+            speechState.activeBtn.textContent = "🔊";
+            speechState.activeBtn = null;
+        }
+    }
+
+    function applySyllablePacing(text) {
+        if (!appState.audio.syllablePacing) return text;
+        return text
+            .replace(/tion/gi, "ti-on")
+            .replace(/ique/gi, "i-que")
+            .replace(/eau/gi, "e-au")
+            .replace(/eux/gi, "eux")
+            .replace(/\s+/g, " ");
+    }
+
+    function chunkPhrase(text) {
+        if (!appState.audio.chunkPlayback) return text;
+        return text
+            .replace(/,\s*/g, ", ... ")
+            .replace(/\s+et\s+/gi, " ... et ")
+            .replace(/\s+ou\s+/gi, " ... ou ");
+    }
+
+    function speakText(text, btn, onEnd, allowRepeat = true) {
+        if (!appState.soundEnabled || !text) return;
+        const baseRate = appState.slowSpeech ? 0.72 : 1;
+        const rate = appState.audio.syllablePacing ? Math.min(baseRate, 0.62) : baseRate;
+        const processedText = chunkPhrase(applySyllablePacing(text));
+
+        if (speechSynthesis.speaking && speechState.currentText === processedText && speechState.currentRate === rate) {
+            if (speechSynthesis.paused) {
+                speechSynthesis.resume();
+                if (btn) btn.textContent = "⏸";
             } else {
-                timeLeft--;
-                updateTimerDisplay();
+                speechSynthesis.pause();
+                if (btn) btn.textContent = "▶";
+            }
+            return;
+        }
+
+        stopSpeech();
+        speechState.manualStop = false;
+        speechState.repeatedOnce = false;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "fr-FR";
+        utterance.rate = rate;
+        const voice = getFrenchVoice();
+        if (voice) utterance.voice = voice;
+
+        speechState.currentText = processedText;
+        speechState.currentRate = rate;
+        speechState.activeBtn = btn || null;
+        if (btn) btn.textContent = "⏸";
+
+        utterance.text = processedText;
+
+        utterance.onend = () => {
+            if (btn) btn.textContent = "🔊";
+            speechState.activeBtn = null;
+            speechState.currentText = "";
+            if (allowRepeat && appState.audio.repeatAfterMe && !speechState.manualStop && !speechState.repeatedOnce) {
+                speechState.repeatedOnce = true;
+                setTimeout(() => speakText(text, btn, onEnd, false), 500);
+                return;
+            }
+            speechState.repeatedOnce = false;
+            if (onEnd) onEnd();
+            if (appState.audio.loop && !speechState.manualStop) {
+                setTimeout(() => speakText(text, btn, onEnd), 160);
+            }
+        };
+
+        speechSynthesis.speak(utterance);
+    }
+
+    function maybeVibrateWrong() {
+        if (navigator.vibrate) navigator.vibrate([30, 35, 30]);
+    }
+
+    function launchConfetti() {
+        const colors = ["#14b8a6", "#2457f5", "#f59e0b", "#22c55e", "#ec4899"];
+        for (let i = 0; i < 72; i++) {
+            const node = document.createElement("span");
+            node.className = "confetti";
+            node.style.left = `${Math.random() * 100}vw`;
+            node.style.background = colors[Math.floor(Math.random() * colors.length)];
+            node.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
+            node.style.animationDelay = `${Math.random() * 0.45}s`;
+            document.body.appendChild(node);
+            setTimeout(() => node.remove(), 2600);
+        }
+    }
+
+    function renderStudyView() {
+        appState.mode = "study";
+        clearInterval(appState.quiz?.timer || null);
+        stopSpeech();
+        appState.quiz = null;
+        appState.flashcard = null;
+        updateTopButtons(refs.navStudy);
+
+        const categories = ["all", ...Object.keys(byCategory)];
+        const filtered = questions.filter(q => {
+            const text = `${q.questionFr} ${q.questionBn} ${q.correctAnswer}`.toLowerCase();
+            const matchSearch = !appState.searchTerm || text.includes(appState.searchTerm.toLowerCase());
+            const matchCategory = appState.selectedCategory === "all" || q.category === appState.selectedCategory;
+            const matchDifficult = !appState.onlyDifficult || appState.difficultIds.has(q.id);
+            return matchSearch && matchCategory && matchDifficult;
+        });
+
+        refs.main.innerHTML = `
+            <section class="study-shell">
+                <div class="study-compact-toolbar">
+                    <div class="study-compact-row">
+                        <input id="searchInput" type="search" placeholder="Rechercher" value="${escapeHtml(appState.searchTerm)}" aria-label="Recherche" style="min-height:32px; padding:6px 8px; font-size:0.8rem;">
+                        <select id="categoryFilter" aria-label="Filtrer par categorie" style="max-width:124px; min-height:32px; padding:6px 8px; font-size:0.78rem;">
+                            ${categories.map(c => `<option value="${escapeHtml(c)}" ${c === appState.selectedCategory ? "selected" : ""}>${escapeHtml(c === "all" ? "Toutes" : c)}</option>`).join("")}
+                        </select>
+                        <button id="studyAdvancedToggle" class="study-chip" type="button" aria-expanded="false">Filtres</button>
+                    </div>
+                    <div class="study-chip-row">
+                        <button id="toggleDifficultOnly" class="study-chip ${appState.onlyDifficult ? "active" : ""}" type="button">Difficiles</button>
+                        <button id="quickDifficult" class="study-chip" type="button">Quiz diff.</button>
+                        <button id="quickWrong" class="study-chip" type="button">Erreurs</button>
+                        <button id="quickRecall" class="study-chip" type="button">Recall 8s</button>
+                    </div>
+                    <div id="studyAdvancedPanel" class="study-advanced">
+                        <div class="study-chip-row">
+                            <button id="modeStressFree" class="study-chip" type="button">Pratique</button>
+                            <button id="modeExam" class="study-chip" type="button">Examen</button>
+                            <button id="modeFlashcard" class="study-chip" type="button">Flashcards</button>
+                            <button id="modeListen" class="study-chip" type="button">Audio</button>
+                            <button id="modeQuick" class="study-chip" type="button">20s</button>
+                            <button id="modeConditioning" class="study-chip" type="button">Condition</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="study-count">${filtered.length} questions</p>
+            </section>
+            <section class="study-list compact" id="studyList"></section>
+        `;
+
+        const list = refs.main.querySelector("#studyList");
+        if (!filtered.length) {
+            list.innerHTML = `<div class="card">Aucune question pour ce filtre.</div>`;
+        } else {
+            list.innerHTML = filtered.map(q => {
+                const exp = explainQuestion(q);
+                const lang = languageVisibility("study", q);
+                const bnMeaning = lang.bn && q.questionBn ? `<div class="study-bn-line">🇧🇩 ${escapeHtml(q.questionBn)}</div>` : "";
+                const warningFr = exp.structure.warnFr || exp.structure.reasonFr;
+                return `
+                <article class="study-compact-card" data-id="${q.id}">
+                    <div class="study-q">🇫🇷 ${keywordHighlights(q.questionFr)}</div>
+                    ${bnMeaning}
+                    <div class="study-a">✔ ${escapeHtml(q.correctAnswer)}</div>
+                    <div class="study-cue">🧠 ${escapeHtml(exp.structure.memoFr)}</div>
+                    <div class="study-warn">⚠ ${escapeHtml(warningFr)}</div>
+                </article>`;
+            }).join("");
+        }
+
+        refs.main.querySelector("#searchInput").addEventListener("input", e => {
+            appState.searchTerm = e.target.value.trim();
+            renderStudyView();
+        });
+
+        refs.main.querySelector("#categoryFilter").addEventListener("change", e => {
+            appState.selectedCategory = e.target.value;
+            renderStudyView();
+        });
+
+        refs.main.querySelector("#toggleDifficultOnly").addEventListener("click", () => {
+            appState.onlyDifficult = !appState.onlyDifficult;
+            renderStudyView();
+        });
+
+        refs.main.querySelector("#quickDifficult").addEventListener("click", () => {
+            startQuizSession("difficult");
+        });
+
+        refs.main.querySelector("#quickWrong").addEventListener("click", () => {
+            startQuizSession("retryWrong");
+        });
+
+        refs.main.querySelector("#quickRecall").addEventListener("click", () => {
+            startQuizSession("recall");
+        });
+
+        refs.main.querySelector("#studyAdvancedToggle").addEventListener("click", (e) => {
+            const panel = refs.main.querySelector("#studyAdvancedPanel");
+            panel.classList.toggle("open");
+            e.currentTarget.setAttribute("aria-expanded", panel.classList.contains("open") ? "true" : "false");
+        });
+
+        refs.main.querySelector("#modeStressFree")?.addEventListener("click", () => startQuizSession("random"));
+        refs.main.querySelector("#modeExam")?.addEventListener("click", () => startQuizSession("exam"));
+        refs.main.querySelector("#modeQuick")?.addEventListener("click", () => startQuizSession("quick"));
+        refs.main.querySelector("#modeConditioning")?.addEventListener("click", () => startQuizSession("conditioning"));
+        refs.main.querySelector("#modeFlashcard")?.addEventListener("click", () => startFlashcardMode(false));
+        refs.main.querySelector("#modeListen")?.addEventListener("click", startListenMode);
+
+        list.addEventListener("click", e => {
+            const card = e.target.closest(".study-compact-card");
+            if (!card) return;
+            appState.studiedIds.add(card.dataset.id);
+            recordDailyActivity(1, 1, 10);
+            saveState();
+        });
+    }
+
+    function pickQuizPool(mode, category) {
+        const source = [...questions].sort((a, b) => getQuestionPriority(b) - getQuestionPriority(a));
+        const todaySeed = new Date().toISOString().slice(0, 10).split("-").join("");
+        const seededOrder = [...source].sort((a, b) => (`${a.id}${todaySeed}` > `${b.id}${todaySeed}` ? 1 : -1));
+
+        if (mode === "category") return shuffle((byCategory[category] || []).slice());
+        if (mode === "daily") return seededOrder.slice(0, 25).sort((a, b) => getQuestionPriority(b) - getQuestionPriority(a));
+        if (mode === "retryWrong") return shuffle(source.filter(q => appState.wrongIds.has(q.id)));
+        if (mode === "difficult") return shuffle(source.filter(q => appState.difficultIds.has(q.id)));
+        if (mode === "favorites") return shuffle(source.filter(q => appState.favoriteIds.has(q.id)));
+        if (mode === "exam") return shuffle(source);
+        if (mode === "quick") return source;
+        if (mode === "recall") {
+            const weak = source.filter(q => getProgress(q.id).masteryScore < 50 || appState.wrongIds.has(q.id));
+            return [...weak, ...source];
+        }
+        if (mode === "conditioning") {
+            return source;
+        }
+        return [...source.slice(0, 55), ...shuffle(source.slice(55))];
+    }
+
+    function startQuizSession(mode, category = "") {
+        const pool = pickQuizPool(mode, category);
+        const size = Math.min(mode === "daily" ? 25 : 40, pool.length || 40);
+        const chosen = pool.slice(0, size);
+        if (!chosen.length) {
+            refs.main.innerHTML = `<div class="card">Aucune question disponible pour ce mode.</div>`;
+            return;
+        }
+
+        const config = {
+            allowChange: !["exam", "conditioning"].includes(mode),
+            noReveal: ["exam", "conditioning"].includes(mode),
+            strict: ["exam", "conditioning"].includes(mode),
+            quickSecondsPerQuestion: mode === "quick" ? 20 : mode === "recall" ? 8 : 0,
+            totalSeconds: mode === "exam" ? 600 : mode === "daily" ? 480 : mode === "quick" ? 400 : mode === "recall" ? 320 : mode === "conditioning" ? 600 : 600,
+            review: !["exam", "conditioning"].includes(mode),
+            showHints: !["exam", "conditioning"].includes(mode),
+            askConfidence: true,
+            minimalUi: mode === "conditioning"
+        };
+
+        appState.mode = "quiz";
+        appState.quiz = {
+            mode,
+            category,
+            config,
+            questions: chosen,
+            index: 0,
+            answers: {},
+            optionMap: {},
+            answerMeta: {},
+            secondsLeft: config.totalSeconds,
+            questionSecondsLeft: config.quickSecondsPerQuestion || 0,
+            reviewOpen: false,
+            questionStartAt: Date.now(),
+            timer: null
+        };
+
+        updateTopButtons(
+            mode === "category" ? refs.navCategoryQuiz :
+            mode === "daily" ? refs.navDailyQuiz :
+            mode === "retryWrong" ? refs.navRetryWrong :
+            refs.navRandomQuiz
+        );
+
+        renderQuizShell();
+        startQuizTimer();
+    }
+
+    function startQuizTimer() {
+        clearInterval(appState.quiz?.timer || null);
+        if (!appState.quiz) return;
+        appState.quiz.timer = setInterval(() => {
+            if (!appState.quiz) return;
+            appState.quiz.secondsLeft -= 1;
+            if (appState.quiz.config.quickSecondsPerQuestion) {
+                appState.quiz.questionSecondsLeft -= 1;
+                if (appState.quiz.questionSecondsLeft <= 0) {
+                    if (appState.quiz.index < appState.quiz.questions.length - 1) {
+                        appState.quiz.index += 1;
+                        appState.quiz.questionSecondsLeft = appState.quiz.config.quickSecondsPerQuestion;
+                        appState.quiz.questionStartAt = Date.now();
+                        updateQuizQuestion();
+                    }
+                }
+            }
+            updateQuizTopBar();
+            if (appState.quiz.secondsLeft <= 0) {
+                clearInterval(appState.quiz.timer);
+                submitQuiz();
             }
         }, 1000);
     }
 
-    function updateTimerDisplay() {
-        let minutes = Math.floor(timeLeft / 60);
-        let seconds = timeLeft % 60;
-        let timerElem = document.getElementById('quizTimer');
-        if(timerElem) timerElem.innerText = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+    function renderQuizShell() {
+        const lang = languageVisibility("quiz");
+        refs.main.innerHTML = `
+            <section class="quiz-top">
+                <div class="progress-track" aria-label="Progression">
+                    <div class="progress-fill" id="quizProgressFill"></div>
+                </div>
+                <div class="quiz-meta">
+                    <span id="quizMetaIndex"></span>
+                    <span id="quizMetaTimer"></span>
+                </div>
+            </section>
+            <section class="card" id="quizCard">
+                <div class="question-line">
+                    <span id="quizQuestionText"></span>
+                    <button id="speakQuizQuestion" class="icon-btn" type="button" aria-label="Ecouter la question" ${appState.quiz.config.minimalUi ? "style='display:none;'" : ""}>🔊</button>
+                </div>
+                <div class="bn" id="quizQuestionBn" ${lang.bn ? "" : "style='display:none;'"}></div>
+                <div id="quizHintBox" class="card" style="margin-top:8px; ${appState.quiz.config.showHints ? "" : "display:none;"}">
+                    <p id="quizHintText">Indice contextuel pour activer le rappel.</p>
+                    <p class="bn" id="quizHintBn" ${lang.bn ? "" : "style='display:none;'"}></p>
+                </div>
+                <div class="quiz-actions" style="margin-top:8px; ${appState.quiz.config.showHints ? "" : "display:none;"}">
+                    <button id="showHintBtn" class="btn" type="button">Voir indice</button>
+                </div>
+                <div class="options" id="quizOptions" role="radiogroup" aria-label="Options de reponse"></div>
+                <div class="quiz-actions" id="confidencePanel" style="display:none; margin-top:8px;">
+                    <span>Etiez-vous sur ?</span>
+                    <button id="confidentBtn" class="btn" type="button">Confident</button>
+                    <button id="unsureBtn" class="btn" type="button">Unsure</button>
+                </div>
+                <div class="quiz-actions">
+                    <button id="quizPrev" class="btn" type="button" ${appState.quiz.config.minimalUi ? "style='display:none;'" : ""}>Precedent</button>
+                    <button id="quizNext" class="btn btn-primary" type="button">Suivant</button>
+                    <button id="quizReview" class="btn" type="button" ${appState.quiz.config.review ? "" : "style='display:none;'"}>Revoir avant envoi</button>
+                    <button id="quizSubmit" class="btn" type="button">Terminer</button>
+                </div>
+                <section id="quizReviewPanel" style="display:none; margin-top:12px;">
+                    <h3>Revue rapide</h3>
+                    <div class="review-grid" id="reviewGrid"></div>
+                </section>
+            </section>
+        `;
+
+        refs.main.querySelector("#quizPrev").addEventListener("click", () => {
+            if (!appState.quiz) return;
+            if (appState.quiz.index > 0) {
+                appState.quiz.index -= 1;
+                updateQuizQuestion();
+            }
+        });
+
+        refs.main.querySelector("#quizNext").addEventListener("click", () => {
+            if (!appState.quiz) return;
+            if (appState.quiz.index < appState.quiz.questions.length - 1) {
+                appState.quiz.index += 1;
+                updateQuizQuestion();
+            }
+        });
+
+        refs.main.querySelector("#quizSubmit").addEventListener("click", submitQuiz);
+        refs.main.querySelector("#quizReview").addEventListener("click", toggleReviewPanel);
+        refs.main.querySelector("#showHintBtn")?.addEventListener("click", () => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            const lang = languageVisibility("quiz", q);
+            const hint = generateHint(q);
+            refs.main.querySelector("#quizHintText").textContent = hint.fr;
+            refs.main.querySelector("#quizHintBn").textContent = lang.bn ? hint.bn : "";
+        });
+        refs.main.querySelector("#speakQuizQuestion").addEventListener("click", (e) => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            speakText(q.questionFr, e.currentTarget);
+        });
+
+        refs.main.querySelector("#quizOptions").addEventListener("click", (e) => {
+            const optionBtn = e.target.closest(".option");
+            if (!optionBtn || !appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            if (!appState.quiz.config.allowChange && appState.quiz.answers[q.id]) return;
+            const value = optionBtn.dataset.value;
+            const responseSec = Math.max(1, Math.round((Date.now() - appState.quiz.questionStartAt) / 1000));
+            appState.quiz.answers[q.id] = value;
+            appState.quiz.answerMeta[q.id] = { responseSec, confidence: "unsure" };
+            markOptionsSelection(q.id);
+            const confidencePanel = refs.main.querySelector("#confidencePanel");
+            if (appState.quiz.config.askConfidence && confidencePanel) {
+                confidencePanel.style.display = "flex";
+            }
+            saveState();
+            if (value !== q.correctAnswer) maybeVibrateWrong();
+        });
+
+        refs.main.querySelector("#confidentBtn")?.addEventListener("click", () => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            if (!appState.quiz.answerMeta[q.id]) appState.quiz.answerMeta[q.id] = { responseSec: 10, confidence: "confident" };
+            appState.quiz.answerMeta[q.id].confidence = "confident";
+            saveState();
+            refs.main.querySelector("#confidencePanel").style.display = "none";
+        });
+
+        refs.main.querySelector("#unsureBtn")?.addEventListener("click", () => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            if (!appState.quiz.answerMeta[q.id]) appState.quiz.answerMeta[q.id] = { responseSec: 10, confidence: "unsure" };
+            appState.quiz.answerMeta[q.id].confidence = "unsure";
+            saveState();
+            refs.main.querySelector("#confidencePanel").style.display = "none";
+        });
+
+        refs.main.querySelector("#quizOptions").addEventListener("keydown", (e) => {
+            if (["Enter", " "].includes(e.key) && e.target.classList.contains("option")) {
+                e.preventDefault();
+                e.target.click();
+                return;
+            }
+            if (!["ArrowDown", "ArrowUp"].includes(e.key)) return;
+            e.preventDefault();
+            const options = Array.from(refs.main.querySelectorAll("#quizOptions .option"));
+            if (!options.length) return;
+            const activeIndex = options.indexOf(document.activeElement);
+            const step = e.key === "ArrowDown" ? 1 : -1;
+            const next = (activeIndex + step + options.length) % options.length;
+            options[next].focus();
+        });
+
+        updateQuizQuestion();
     }
 
-    function renderQuizQuestion() {
-        if(currentMode !== "quiz") return;
-        if(currentQIndex >= quizQuestions.length) {
-            submitQuiz();
-            return;
-        }
-        const q = quizQuestions[currentQIndex];
-        const options = getOptionsForQuiz(q, fullQuestions);
-        const saved = userAnswers[currentQIndex];
-        let html = `<div class="panel"><div class="quiz-header">
-                        <span>Question ${currentQIndex+1} / ${quizQuestions.length}</span>
-                        <span class="timer" id="quizTimer">${Math.floor(timeLeft/60).toString().padStart(2,'0')}:${(timeLeft%60).toString().padStart(2,'0')}</span>
-                    </div>
-                    <div class="quiz-question-card">
-                        <div class="quiz-question-text">🇫🇷 ${q.qFr}
-                            <!-- <br><span class="lang-bn">🇧🇩 ${q.qBn}</span> -->
-                            </div>
-                        <div class="options-list" id="optionsList">`;
-        options.forEach(opt => {
-            let isSel = (saved === opt);
-            html += `<div class="option ${isSel ? 'selected' : ''}" data-value="${opt.replace(/"/g, '&quot;')}">${opt}</div>`;
-        });
-        html += `</div><div class="quiz-nav">
-                    <button id="prevQuiz" class="btn" ${currentQIndex===0?'disabled':''}>◀ Précédent</button>
-                    <button id="nextQuiz" class="btn btn-primary">Suivant ▶</button>
-                    <button id="submitQuiz" class="btn">🏁 Terminer</button>
-                 </div></div></div>`;
-        document.getElementById('mainContent').innerHTML = html;
-
-        document.querySelectorAll('.option').forEach(optDiv => {
-            optDiv.addEventListener('click', () => {
-                let val = optDiv.getAttribute('data-value');
-                userAnswers[currentQIndex] = val;
-                renderQuizQuestion();
+    function toggleReviewPanel() {
+        if (!appState.quiz) return;
+        appState.quiz.reviewOpen = !appState.quiz.reviewOpen;
+        const panel = refs.main.querySelector("#quizReviewPanel");
+        panel.style.display = appState.quiz.reviewOpen ? "block" : "none";
+        if (!appState.quiz.reviewOpen) return;
+        const grid = refs.main.querySelector("#reviewGrid");
+        grid.innerHTML = appState.quiz.questions.map((q, idx) => `
+            <button class="review-pill ${appState.quiz.answers[q.id] ? "done" : ""}" type="button" data-index="${idx}">${idx + 1}</button>
+        `).join("");
+        grid.querySelectorAll("button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                appState.quiz.index = Number(btn.dataset.index);
+                updateQuizQuestion();
             });
         });
-        document.getElementById('prevQuiz')?.addEventListener('click', () => { if(currentQIndex>0) { currentQIndex--; renderQuizQuestion(); } });
-        document.getElementById('nextQuiz')?.addEventListener('click', () => { if(currentQIndex<quizQuestions.length-1) { currentQIndex++; renderQuizQuestion(); } else { submitQuiz(); } });
-        document.getElementById('submitQuiz')?.addEventListener('click', () => submitQuiz());
-        updateTimerDisplay();
+    }
+
+    function formatTimer(seconds) {
+        const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+        const s = Math.max(0, seconds % 60).toString().padStart(2, "0");
+        return `${m}:${s}`;
+    }
+
+    function updateQuizTopBar() {
+        if (!appState.quiz) return;
+        const total = appState.quiz.questions.length;
+        const current = appState.quiz.index + 1;
+        const answeredCount = appState.quiz.questions.filter(q => appState.quiz.answers[q.id]).length;
+        const quickPart = appState.quiz.config.quickSecondsPerQuestion ? ` | ${appState.quiz.config.quickSecondsPerQuestion}s: ${String(Math.max(0, appState.quiz.questionSecondsLeft)).padStart(2, "0")}` : "";
+        const modeLabel = appState.quiz.mode === "conditioning" ? "Conditionnement" : appState.quiz.mode === "exam" ? "Examen reel" : appState.quiz.mode === "recall" ? "Fast Recall" : "Pratique";
+        refs.main.querySelector("#quizMetaIndex").textContent = `${modeLabel} | Question ${current}/${total} - Repondues ${answeredCount}/${total}`;
+        refs.main.querySelector("#quizMetaTimer").textContent = `Temps ${formatTimer(appState.quiz.secondsLeft)}${quickPart}`;
+        refs.main.querySelector("#quizProgressFill").style.width = `${(current / total) * 100}%`;
+    }
+
+    function markOptionsSelection(questionId) {
+        const selected = appState.quiz?.answers?.[questionId];
+        const optionNodes = refs.main.querySelectorAll("#quizOptions .option");
+        optionNodes.forEach(node => {
+            const isSelected = node.dataset.value === selected;
+            node.classList.toggle("selected", isSelected);
+            node.setAttribute("aria-checked", isSelected ? "true" : "false");
+        });
+    }
+
+    function updateQuizQuestion() {
+        if (!appState.quiz) return;
+        const q = appState.quiz.questions[appState.quiz.index];
+        const lang = languageVisibility("quiz", q);
+        const options = buildSmartOptions(q, questions, appState.quiz.optionMap[q.id]);
+        const intel = getQuestionIntel(q);
+        appState.quiz.optionMap[q.id] = options;
+        appState.quiz.questionStartAt = Date.now();
+        if (appState.quiz.config.quickSecondsPerQuestion) appState.quiz.questionSecondsLeft = appState.quiz.config.quickSecondsPerQuestion;
+
+        refs.main.querySelector("#quizQuestionText").innerHTML = keywordHighlights(q.questionFr);
+        refs.main.querySelector("#quizQuestionBn").textContent = lang.bn ? (q.questionBn || "") : "";
+        const hint = generateHint(q);
+        refs.main.querySelector("#quizHintText").textContent = appState.quiz.config.showHints ? "Indice contextuel pour activer le rappel." : "";
+        refs.main.querySelector("#quizHintBn").textContent = lang.bn && appState.quiz.config.showHints ? hint.bn : "";
+
+        const confidencePanel = refs.main.querySelector("#confidencePanel");
+        if (confidencePanel) confidencePanel.style.display = "none";
+
+        const p = getProgress(q.id);
+        if (appState.quiz.config.showHints && (p.failCount >= 2 || p.unsureCount >= 2 || isWeakCategory(q.category))) {
+            refs.main.querySelector("#quizHintText").textContent = hint.fr;
+        }
+
+        if (appState.quiz.mode === "recall" || appState.quiz.mode === "retryWrong") {
+            const cue = intel ? intel.fastRecallCue : (hint.fr || "Indice de rappel");
+            refs.main.querySelector("#quizHintText").textContent = `Cue: ${cue}`;
+            refs.main.querySelector("#quizHintBn").textContent = "";
+        }
+
+        if (intel && intel.pronunciationFocus && !appState.quiz.config.minimalUi) {
+            refs.main.querySelector("#quizHintText").textContent = `${refs.main.querySelector("#quizHintText").textContent} | Prononciation: ${intel.pronunciationFocus}`.trim();
+        }
+
+        const optionsRoot = refs.main.querySelector("#quizOptions");
+        optionsRoot.innerHTML = options.map(opt => `
+            <div class="option" role="radio" tabindex="0" aria-checked="false" data-value="${escapeHtml(opt)}">
+                <span>${escapeHtml(opt)}</span>
+                <button class="icon-btn speak-option" type="button" data-opt="${escapeHtml(opt)}" aria-label="Ecouter option">🔊</button>
+            </div>
+        `).join("");
+
+        optionsRoot.querySelectorAll(".speak-option").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                speakText(btn.dataset.opt, btn);
+            });
+        });
+
+        if (appState.audio.autoPlay) {
+            if (appState.audio.sequentialQA) {
+                speakText(q.questionFr, null, () => speakText(q.correctAnswer, null));
+            } else {
+                speakText(q.questionFr);
+            }
+        }
+
+        markOptionsSelection(q.id);
+        updateQuizTopBar();
+        if (appState.quiz.reviewOpen) toggleReviewPanel();
     }
 
     function submitQuiz() {
-        clearInterval(timerInterval);
-        let score = 0;
-        let details = [];
-        for(let i=0; i<quizQuestions.length; i++) {
-            let correct = quizQuestions[i].aFr;
-            let user = userAnswers[i];
-            let isOk = (user === correct);
-            if(isOk) score++;
-            details.push({q: quizQuestions[i].qFr, correct, user: user || "(pas répondu)", ok: isOk});
-        }
-        let percent = Math.round((score/quizQuestions.length)*100);
-        let resultHtml = `<div class="panel"><div class="section-title">📊 Résultat du quiz</div>
-        <div class="score-area"><strong>Score : ${score} / ${quizQuestions.length} (${percent}%)</strong><br>
-        ${percent>=70 ? '✅ Félicitations !' : '📚 Révisez davantage.'}</div>
-        <button id="restartQuizBtn" class="btn btn-primary">🔄 Nouveau quiz (40 questions)</button>
-        <button id="backToStudyBtn" class="btn">📖 Retour à l'étude</button>
-        <div style="margin-top:20px;">`;
-        details.forEach(d => {
-            resultHtml += `<div class="study-card" style="border-left:5px solid ${d.ok?'#2ecc71':'#e74c3c'}">
-            <div><strong>❓ ${d.q}</strong></div>
-            <div>✔️ Bonne réponse : ${d.correct}</div>
-            <div>📝 Votre réponse : ${d.user}</div></div>`;
+        if (!appState.quiz) return;
+        clearInterval(appState.quiz.timer);
+        stopSpeech();
+
+        const result = appState.quiz.questions.map(q => {
+            const userAnswer = appState.quiz.answers[q.id] || "(pas de reponse)";
+            const ok = userAnswer === q.correctAnswer;
+            const options = appState.quiz.optionMap[q.id] || [];
+            const exp = explainQuestion(q, options, userAnswer);
+            const responseSec = appState.quiz.answerMeta[q.id]?.responseSec || 12;
+            const confidence = appState.quiz.answerMeta[q.id]?.confidence || "unsure";
+            updateProgress(q, ok, responseSec, confidence);
+            recordDailyActivity(1, ok ? 4 : 2, responseSec);
+            return {
+                id: q.id,
+                category: q.category,
+                question: q.questionFr,
+                correct: q.correctAnswer,
+                user: userAnswer,
+                ok,
+                responseSec,
+                confidence,
+                explainFr: exp.frShort,
+                explainBn: exp.bnShort,
+                explainStruct: exp.structure,
+                wrongReasons: exp.wrongReasons
+            };
         });
-        resultHtml += `</div></div>`;
-        document.getElementById('mainContent').innerHTML = resultHtml;
-        document.getElementById('restartQuizBtn')?.addEventListener('click', startQuiz);
-        document.getElementById('backToStudyBtn')?.addEventListener('click', renderStudyMode);
-        currentMode = "study";
+
+        const score = result.filter(r => r.ok).length;
+        const total = result.length;
+        const percent = Math.round((score / total) * 100);
+
+        appState.wrongIds.clear();
+        result.filter(r => !r.ok).forEach(r => appState.wrongIds.add(r.id));
+
+        const categoryAgg = {};
+        result.forEach(r => {
+            if (!categoryAgg[r.category]) categoryAgg[r.category] = { total: 0, errors: 0 };
+            categoryAgg[r.category].total += 1;
+            if (!r.ok) categoryAgg[r.category].errors += 1;
+        });
+
+        const weakCategories = Object.entries(categoryAgg)
+            .map(([category, stats]) => ({ category, errorRate: stats.errors / stats.total, errors: stats.errors }))
+            .filter(v => v.errors > 0)
+            .sort((a, b) => b.errorRate - a.errorRate)
+            .slice(0, 3);
+
+        appState.stats.quizzesTaken += 1;
+        appState.stats.lastScore = percent;
+        appState.stats.bestScore = Math.max(appState.stats.bestScore, percent);
+        appState.stats.avgResponseSec = Math.round(result.reduce((s, r) => s + r.responseSec, 0) / result.length);
+        saveState();
+
+        if (percent >= 80) launchConfetti();
+
+        refs.main.innerHTML = `
+            <section class="analytics">
+                <h2>Resultat final</h2>
+                <div class="stats">
+                    <div class="stat"><strong>${score}/${total}</strong><span>Score</span></div>
+                    <div class="stat"><strong>${percent}%</strong><span>Pourcentage</span></div>
+                    <div class="stat"><strong>${weakCategories.length}</strong><span>Categories faibles</span></div>
+                    <div class="stat"><strong>${appState.stats.avgResponseSec}s</strong><span>Vitesse reponse</span></div>
+                </div>
+                <div class="card">
+                    <p>${percent >= 85 ? "Excellent progress! Votre niveau est proche des conditions d'examen." : percent >= 65 ? "Vous progressez clairement. Continuez la repetition espacee sur les faiblesses." : "Base solide en cours. Priorisez les erreurs recentes et les categories faibles."}</p>
+                    <p>Reponses "unsure": ${result.filter(r => r.confidence === "unsure").length}. Elles seront revues plus tot.</p>
+                </div>
+                <div class="card">
+                    <h3>Categories a renforcer</h3>
+                    ${weakCategories.length ? weakCategories.map(w => `<p><strong>${escapeHtml(w.category)}</strong> - ${Math.round(w.errorRate * 100)}% d'erreurs</p>`).join("") : "<p>Aucune faiblesse evidente.</p>"}
+                </div>
+                <div class="card">
+                    <h3>Revision des erreurs</h3>
+                    ${result.filter(r => !r.ok).map(r => `
+                        <div style="padding:8px 0; border-bottom:1px solid var(--border);">
+                            <p><strong>Q:</strong> ${escapeHtml(r.question)}</p>
+                            <p><strong>Bonne reponse:</strong> ${escapeHtml(r.correct)}</p>
+                            <p><strong>Votre reponse:</strong> ${escapeHtml(r.user)}</p>
+                            <p><strong>Pourquoi:</strong> ${escapeHtml(r.explainStruct.reasonFr)}</p>
+                            <p><strong>Memo:</strong> ${escapeHtml(r.explainStruct.memoFr)}</p>
+                            <p><strong>Attention:</strong> ${escapeHtml(r.explainStruct.warnFr)}</p>
+                            ${r.wrongReasons.slice(0, 3).map(w => `<p>- ${escapeHtml(w.option)}: ${escapeHtml(w.reason)}</p>`).join("")}
+                        </div>
+                    `).join("") || "<p>Aucune erreur.</p>"}
+                </div>
+                <div class="quiz-actions">
+                    <button id="redoWrongNow" class="btn btn-primary" type="button">Reessayer erreurs</button>
+                    <button id="showAnalytics" class="btn" type="button">Voir analytics</button>
+                    <button id="goStudy" class="btn" type="button">Retour etude</button>
+                </div>
+            </section>
+        `;
+
+        refs.main.querySelector("#redoWrongNow").addEventListener("click", () => startQuizSession("retryWrong"));
+        refs.main.querySelector("#showAnalytics").addEventListener("click", renderAnalyticsDashboard);
+        refs.main.querySelector("#goStudy").addEventListener("click", renderStudyView);
+        appState.quiz = null;
     }
 
-    // attach buttons
-    document.getElementById('studyModeBtn').addEventListener('click', renderStudyMode);
-    document.getElementById('quizModeBtn').addEventListener('click', startQuiz);
-    renderStudyMode();
+    function startFlashcardMode(strict = false) {
+        const queue = [...questions].sort((a, b) => getQuestionPriority(b) - getQuestionPriority(a)).slice(0, 40);
+        if (!queue.length) return;
+        appState.mode = "flashcard";
+        appState.flashcard = { queue, index: 0, reveal: false, strict };
+        renderFlashcard();
+    }
+
+    function renderFlashcard() {
+        if (!appState.flashcard) return;
+        const item = appState.flashcard.queue[appState.flashcard.index];
+        const intel = getQuestionIntel(item);
+        const exp = explainQuestion(item);
+        const lang = languageVisibility("flashcard", item, !!appState.flashcard.strict);
+        const p = getProgress(item.id);
+        refs.main.innerHTML = `
+            <section class="card">
+                <h2>Flashcard ${appState.flashcard.index + 1}/${appState.flashcard.queue.length}</h2>
+                <p><strong>Memory hook:</strong> ${escapeHtml(intel ? intel.memoryHook : exp.structure.memoFr)}</p>
+                <p><strong>Question:</strong> ${escapeHtml(item.questionFr)}</p>
+                ${lang.bn ? `<p class="bn">${escapeHtml(item.questionBn || "")}</p>` : ""}
+                <p><strong>Fast recall cue:</strong> ${escapeHtml(intel ? intel.fastRecallCue : exp.structure.hookFr)}</p>
+                ${appState.flashcard.reveal ? `<div style="margin-top:12px;"><p><strong>Reponse:</strong> ${escapeHtml(item.correctAnswer)}</p><p>${escapeHtml(exp.structure.reasonFr)}</p><p><strong>Attention:</strong> ${escapeHtml(exp.structure.warnFr)}</p>${lang.bn ? `<p class="bn">${escapeHtml(exp.structure.reasonBn)}</p>` : ""}</div>` : ""}
+                <div class="quiz-actions" style="margin-top:12px;">
+                    <button id="flashReveal" class="btn btn-primary" type="button">${appState.flashcard.reveal ? "Masquer" : "Montrer reponse"}</button>
+                    <button id="flashSpeak" class="btn" type="button">Ecouter</button>
+                    <button id="flashKnow" class="btn" type="button">Je maitrise</button>
+                    <button id="flashAgain" class="btn" type="button">A revoir</button>
+                    <button id="flashExit" class="btn" type="button">Quitter</button>
+                </div>
+                <p style="margin-top:8px;">Niveau actuel: ${p.masteryLevel} (${p.masteryScore}%)</p>
+            </section>
+        `;
+
+        refs.main.querySelector("#flashReveal").addEventListener("click", () => {
+            appState.flashcard.reveal = !appState.flashcard.reveal;
+            renderFlashcard();
+        });
+        refs.main.querySelector("#flashSpeak").addEventListener("click", () => {
+            speakText(item.questionFr, null, () => speakText(item.correctAnswer));
+        });
+        refs.main.querySelector("#flashKnow").addEventListener("click", () => {
+            updateProgress(item, true, 8);
+            recordDailyActivity(1, 3, 8);
+            nextFlash();
+        });
+        refs.main.querySelector("#flashAgain").addEventListener("click", () => {
+            updateProgress(item, false, 10);
+            appState.wrongIds.add(item.id);
+            recordDailyActivity(1, 2, 10);
+            nextFlash();
+        });
+        refs.main.querySelector("#flashExit").addEventListener("click", () => {
+            appState.flashcard = null;
+            saveState();
+            renderStudyView();
+        });
+    }
+
+    function nextFlash() {
+        if (!appState.flashcard) return;
+        appState.flashcard.index += 1;
+        appState.flashcard.reveal = false;
+        if (appState.flashcard.index >= appState.flashcard.queue.length) {
+            saveState();
+            renderStudyView();
+            return;
+        }
+        saveState();
+        renderFlashcard();
+    }
+
+    function startListenMode() {
+        const queue = [...questions]
+            .sort((a, b) => {
+                const ai = getQuestionIntel(a);
+                const bi = getQuestionIntel(b);
+                const pa = getProgress(a.id);
+                const pb = getProgress(b.id);
+                const aBoost = (ai?.pronunciationFocus ? 12 : 0) + pa.failCount * 3;
+                const bBoost = (bi?.pronunciationFocus ? 12 : 0) + pb.failCount * 3;
+                return (getQuestionPriority(b) + bBoost) - (getQuestionPriority(a) + aBoost);
+            })
+            .slice(0, 25);
+        refs.main.innerHTML = `
+            <section class="card">
+                <h2>Listen and repeat</h2>
+                <p>Mode audio sequentiel question + reponse. Ideal pour memoire auditive.</p>
+                <div class="quiz-actions">
+                    <button id="listenStart" class="btn btn-primary" type="button">Demarrer</button>
+                    <button id="listenStop" class="btn" type="button">Arreter</button>
+                    <button id="listenBack" class="btn" type="button">Retour</button>
+                </div>
+                <div id="listenNow" style="margin-top:10px;"></div>
+            </section>
+        `;
+
+        let idx = 0;
+        let running = false;
+        const next = () => {
+            if (!running || idx >= queue.length) return;
+            const q = queue[idx];
+            refs.main.querySelector("#listenNow").innerHTML = `<p><strong>${idx + 1}/${queue.length}</strong> ${escapeHtml(q.questionFr)}</p><p>${escapeHtml(q.correctAnswer)}</p>`;
+            speakText(q.questionFr, null, () => {
+                speakText(q.correctAnswer, null, () => {
+                    updateProgress(q, true, 9);
+                    recordDailyActivity(1, 2, 9);
+                    idx += 1;
+                    setTimeout(next, 500);
+                });
+            });
+        };
+
+        refs.main.querySelector("#listenStart").addEventListener("click", () => {
+            running = true;
+            next();
+        });
+        refs.main.querySelector("#listenStop").addEventListener("click", () => {
+            running = false;
+            stopSpeech();
+        });
+        refs.main.querySelector("#listenBack").addEventListener("click", () => {
+            running = false;
+            stopSpeech();
+            saveState();
+            renderStudyView();
+        });
+    }
+
+    function renderAnalyticsDashboard() {
+        const cat = categoryMetrics();
+        const entries = Object.entries(cat);
+        const strongest = entries.sort((a, b) => b[1].mastery - a[1].mastery).slice(0, 3);
+        const weakest = [...entries].sort((a, b) => a[1].mastery - b[1].mastery).slice(0, 3);
+        const reviewed = questions.filter(q => !!getProgress(q.id).lastReviewed);
+        const totalSuccess = reviewed.reduce((s, q) => s + getProgress(q.id).successCount, 0);
+        const totalFail = reviewed.reduce((s, q) => s + getProgress(q.id).failCount, 0);
+        const totalUnsure = reviewed.reduce((s, q) => s + getProgress(q.id).unsureCount, 0);
+        const accuracy = totalSuccess + totalFail ? Math.round((totalSuccess / (totalSuccess + totalFail)) * 100) : 0;
+        const avgSpeed = reviewed.length ? Math.round(reviewed.reduce((s, q) => s + getProgress(q.id).avgSec, 0) / reviewed.length) : 0;
+        const mastery = Math.round(questions.reduce((s, q) => s + getProgress(q.id).masteryScore, 0) / questions.length);
+        const readiness = Math.min(100, Math.round(accuracy * 0.45 + mastery * 0.4 + Math.max(0, 100 - questions.filter(q => getProgress(q.id).masteryScore < 45).length) * 0.15));
+        const likelyFail = weakest.map(([name, val]) => ({ name, risk: Math.min(95, 100 - val.mastery + val.weak * 2) }));
+        const passProbability = Math.max(5, Math.min(99, Math.round(readiness * 0.88 + (100 - totalUnsure) * 0.12)));
+
+        const intelQuestions = questions.filter(q => !!getQuestionIntel(q));
+        const confusionTopics = intelQuestions
+            .map(q => ({
+                id: q.id,
+                q: q.questionFr,
+                trap: getQuestionIntel(q)?.examTrap || "",
+                confusion: getProgress(q.id).confusionTrapCount
+            }))
+            .sort((a, b) => b.confusion - a.confusion)
+            .slice(0, 5);
+        const slowRecallConcepts = questions
+            .map(q => ({ q: q.questionFr, slow: getProgress(q.id).slowRecallCount, avg: getProgress(q.id).avgSec }))
+            .sort((a, b) => (b.slow * 10 + b.avg) - (a.slow * 10 + a.avg))
+            .slice(0, 5);
+        const highConfidenceFails = questions
+            .map(q => ({ q: q.questionFr, c: getProgress(q.id).highConfidenceFailCount }))
+            .filter(x => x.c > 0)
+            .sort((a, b) => b.c - a.c)
+            .slice(0, 5);
+        const strongestAnchors = intelQuestions
+            .map(q => ({
+                q: q.questionFr,
+                anchor: getQuestionIntel(q)?.memoryHook || "",
+                mastery: getProgress(q.id).masteryScore
+            }))
+            .sort((a, b) => b.mastery - a.mastery)
+            .slice(0, 5);
+
+        const todayKey = getTodayKey();
+        const yesterdayKey = addDays(todayKey, -1);
+        const todayXp = appState.daily.history[todayKey]?.xp || 0;
+        const yesterdayXp = appState.daily.history[yesterdayKey]?.xp || 0;
+        const last7Days = Array.from({ length: 7 }).map((_, i) => addDays(todayKey, -i)).reverse();
+        const firstHalf = last7Days.slice(0, 3).map(d => appState.daily.history[d]?.seconds || 0);
+        const secondHalf = last7Days.slice(3).map(d => appState.daily.history[d]?.seconds || 0);
+        const firstAvg = firstHalf.length ? Math.round(firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length) : 0;
+        const secondAvg = secondHalf.length ? Math.round(secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length) : 0;
+        const speedImprovement = firstAvg && secondAvg ? Math.round(((secondAvg - firstAvg) / Math.max(1, firstAvg)) * 100) : 0;
+
+        refs.main.innerHTML = `
+            <section class="analytics">
+                <h2>Tableau analytique</h2>
+                <div class="stats">
+                    <div class="stat"><strong>${accuracy}%</strong><span>Accuracy</span></div>
+                    <div class="stat"><strong>${avgSpeed}s</strong><span>Vitesse reponse</span></div>
+                    <div class="stat"><strong>${mastery}%</strong><span>Maitrise</span></div>
+                    <div class="stat"><strong>${readiness}%</strong><span>Preparation examen predite</span></div>
+                    <div class="stat"><strong>${passProbability}%</strong><span>Probabilite de reussite estimee</span></div>
+                    <div class="stat"><strong>${totalUnsure}</strong><span>Reponses "unsure"</span></div>
+                </div>
+                <div class="card">
+                    <h3>Categories les plus fortes</h3>
+                    ${strongest.map(([name, val]) => `<p>${escapeHtml(name)} - ${val.mastery}%</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>Categories les plus faibles</h3>
+                    ${weakest.map(([name, val]) => `<p>${escapeHtml(name)} - ${val.mastery}% | ${val.weak} questions faibles</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>Categories les plus a risque a l'examen</h3>
+                    ${likelyFail.map(item => `<p>${escapeHtml(item.name)} - risque estime ${item.risk}%</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>Progression recente</h3>
+                    <p>XP aujourd'hui: ${todayXp}</p>
+                    <p>XP hier: ${yesterdayXp}</p>
+                    <p>${todayXp > yesterdayXp ? "Vous avez progresse par rapport a hier." : "Continuez: la progression peut accelerer avec la repetition espacee."}</p>
+                    <p>Questions faibles restantes: ${questions.filter(q => getProgress(q.id).masteryScore < 45).length}</p>
+                    <p>Amelioration vitesse de rappel (7 jours): ${speedImprovement >= 0 ? `+${speedImprovement}%` : `${speedImprovement}%`}</p>
+                </div>
+                <div class="card">
+                    <h3>Confusion-prone topics</h3>
+                    ${confusionTopics.length ? confusionTopics.map(t => `<p>${escapeHtml(t.q)} - ${escapeHtml(t.trap)} (${t.confusion})</p>`).join("") : "<p>Aucun signal fort pour le moment.</p>"}
+                </div>
+                <div class="card">
+                    <h3>Slow recall concepts</h3>
+                    ${slowRecallConcepts.map(t => `<p>${escapeHtml(t.q)} - lenteur: ${t.slow}, moyenne: ${t.avg}s</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>High-confidence failures</h3>
+                    ${highConfidenceFails.length ? highConfidenceFails.map(t => `<p>${escapeHtml(t.q)} - ${t.c}</p>`).join("") : "<p>Aucune erreur en confiance elevee actuellement.</p>"}
+                </div>
+                <div class="card">
+                    <h3>Strongest memory anchors</h3>
+                    ${strongestAnchors.length ? strongestAnchors.map(t => `<p>${escapeHtml(t.anchor)} - maitrise ${t.mastery}%</p>`).join("") : "<p>En cours de construction.</p>"}
+                </div>
+                <div class="quiz-actions">
+                    <button id="analyticsBack" class="btn" type="button">Retour etude</button>
+                </div>
+            </section>
+        `;
+
+        refs.main.querySelector("#analyticsBack").addEventListener("click", renderStudyView);
+    }
+
+    function showCategoryPickerAndStart() {
+        const categories = Object.keys(byCategory);
+        refs.main.innerHTML = `
+            <section class="view-head">
+                <h2>Quiz par categorie</h2>
+                <select id="quizCategorySelect">
+                    ${categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join("")}
+                </select>
+                <button id="startCategoryQuiz" class="btn btn-primary" type="button">Demarrer</button>
+            </section>
+        `;
+        refs.main.querySelector("#startCategoryQuiz").addEventListener("click", () => {
+            const cat = refs.main.querySelector("#quizCategorySelect").value;
+            startQuizSession("category", cat);
+        });
+    }
+
+    function wireGlobalActions() {
+        refs.navStudy.addEventListener("click", renderStudyView);
+        refs.navRandomQuiz.addEventListener("click", () => startQuizSession("random"));
+        refs.navCategoryQuiz.addEventListener("click", showCategoryPickerAndStart);
+        refs.navDailyQuiz.addEventListener("click", () => startQuizSession("daily"));
+        refs.navRetryWrong.addEventListener("click", () => startQuizSession("retryWrong"));
+
+        refs.soundToggle.addEventListener("click", () => {
+            appState.soundEnabled = !appState.soundEnabled;
+            if (!appState.soundEnabled) stopSpeech();
+            saveState();
+            updateTopButtons(null);
+        });
+
+        refs.speedToggle.addEventListener("click", () => {
+            appState.slowSpeech = !appState.slowSpeech;
+            saveState();
+            updateTopButtons(null);
+        });
+
+        refs.themeToggle.addEventListener("click", () => {
+            appState.theme = appState.theme === "auto" ? "light" : appState.theme === "light" ? "dark" : "auto";
+            applyTheme();
+            saveState();
+        });
+    }
+
+    loadState();
+    questions.forEach(q => getProgress(q.id));
+    applyTheme();
+    wireGlobalActions();
+    renderStudyView();
 </script>
 </body>
 </html>
