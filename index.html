@@ -158,6 +158,29 @@
             flex-wrap: wrap;
         }
 
+        .toolbar-main {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding-bottom: 1px;
+        }
+
+        .toolbar-secondary {
+            gap: 6px;
+        }
+
+        .toolbar.minimized .toolbar-main {
+            display: none;
+        }
+
+        .toolbar.minimized {
+            padding: 7px;
+            gap: 6px;
+        }
+
+        .toolbar.minimized .toolbar-secondary {
+            justify-content: flex-end;
+        }
+
         .btn {
             border: 1px solid var(--border);
             background: var(--surface);
@@ -184,6 +207,19 @@
         .btn-soft {
             background: var(--primary-soft);
             border-color: transparent;
+        }
+
+        .quick-setting {
+            min-width: 42px;
+            min-height: 42px;
+            padding: 0 10px;
+            font-size: 1.02rem;
+            font-weight: 600;
+        }
+
+        .quick-setting.toggle {
+            min-width: 44px;
+            font-size: 1rem;
         }
 
         .btn.active {
@@ -404,13 +440,31 @@
         .study-q {
             font-size: 0.88rem;
             line-height: 1.24;
-            font-weight: 400;
+            font-weight: 500;
+            border-left: 3px solid var(--primary);
+            background: color-mix(in srgb, var(--primary-soft) 55%, transparent);
+            padding: 4px 6px;
+            border-radius: 6px;
         }
 
         .study-a {
             font-size: 0.84rem;
             line-height: 1.22;
-            font-weight: 400;
+            font-weight: 500;
+            border-left: 3px solid var(--success);
+            background: color-mix(in srgb, rgba(22, 163, 74, 0.16) 65%, transparent);
+            padding: 4px 6px;
+            border-radius: 6px;
+        }
+
+        .study-label {
+            display: inline-block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            margin-right: 6px;
+            color: var(--text-soft);
         }
 
         .study-cue,
@@ -424,6 +478,40 @@
             font-size: 0.74rem;
             color: color-mix(in srgb, var(--text-soft) 85%, transparent);
             line-height: 1.16;
+        }
+
+        .study-audio-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .study-audio-btn {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            border-radius: 8px;
+            min-height: 28px;
+            padding: 3px 8px;
+            font-size: 0.74rem;
+            cursor: pointer;
+        }
+
+        .exam-time-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-soft);
+            font-size: 0.74rem;
+            padding: 2px 0;
+        }
+
+        .exam-time-control select {
+            width: auto;
+            min-height: 30px;
+            font-size: 0.76rem;
+            padding: 4px 8px;
+            border-radius: 8px;
         }
 
         .quiz-top {
@@ -669,9 +757,10 @@
             <button id="navRetryWrong" class="btn" type="button">Reessayer erreurs</button>
         </div>
         <div class="toolbar-secondary">
-            <button id="soundToggle" class="btn btn-soft" type="button" aria-pressed="true">Son ON</button>
-            <button id="speedToggle" class="btn btn-soft" type="button" aria-pressed="false">Prononciation lente OFF</button>
-            <button id="themeToggle" class="btn btn-soft" type="button">Theme auto</button>
+            <button id="toolbarMinimizeToggle" class="btn btn-soft quick-setting toggle" type="button" aria-expanded="true" aria-label="Minimiser barre">▾</button>
+            <button id="soundToggle" class="btn btn-soft quick-setting" type="button" aria-pressed="true" aria-label="Son">🔊</button>
+            <button id="speedToggle" class="btn btn-soft quick-setting" type="button" aria-pressed="false" aria-label="Vitesse prononciation">⚡</button>
+            <button id="themeToggle" class="btn btn-soft quick-setting" type="button" aria-label="Theme">🌓</button>
         </div>
     </section>
 
@@ -927,6 +1016,10 @@
             repeatAfterMe: false,
             chunkPlayback: false
         },
+        ui: {
+            toolbarMinimized: false,
+            examMinutes: 10
+        },
         language: {
             autoReduceBengali: true
         },
@@ -940,11 +1033,13 @@
 
     const refs = {
         main: document.getElementById("mainContent"),
+        toolbar: document.querySelector(".toolbar"),
         navStudy: document.getElementById("navStudy"),
         navRandomQuiz: document.getElementById("navRandomQuiz"),
         navCategoryQuiz: document.getElementById("navCategoryQuiz"),
         navDailyQuiz: document.getElementById("navDailyQuiz"),
         navRetryWrong: document.getElementById("navRetryWrong"),
+        toolbarMinimizeToggle: document.getElementById("toolbarMinimizeToggle"),
         soundToggle: document.getElementById("soundToggle"),
         speedToggle: document.getElementById("speedToggle"),
         themeToggle: document.getElementById("themeToggle")
@@ -957,6 +1052,16 @@
         manualStop: false,
         repeatedOnce: false
     };
+
+    let quizTimerRef = null;
+
+    function stopQuizTimer() {
+        if (quizTimerRef) {
+            clearInterval(quizTimerRef);
+            quizTimerRef = null;
+        }
+        if (appState.quiz) appState.quiz.timer = null;
+    }
 
     function getTodayKey() {
         return new Date().toISOString().slice(0, 10);
@@ -1716,12 +1821,14 @@
             progress: appState.progress,
             daily: appState.daily,
             audio: appState.audio,
+            ui: appState.ui,
             language: appState.language,
             stats: appState.stats
         };
     }
 
     function loadState() {
+        let hasStoredToolbarPref = false;
         try {
             const raw = localStorage.getItem(STORAGE_KEY);
             if (!raw) return;
@@ -1736,10 +1843,16 @@
             appState.progress = parsed.progress || {};
             appState.daily = { ...appState.daily, ...(parsed.daily || {}) };
             appState.audio = { ...appState.audio, ...(parsed.audio || {}) };
+            appState.ui = { ...appState.ui, ...(parsed.ui || {}) };
+            hasStoredToolbarPref = typeof parsed?.ui?.toolbarMinimized !== "undefined";
             appState.language = { ...appState.language, ...(parsed.language || {}) };
             appState.stats = parsed.stats || appState.stats;
         } catch (_e) {
             // ignore corrupted state
+        }
+
+        if (!hasStoredToolbarPref && window.innerWidth <= 640) {
+            appState.ui.toolbarMinimized = true;
         }
     }
 
@@ -1749,7 +1862,10 @@
 
     function applyTheme() {
         document.body.setAttribute("data-theme", appState.theme === "auto" ? "" : appState.theme);
-        refs.themeToggle.textContent = `Theme ${appState.theme}`;
+        const themeIcon = appState.theme === "light" ? "☀️" : appState.theme === "dark" ? "🌙" : "🌓";
+        refs.themeToggle.textContent = themeIcon;
+        refs.themeToggle.setAttribute("title", `Theme: ${appState.theme}`);
+        refs.themeToggle.setAttribute("aria-label", `Theme: ${appState.theme}`);
     }
 
     function updateTopButtons(active) {
@@ -1757,10 +1873,22 @@
             btn.classList.remove("active");
         });
         if (active) active.classList.add("active");
-        refs.soundToggle.textContent = appState.soundEnabled ? "Son ON" : "Son OFF";
+        refs.soundToggle.textContent = appState.soundEnabled ? "🔊" : "🔇";
+        refs.soundToggle.setAttribute("title", appState.soundEnabled ? "Son: ON" : "Son: OFF");
+        refs.soundToggle.setAttribute("aria-label", appState.soundEnabled ? "Son active" : "Son coupe");
         refs.soundToggle.setAttribute("aria-pressed", String(appState.soundEnabled));
-        refs.speedToggle.textContent = appState.slowSpeech ? "Prononciation lente ON" : "Prononciation lente OFF";
+        refs.speedToggle.textContent = appState.slowSpeech ? "🐢" : "⚡";
+        refs.speedToggle.setAttribute("title", appState.slowSpeech ? "Prononciation lente: ON" : "Prononciation lente: OFF");
+        refs.speedToggle.setAttribute("aria-label", appState.slowSpeech ? "Prononciation lente active" : "Prononciation normale");
         refs.speedToggle.setAttribute("aria-pressed", String(appState.slowSpeech));
+    }
+
+    function applyToolbarMinimizeState() {
+        if (!refs.toolbar || !refs.toolbarMinimizeToggle) return;
+        refs.toolbar.classList.toggle("minimized", appState.ui.toolbarMinimized);
+        refs.toolbarMinimizeToggle.textContent = appState.ui.toolbarMinimized ? "▸" : "▾";
+        refs.toolbarMinimizeToggle.setAttribute("aria-expanded", String(!appState.ui.toolbarMinimized));
+        refs.toolbarMinimizeToggle.setAttribute("title", appState.ui.toolbarMinimized ? "Afficher menu" : "Minimiser menu");
     }
 
     function getFrenchVoice() {
@@ -1867,7 +1995,7 @@
 
     function renderStudyView() {
         appState.mode = "study";
-        clearInterval(appState.quiz?.timer || null);
+        stopQuizTimer();
         stopSpeech();
         appState.quiz = null;
         appState.flashcard = null;
@@ -1907,6 +2035,16 @@
                             <button id="modeQuick" class="study-chip" type="button">20s</button>
                             <button id="modeConditioning" class="study-chip" type="button">Condition</button>
                         </div>
+                        <div class="exam-time-control">
+                            <label for="examDurationSelect">Temps examen:</label>
+                            <select id="examDurationSelect" aria-label="Temps examen en minutes">
+                                <option value="10" ${appState.ui.examMinutes === 10 ? "selected" : ""}>10 min</option>
+                                <option value="15" ${appState.ui.examMinutes === 15 ? "selected" : ""}>15 min</option>
+                                <option value="20" ${appState.ui.examMinutes === 20 ? "selected" : ""}>20 min</option>
+                                <option value="25" ${appState.ui.examMinutes === 25 ? "selected" : ""}>25 min</option>
+                                <option value="30" ${appState.ui.examMinutes === 30 ? "selected" : ""}>30 min</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <p class="study-count">${filtered.length} questions</p>
@@ -1925,9 +2063,15 @@
                 const warningFr = exp.structure.warnFr || exp.structure.reasonFr;
                 return `
                 <article class="study-compact-card" data-id="${q.id}">
-                    <div class="study-q">🇫🇷 ${keywordHighlights(q.questionFr)}</div>
+                    <div class="study-q"><span class="study-label">Question</span>🇫🇷 ${keywordHighlights(q.questionFr)}</div>
+                    <div class="study-audio-row">
+                        <button class="study-audio-btn speak-question" type="button" data-id="${q.id}" aria-label="Ecouter la question">🔊 Question</button>
+                    </div>
                     ${bnMeaning}
-                    <div class="study-a">✔ ${escapeHtml(q.correctAnswer)}</div>
+                    <div class="study-a"><span class="study-label">Reponse</span>✔ ${escapeHtml(q.correctAnswer)}</div>
+                    <div class="study-audio-row">
+                        <button class="study-audio-btn speak-answer" type="button" data-id="${q.id}" aria-label="Ecouter la reponse">🔊 Reponse</button>
+                    </div>
                     <div class="study-cue">🧠 ${escapeHtml(exp.structure.memoFr)}</div>
                     <div class="study-warn">⚠ ${escapeHtml(warningFr)}</div>
                 </article>`;
@@ -1973,8 +2117,29 @@
         refs.main.querySelector("#modeConditioning")?.addEventListener("click", () => startQuizSession("conditioning"));
         refs.main.querySelector("#modeFlashcard")?.addEventListener("click", () => startFlashcardMode(false));
         refs.main.querySelector("#modeListen")?.addEventListener("click", startListenMode);
+        refs.main.querySelector("#examDurationSelect")?.addEventListener("change", (e) => {
+            const next = Number(e.target.value);
+            appState.ui.examMinutes = Math.min(30, Math.max(10, next));
+            saveState();
+        });
 
         list.addEventListener("click", e => {
+            const actionBtn = e.target.closest("button");
+            if (actionBtn && actionBtn.classList.contains("speak-question")) {
+                const id = actionBtn.dataset.id;
+                const question = questions.find(q => q.id === id);
+                if (question) speakText(question.questionFr, actionBtn);
+                e.stopPropagation();
+                return;
+            }
+            if (actionBtn && actionBtn.classList.contains("speak-answer")) {
+                const id = actionBtn.dataset.id;
+                const question = questions.find(q => q.id === id);
+                if (question) speakText(question.correctAnswer, actionBtn);
+                e.stopPropagation();
+                return;
+            }
+
             const card = e.target.closest(".study-compact-card");
             if (!card) return;
             appState.studiedIds.add(card.dataset.id);
@@ -2006,6 +2171,7 @@
     }
 
     function startQuizSession(mode, category = "") {
+        stopQuizTimer();
         const pool = pickQuizPool(mode, category);
         const size = Math.min(mode === "daily" ? 25 : 40, pool.length || 40);
         const chosen = pool.slice(0, size);
@@ -2019,7 +2185,7 @@
             noReveal: ["exam", "conditioning"].includes(mode),
             strict: ["exam", "conditioning"].includes(mode),
             quickSecondsPerQuestion: mode === "quick" ? 20 : mode === "recall" ? 8 : 0,
-            totalSeconds: mode === "exam" ? 600 : mode === "daily" ? 480 : mode === "quick" ? 400 : mode === "recall" ? 320 : mode === "conditioning" ? 600 : 600,
+            totalSeconds: mode === "exam" ? appState.ui.examMinutes * 60 : mode === "daily" ? 480 : mode === "quick" ? 400 : mode === "recall" ? 320 : mode === "conditioning" ? 600 : 600,
             review: !["exam", "conditioning"].includes(mode),
             showHints: !["exam", "conditioning"].includes(mode),
             askConfidence: true,
@@ -2055,9 +2221,9 @@
     }
 
     function startQuizTimer() {
-        clearInterval(appState.quiz?.timer || null);
+        stopQuizTimer();
         if (!appState.quiz) return;
-        appState.quiz.timer = setInterval(() => {
+        quizTimerRef = setInterval(() => {
             if (!appState.quiz) return;
             appState.quiz.secondsLeft -= 1;
             if (appState.quiz.config.quickSecondsPerQuestion) {
@@ -2073,10 +2239,11 @@
             }
             updateQuizTopBar();
             if (appState.quiz.secondsLeft <= 0) {
-                clearInterval(appState.quiz.timer);
+                stopQuizTimer();
                 submitQuiz();
             }
         }, 1000);
+        appState.quiz.timer = quizTimerRef;
     }
 
     function renderQuizShell() {
@@ -2320,7 +2487,7 @@
 
     function submitQuiz() {
         if (!appState.quiz) return;
-        clearInterval(appState.quiz.timer);
+        stopQuizTimer();
         stopSpeech();
 
         const result = appState.quiz.questions.map(q => {
@@ -2703,6 +2870,12 @@
             applyTheme();
             saveState();
         });
+
+        refs.toolbarMinimizeToggle.addEventListener("click", () => {
+            appState.ui.toolbarMinimized = !appState.ui.toolbarMinimized;
+            applyToolbarMinimizeState();
+            saveState();
+        });
     }
 
     let deferredInstallPrompt = null;
@@ -2754,6 +2927,7 @@
     questions.forEach(q => getProgress(q.id));
     applyTheme();
     wireGlobalActions();
+    applyToolbarMinimizeState();
     wireInstallPrompt();
     registerServiceWorker();
     renderStudyView();
