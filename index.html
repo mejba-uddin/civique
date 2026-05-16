@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#2457f5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="CSP Revision">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.svg">
+    <title>Examen Civique CSP – Révision complète & Quiz officiel</title>
+    <style>
+        :root {
+            --bg: #f6f8fd;
+            --surface: #ffffff;
+            --surface-soft: #eff3ff;
+            --text: #172033;
+            --text-soft: #56627a;
+            --primary: #2457f5;
+            --primary-soft: #dbe4ff;
+            --accent: #14b8a6;
+            --danger: #ef4444;
+            --success: #16a34a;
+            --border: #dfe5f2;
+            --shadow: 0 8px 28px rgba(34, 55, 99, 0.08);
+            --radius-lg: 22px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1522;
+                --surface: #171f31;
+                --surface-soft: #1f2a42;
+                --text: #ecf1ff;
+                --text-soft: #b6c2df;
+                --primary: #7ea0ff;
+                --primary-soft: #273861;
+                --accent: #2dd4bf;
+                --danger: #f87171;
+                --success: #34d399;
+                --border: #2b3a5d;
+                --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+            }
+        }
+
+        body[data-theme="light"] {
+            --bg: #f6f8fd;
+            --surface: #ffffff;
+            --surface-soft: #eff3ff;
+            --text: #172033;
+            --text-soft: #56627a;
+            --primary: #2457f5;
+            --primary-soft: #dbe4ff;
+            --accent: #14b8a6;
+            --danger: #ef4444;
+            --success: #16a34a;
+            --border: #dfe5f2;
+            --shadow: 0 8px 28px rgba(34, 55, 99, 0.08);
+        }
+
+        body[data-theme="dark"] {
+            --bg: #0f1522;
+            --surface: #171f31;
+            --surface-soft: #1f2a42;
+            --text: #ecf1ff;
+            --text-soft: #b6c2df;
+            --primary: #7ea0ff;
+            --primary-soft: #273861;
+            --accent: #2dd4bf;
+            --danger: #f87171;
+            --success: #34d399;
+            --border: #2b3a5d;
+            --shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            min-height: 100%;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top right, rgba(36, 87, 245, 0.14), transparent 35%), var(--bg);
+            color: var(--text);
+            line-height: 1.45;
+            padding: 12px;
+        }
+
+        .app {
+            max-width: 860px;
+            margin: 0 auto;
+            display: grid;
+            gap: 12px;
+        }
+
+        .hero {
+            background: linear-gradient(140deg, var(--primary), #1f3da2);
+            color: #fff;
+            border-radius: 24px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .hero h1 {
+            font-size: 1.15rem;
+            line-height: 1.25;
+            margin-bottom: 6px;
+        }
+
+        .hero p {
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .chip-row {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip {
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.13);
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            min-height: 42px;
+        }
+
+        .toolbar {
+            position: sticky;
+            top: 6px;
+            z-index: 15;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .toolbar-main,
+        .toolbar-secondary {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            min-height: 46px;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+        }
+
+        .btn-soft {
+            background: var(--primary-soft);
+            border-color: transparent;
+        }
+
+        .btn.active {
+            background: var(--text);
+            color: var(--surface);
+            border-color: transparent;
+        }
+
+        .view {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            padding: 12px;
+            min-height: 280px;
+        }
+
+        .view-head {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .stat {
+            background: var(--surface-soft);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+            text-align: center;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1rem;
+        }
+
+        .filters {
+            display: grid;
+            gap: 8px;
+            grid-template-columns: 1fr;
+        }
+
+        input, select {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            border-radius: 12px;
+            min-height: 44px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+        }
+
+        .study-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .accordion {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--surface);
+        }
+
+        .accordion-top {
+            padding: 12px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .q-main {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .q-meta {
+            font-size: 0.83rem;
+            color: var(--text-soft);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .icon-btn {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .mini-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .accordion-body {
+            border-top: 1px solid var(--border);
+            padding: 12px;
+            display: none;
+            animation: fadeIn 0.25s ease;
+            background: var(--surface-soft);
+        }
+
+        .accordion.open .accordion-body {
+            display: block;
+        }
+
+        .answer {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .bn {
+            font-family: "Noto Sans Bengali", sans-serif;
+            color: var(--text-soft);
+            font-size: 0.9rem;
+        }
+
+        .study-shell {
+            display: grid;
+            gap: 6px;
+        }
+
+        .study-compact-toolbar {
+            position: sticky;
+            top: 6px;
+            z-index: 12;
+            background: color-mix(in srgb, var(--surface) 94%, transparent);
+            border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+            border-radius: 10px;
+            padding: 4px;
+            display: grid;
+            gap: 4px;
+        }
+
+        .study-compact-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .study-chip-row {
+            display: flex;
+            gap: 4px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            padding-bottom: 1px;
+        }
+
+        .study-chip {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 4px 9px;
+            min-height: 30px;
+            font-size: 0.76rem;
+            font-weight: 400;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .study-chip.active {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .study-advanced {
+            display: none;
+            border-top: 1px dashed color-mix(in srgb, var(--border) 70%, transparent);
+            padding-top: 4px;
+            gap: 4px;
+        }
+
+        .study-advanced.open {
+            display: grid;
+        }
+
+        .study-count {
+            font-size: 0.76rem;
+            color: var(--text-soft);
+            padding-left: 2px;
+        }
+
+        .study-list.compact {
+            gap: 4px;
+        }
+
+        .study-compact-card {
+            border: 1px solid color-mix(in srgb, var(--border) 75%, transparent);
+            border-radius: 8px;
+            padding: 6px 7px;
+            background: var(--surface);
+            display: grid;
+            gap: 2px;
+        }
+
+        .study-q {
+            font-size: 0.88rem;
+            line-height: 1.24;
+            font-weight: 400;
+        }
+
+        .study-a {
+            font-size: 0.84rem;
+            line-height: 1.22;
+            font-weight: 400;
+        }
+
+        .study-cue,
+        .study-warn {
+            font-size: 0.76rem;
+            color: var(--text-soft);
+            line-height: 1.18;
+        }
+
+        .study-bn-line {
+            font-size: 0.74rem;
+            color: color-mix(in srgb, var(--text-soft) 85%, transparent);
+            line-height: 1.16;
+        }
+
+        .quiz-top {
+            position: sticky;
+            top: 84px;
+            z-index: 14;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 10px;
+            margin-bottom: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--surface-soft);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            transition: width 0.28s ease;
+        }
+
+        .quiz-meta {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 14px;
+            background: var(--surface);
+        }
+
+        .question-line {
+            font-size: 1.07rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .options {
+            margin-top: 10px;
+            display: grid;
+            gap: 8px;
+        }
+
+        .option {
+            border: 1px solid var(--border);
+            background: var(--surface-soft);
+            color: var(--text);
+            border-radius: 14px;
+            min-height: 52px;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .option.selected {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            box-shadow: 0 0 0 2px rgba(36, 87, 245, 0.16) inset;
+        }
+
+        .option.correct {
+            border-color: var(--success);
+            background: rgba(22, 163, 74, 0.15);
+        }
+
+        .option.wrong {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .quiz-actions {
+            margin-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .review-pill {
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 12px;
+            min-height: 42px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .review-pill.done {
+            background: rgba(22, 163, 74, 0.14);
+            border-color: var(--success);
+        }
+
+        .analytics {
+            display: grid;
+            gap: 10px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            padding: 6px 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            background: var(--surface-soft);
+            color: var(--text-soft);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        .confetti {
+            position: fixed;
+            top: -12px;
+            width: 8px;
+            height: 14px;
+            opacity: 0.9;
+            animation: confettiDrop 2.4s linear forwards;
+            z-index: 999;
+        }
+
+        .install-fab {
+            position: fixed;
+            right: 12px;
+            bottom: 12px;
+            z-index: 1000;
+            border: 1px solid var(--primary);
+            background: var(--primary);
+            color: #fff;
+            border-radius: 999px;
+            padding: 10px 14px;
+            min-height: 40px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(36, 87, 245, 0.28);
+            cursor: pointer;
+            display: none;
+        }
+
+        .install-fab.show {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes confettiDrop {
+            to {
+                transform: translateY(105vh) rotate(540deg);
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (min-width: 720px) {
+            body {
+                padding: 20px;
+            }
+
+            .hero {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.55rem;
+            }
+
+            .filters {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+
+            .view {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<button id="installAppBtn" class="install-fab" type="button" aria-label="Installer l'application">Installer</button>
+<div class="app" id="app">
+    <header class="hero">
+        <h1>Preparation officielle CSP <span style="font-family:'Noto Sans Bengali',sans-serif;">(সিভিক পরীক্ষা)</span></h1>
+        <p>Application de revision serieuse: mode etude, quiz intelligent, suivi de progression et prononciation.</p>
+        <div class="chip-row">
+            <span class="chip">Sans distraction</span>
+            <span class="chip">Mobile first</span>
+            <span class="chip">FR + BN + audio</span>
+        </div>
+    </header>
+
+    <section class="toolbar" aria-label="Actions principales">
+        <div class="toolbar-main">
+            <button id="navStudy" class="btn active" type="button">Etude</button>
+            <button id="navRandomQuiz" class="btn" type="button">Quiz aleatoire</button>
+            <button id="navCategoryQuiz" class="btn" type="button">Quiz categorie</button>
+            <button id="navDailyQuiz" class="btn" type="button">Pratique du jour</button>
+            <button id="navRetryWrong" class="btn" type="button">Reessayer erreurs</button>
+        </div>
+        <div class="toolbar-secondary">
+            <button id="soundToggle" class="btn btn-soft" type="button" aria-pressed="true">Son ON</button>
+            <button id="speedToggle" class="btn btn-soft" type="button" aria-pressed="false">Prononciation lente OFF</button>
+            <button id="themeToggle" class="btn btn-soft" type="button">Theme auto</button>
+        </div>
+    </section>
+
+    <main id="mainContent" class="view" aria-live="polite"></main>
+</div>
+<script>
+    // ============================================================
+    // DONNÉES COMPLÈTES : toutes les questions officielles
+    // Chaque objet : cat, qFr, qBn, qPronounce, aFr, aBn, aPronounce
+    // ============================================================
+    const fullQuestions = [
+        // PRINCIPES ET VALEURS (37 questions officielles)
+        { cat:"🇫🇷 Principes & valeurs", qFr:"À quoi correspond la date du 14 juillet ?", qBn:"১৪ জুলাই তারিখটি কীসের সাথে সম্পর্কিত?", qPronounce:"আ কোয়া কোরেসপোঁ লা দাত দু কাতোর্জুইয়ে ?", aFr:"À la Fête nationale (prise de la Bastille en 1789).", aBn:"জাতীয় দিবস (১৭৮৯ সালে বাস্তিল দুর্গ দখল)।", aPronounce:"আ লা ফেত নাসিওনাল (প্রিজ দ্য লা বাস্তিল আঁ মিল সেপ সাঁক সঁকান্ত নোঁফ) ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel est l’un des symboles de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের একটি প্রতীক কী?", qPronounce:"কেল এ লাঁ দে সাঁবোল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Le drapeau tricolore.", aBn:"ত্রিবর্ণ পতাকা।", aPronounce:"ল্য দ্রাপো ত্রিকোলোর।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Le principe d’égalité signifie que :", qBn:"সাম্যের নীতিটির অর্থ কী?", qPronounce:"ল্য প্রাঁসিপ দেগালিতে সিনিফিয়ে কে ?", aFr:"Tous les citoyens sont égaux devant la loi.", aBn:"আইনের চোখে সবাই সমান।", aPronounce:"তু লে সিতোয়েঁ সোঁ এগো দ্যেভাঁ লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"'Liberté, égalité, fraternité', c’est :", qBn:"'স্বাধীনতা, সাম্য, ভ্রাতৃত্ব' এটি কী?", qPronounce:"লিবেরতে, এগালিতে, ফ্রাতের্নিতে, সে ?", aFr:"La devise de la République française.", aBn:"ফরাসি প্রজাতন্ত্রের মূলমন্ত্র।", aPronounce:"লা দ্যাভিজ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"A-t-on le droit d'insulter publiquement quelqu’un parce qu’il est différent (handicap, apparence physique, sexe…) ?", qBn:"কাউকে ভিন্ন (প্রতিবন্ধী, চেহারা, লিঙ্গ) বলে প্রকাশ্যে অপমান করার অধিকার কি আছে?", qPronounce:"আ-তোঁ ল্য দ্রোয়া দাঁস্যুলতে পুব্লিকমঁ কেলক্যাঁ পার্সকিেল এ দিফেরঁ ?", aFr:"Non, c’est interdit par la loi.", aBn:"না, এটি আইনত নিষিদ্ধ।", aPronounce:"নোঁ, সে তাঁতের্দি পার লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Certains métiers peuvent-ils être réservés aux hommes ?", qBn:"কিছু পেশা কি শুধু পুরুষদের জন্য সংরক্ষিত হতে পারে?", qPronounce:"সার্তাঁ মেতিয়ে প্যুভঁ-তিল জেত্র রেজেরভে ওজোম ?", aFr:"Non, l’égalité hommes-femmes est un principe fondamental.", aBn:"না, নারী-পুরুষ সমান অধিকারভুক্ত।", aPronounce:"নোঁ, লেগালিতে ওম-ফাম এ তাঁ প্রাঁসিপ ফোঁদামঁতাল।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"De quand date la Constitution de la Ve République ?", qBn:"পঞ্চম প্রজাতন্ত্রের সংবিধান কবে থেকে কার্যকর?", qPronounce:"দ্য কঁ দাত লা কোঁস্তিত্যুসিওঁ দ্য লা সাঁকিয়েম রেপ্যুব্লিক ?", aFr:"1958.", aBn:"১৯৫৮ সাল।", aPronounce:"মিল নেফ সাঁক সঁকান্ত।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Le régime de la France est :", qBn:"ফ্রান্সের শাসনব্যবস্থা কী?", qPronounce:"ল্য রেজিম দ্য লা ফ্রঁস এ ?", aFr:"Une République démocratique.", aBn:"একটি গণতান্ত্রিক প্রজাতন্ত্র।", aPronounce:"উন রেপ্যুব্লিক দেমোক্রাতিক।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Lequel de ces symboles représente officiellement la République française ?", qBn:"এই প্রতীকগুলোর মধ্যে কোনটি ফরাসি প্রজাতন্ত্রের সরকারি প্রতীক?", qPronounce:"লেকেল দ্য সে সাঁবোল রেপ্রেজঁত অফিসিয়ালমঁ লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Marianne.", aBn:"ম্যারিয়ান প্রজাতন্ত্রের প্রতীক।", aPronounce:"ম্যারিয়ান।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Où peut-on voir la devise de la République ?", qBn:"প্রজাতন্ত্রের মূলমন্ত্র কোথায় দেখা যায়?", qPronounce:"উ প্যু-তোঁ ভোয়ার লা দ্যাভিজ দ্য লা রেপ্যুব্লিক ?", aFr:"Sur les bâtiments publics (mairies, écoles).", aBn:"সরকারি ভবনে (মেয়র অফিস, স্কুল)।", aPronounce:"স্যুর লে বাতিমঁ প্যুব্লিক (মেরি, একোল)।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quels sont des symboles officiels de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের সরকারি প্রতীকগুলো কী কী?", qPronounce:"কেল সোঁ দে সাঁবোল অফিসিয়েল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Le drapeau tricolore, Marianne, l’hymne national et la devise.", aBn:"ত্রিবর্ণ পতাকা, ম্যারিয়ান, জাতীয় সংগীত ও মূলমন্ত্র।", aPronounce:"ল্য দ্রাপো ত্রিকোলোর, ম্যারিয়ান, লিম্ন নাসিওনাল এ লা দ্যাভিজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu’est-ce que l’égalité ?", qBn:"সাম্য কী?", qPronounce:"কেস্কে লেগালিতে ?", aFr:"Le fait que tous sont traités de la même manière par la loi.", aBn:"আইনের কাছে সমান আচরণ।", aPronounce:"ল্য ফে কে তু সোঁ ত্রেতে দ্য লা মেম মানিয়ের পার লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Que signifie la liberté ?", qBn:"স্বাধীনতা বলতে কী বোঝায়?", qPronounce:"কে সিনিফিয়ে লা লিবেরতে ?", aFr:"Pouvoir faire des choix dans le respect de la loi.", aBn:"আইন মেনে স্বাধীনভাবে সিদ্ধান্ত নেওয়া।", aPronounce:"পুভোয়ার ফেয়ার দে শোয়া দাঁ ল্য রেস্পেক দ্য লা লোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Que signifie le mot 'fraternité' dans la devise française ?", qBn:"ফরাসি মূলমন্ত্রে 'ভ্রাতৃত্ব' শব্দটির অর্থ কী?", qPronounce:"কে সিনিফিয়ে ল্য মো 'ফ্রাতের্নিতে' দাঁ লা দ্যাভিজ ফ্রঁসেজ ?", aFr:"Solidarité et entraide entre les citoyens.", aBn:"ভ্রাতৃত্ব, সহমর্মিতা ও সহযোগিতা।", aPronounce:"সলিদারিতে এ আঁত্রেদ আঁত্র লে সিতোয়েঁ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel animal est un symbole de la France ?", qBn:"ফ্রান্সের প্রতীক কোন প্রাণী?", qPronounce:"কেল আনিমাল এ তাঁ সাঁবোল দ্য লা ফ্রঁস ?", aFr:"Le coq gaulois.", aBn:"গালীয় মোরগ।", aPronounce:"ল্য কক গলোয়া।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel est l’un des rôles des associations ?", qBn:"অ্যাসোসিয়েশনগুলোর একটি ভূমিকা কী?", qPronounce:"কেল এ লাঁ দে রোল দে জ়াসোসিয়াসিওঁ ?", aFr:"Mener des actions solidaires ou culturelles.", aBn:"সামাজিক বা সাংস্কৃতিক কাজ করা।", aPronounce:"মেনে দে জ়াক্সিওঁ সোলিদের উ কুলত্যুরেল।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel est le nom de l'hymne national ?", qBn:"জাতীয় সংগীতের নাম কী?", qPronounce:"কেল এ ল্য নোঁ দ্য লিম্ন নাসিওনাল ?", aFr:"La Marseillaise.", aBn:"লা মার্সেইয়েজ।", aPronounce:"লা মার্সেইয়েজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel symbole de la République française est tricolore ?", qBn:"ফরাসি প্রজাতন্ত্রের কোন প্রতীকটি ত্রিবর্ণ?", qPronounce:"কেল সাঁবোল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ এ ত্রিকোলোর ?", aFr:"Le drapeau bleu, blanc, rouge.", aBn:"নীল, সাদা, লাল পতাকা।", aPronounce:"ল্য দ্রাপো ব্লো, ব্লঁ, রুজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la date de la fête nationale française ?", qBn:"ফরাসি জাতীয় দিবসের তারিখ কত?", qPronounce:"কেল এ লা দাত দ্য লা ফেত নাসিওনাল ফ্রঁসেজ ?", aFr:"Le 14 juillet.", aBn:"১৪ জুলাই।", aPronounce:"ল্য কাতোর্জুইয়ে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la devise de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের মূলমন্ত্র কী?", qPronounce:"কেল এ লা দ্যাভিজ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Liberté, Égalité, Fraternité.", aBn:"স্বাধীনতা, সাম্য, ভ্রাতৃত্ব।", aPronounce:"লিবেরতে, এগালিতে, ফ্রাতের্নিতে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la langue officielle de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের সরকারি ভাষা কী?", qPronounce:"কেল এ লা লাঁগ অফিসিয়েল দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"Le français.", aBn:"ফরাসি ভাষা।", aPronounce:"ল্য ফ্রঁসে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle est la place de la langue française dans la République ?", qBn:"প্রজাতন্ত্রে ফরাসি ভাষার স্থান কী?", qPronounce:"কেল এ লা প্লাস দ্য লা লাঁগ ফ্রঁসেজ দাঁ লা রেপ্যুব্লিক ?", aFr:"Elle est la langue officielle de l’État.", aBn:"এটি রাষ্ট্রের সরকারি ভাষা।", aPronounce:"এল এ লা লাঁগ অফিসিয়েল দ্য লেতা।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle liberté permet à chacun d’exprimer ses idées ?", qBn:"কোন স্বাধীনতা প্রত্যেককে তার মতামত প্রকাশের অনুমতি দেয়?", qPronounce:"কেল লিবেরতে পার্মে আ শাক্যাঁ দেক্সপ্রিমে সে জিদে ?", aFr:"La liberté d’expression.", aBn:"মতপ্রকাশের স্বাধীনতা।", aPronounce:"লা লিবেরতে দেক্সপ্রেসিওঁ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelle proposition est correcte ? La liberté d'expression :", qBn:"কোন প্রস্তাবটি সঠিক? মতপ্রকাশের স্বাধীনতা:", qPronounce:"কেল প্রোপোজিসিওঁ এ কোরেক্ত ? লা লিবেরতে দেক্সপ্রেসিওঁ :", aFr:"Est garantie par la loi mais a des limites (respect d’autrui).", aBn:"আইনে সুরক্ষিত, তবে সীমাবদ্ধতা আছে।", aPronounce:"এ গারঁতি পার লা লোয়া মে আ দে লিমিত (রেস্পেক দোত্রুই)।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quelles sont les couleurs du drapeau français ?", qBn:"ফরাসি পতাকার রংগুলো কী কী?", qPronounce:"কেল সোঁ লে কুল্যোর দ্যু দ্রাপো ফ্রঁসে ?", aFr:"Bleu, blanc, rouge.", aBn:"নীল, সাদা, লাল।", aPronounce:"ব্লো, ব্লঁ, রুজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu'est-ce que la Marseillaise ?", qBn:"লা মার্সেইয়েজ কী?", qPronounce:"কেস্কে লা মার্সেইয়েজ ?", aFr:"L’hymne national français.", aBn:"এটি ফ্রান্সের জাতীয় সংগীত।", aPronounce:"লিম্ন নাসিওনাল ফ্রঁসে।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu'est ce qui est traditionnellement organisé sur les Champs Élysées le 14 juillet pour célébrer la fête nationale ?", qBn:"১৪ জুলাই জাতীয় দিবস উপলক্ষে শঁজ-এলিজে কী আয়োজন করা হয়?", qPronounce:"কেস্কি এ ত্রাদিসিওনেলমঁ অর্গানিজে স্যুর লে শঁজ এলিজে ল্য কাতোর্জুইয়ে পুর সেলেব্রে লা ফেত নাসিওনাল ?", aFr:"Un défilé militaire.", aBn:"সামরিক কুচকাওয়াজ।", aPronounce:"আঁ দেফিলে মিলিতের।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qui est Marianne ?", qBn:"ম্যারিয়ান কে?", qPronounce:"কি এ ম্যারিয়ান ?", aFr:"Le symbole féminin de la République française.", aBn:"প্রজাতন্ত্রের নারীমূর্তি প্রতীক।", aPronounce:"ল্য সাঁবোল ফেমিনাঁ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Une personne peut-elle changer librement de religion ?", qBn:"একজন ব্যক্তি কি অবাধে ধর্ম পরিবর্তন করতে পারেন?", qPronounce:"উন পের্সোন প্যু-তেল শঁজে লিব্রেমঁ দ্য রেলিজিওঁ ?", aFr:"Oui.", aBn:"হ্যাঁ, পারেন।", aPronounce:"উই।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"La France est une République indivisible, ..., démocratique et sociale. Complétez cette phrase extraite de l'article 1er de la Constitution :", qBn:"'ফ্রান্স একটি অবিভাজ্য, ..., গণতান্ত্রিক ও সামাজিক প্রজাতন্ত্র'। সংবিধানের ১ নং অনুচ্ছেদের বাক্যটি সম্পূর্ণ করুন:", qPronounce:"লা ফ্রঁস এ উন রেপ্যুব্লিক এঁদিভিজিবল, ..., দেমোক্রাতিক এ সোসিয়াল। কোঁপ্লেতে সেত ফ্রাজ এক্সত্রেত দ্য লার্তিকল প্রিমিয়ে দ্য লা কোঁস্তিত্যুসিওঁ :", aFr:"Laïque.", aBn:"ধর্মনিরপেক্ষ।", aPronounce:"লাইক।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"En quelle année la loi de séparation des Églises et de l'État a-t-elle été votée ?", qBn:"গির্জা ও রাষ্ট্র বিচ্ছেদের আইন কত সালে পাস হয়?", qPronounce:"আ কেল আনে লা লোয়া দ্য সেপারাসিওঁ দেজ এগ্লিজ এ দ্য লেতা আ-তেল এতে ভোতে ?", aFr:"1905.", aBn:"১৯০৫ সালে।", aPronounce:"মিল নেফ সাঁক।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Que permet le principe de laïcité ?", qBn:"ধর্মনিরপেক্ষতার নীতি কী করার অনুমতি দেয়?", qPronounce:"কে পার্মে ল্য প্রাঁসিপ দ্য লাসিতে ?", aFr:"La liberté de conscience et la neutralité de l’État.", aBn:"বিবেকের স্বাধীনতা ও রাষ্ট্রের নিরপেক্ষতা।", aPronounce:"লা লিবেরতে দ্য কোঁসিয়াস এ লা নোত্রালিতে দ্য লেতা।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Quel droit est garanti par la laïcité ?", qBn:"ধর্মনিরপেক্ষতা কোন অধিকার নিশ্চিত করে?", qPronounce:"কেল দ্রোয়া এ গারঁতি পার লা লাসিতে ?", aFr:"Le droit de croire ou de ne pas croire.", aBn:"বিশ্বাস করা বা না করার অধিকার।", aPronounce:"ল্য দ্রোয়া দ্য ক্রোয়ার উ দ্য নে পা ক্রোয়ার।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Pourquoi le principe de laïcité doit-il être respecté à l'école ?", qBn:"স্কুলে ধর্মনিরপেক্ষতার নীতি কেন মেনে চলা উচিত?", qPronounce:"পুরকোয়া ল্য প্রাঁসিপ দ্য লাসিতে দোয়া-তিল জেত্র রেস্পেকতে আ লেকোল ?", aFr:"Pour garantir la neutralité et l’égalité entre les élèves.", aBn:"নিরপেক্ষতা ও সমতা বজায় রাখতে।", aPronounce:"পুর গারঁতি লা নোত্রালিতে এ লেগালিতে আঁত্র লে জেলেভ।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Qu'est-ce que la laïcité ?", qBn:"ধর্মনিরপেক্ষতা কী?", qPronounce:"কেস্কে লা লাসিতে ?", aFr:"La séparation des religions et de l’État.", aBn:"ধর্ম ও রাষ্ট্রের পৃথকীকরণ।", aPronounce:"লা সেপারাসিওঁ দে রেলিজিওঁ এ দ্য লেতা।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Un enfant peut-il refuser d’aller à l’école pour une raison religieuse ?", qBn:"একজন শিশু কি ধর্মীয় কারণে স্কুলে যেতে অস্বীকার করতে পারে?", qPronounce:"আ নঁফা প্যু-তিল রেফ্যুজে দালে আ লেকোল পুর উন রেজোঁ রেলিজিয়োজ ?", aFr:"Non, l’école est obligatoire.", aBn:"না, স্কুল বাধ্যতামূলক।", aPronounce:"নোঁ, লেকোল এত ওব্লিগাতোয়ার।" },
+        { cat:"🇫🇷 Principes & valeurs", qFr:"Une personne a-t-elle le droit de ne pas croire en une religion ?", qBn:"একজন ব্যক্তির কি কোনো ধর্মে না বিশ্বাস করার অধিকার আছে?", qPronounce:"উন পের্সোন আ-তেল ল্য দ্রোয়া দ্য নে পা ক্রোয়ার আন উন রেলিজিওঁ ?", aFr:"Oui, c’est un droit garanti par la laïcité.", aBn:"হ্যাঁ, এটি আইনে সুরক্ষিত অধিকার।", aPronounce:"উই, সে তাঁ দ্রোয়া গারঁতি পার লা লাসিতে।" },
+
+        // SYSTÈME INSTITUTIONNEL ET POLITIQUE (48 questions officielles)
+        { cat:"🏛️ Institutions", qFr:"Qui nomme le Premier ministre ?", qBn:"প্রধানমন্ত্রী কে নিয়োগ দেন?", qPronounce:"কি নোম ল্য প্রেমিয়ে মিনিস্ত্র ?", aFr:"Le Président de la République.", aBn:"প্রধানমন্ত্রীকে রাষ্ট্রপতি নিয়োগ করেন।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক।" },
+        { cat:"🏛️ Institutions", qFr:"Le Parlement est composé :", qBn:"সংসদ গঠিত:", qPronounce:"ল্য পার্ল্যমঁ এ কোঁপোজে :", aFr:"De l’Assemblée nationale et du Sénat.", aBn:"পালামঁ গঠিত জাতীয় পরিষদ ও সিনেট নিয়ে।", aPronounce:"দ্য লাসঁব্লে নাসিওনাল এ দ্যু সেনা।" },
+        { cat:"🏛️ Institutions", qFr:"Qu'est-ce que le pouvoir exécutif ? Le pouvoir :", qBn:"নির্বাহী ক্ষমতা কী?", qPronounce:"কেস্কে ল্য পুভোয়ার এগজেক্যুতিফ ? ল্য পুভোয়ার :", aFr:"Qui applique les lois et dirige le gouvernement.", aBn:"আইন বাস্তবায়ন ও সরকার পরিচালনার ক্ষমতা।", aPronounce:"কি আপ্লিক লে লোয়া এ দিরিজ ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Les dirigeants sont élus par les citoyens dans :", qBn:"নেতারা নাগরিকদের দ্বারা নির্বাচিত হন:", qPronounce:"লে দিরিজাঁ সোঁ এলু পার লে সিতোয়েঁ দাঁ :", aFr:"Une démocratie.", aBn:"গণতন্ত্রে।", aPronounce:"উন দেমোক্রাসি।" },
+        { cat:"🏛️ Institutions", qFr:"A-t-on le droit de ne pas respecter une loi ?", qBn:"কোনো আইন না মানার অধিকার কি আছে?", qPronounce:"আ-তোঁ ল্য দ্রোয়া দ্য নে পা রেস্পেকতে উন লোয়া ?", aFr:"Non.", aBn:"না।", aPronounce:"নোঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui doit respecter la loi ?", qBn:"কাকে আইন মেনে চলতে হবে?", qPronounce:"কি দোয়া রেস্পেকতে লা লোয়া ?", aFr:"Tout le monde (citoyens et dirigeants).", aBn:"সবাইকে আইন মানতে হবে।", aPronounce:"তু ল্য মোঁদ (সিতোয়েঁ এ দিরিজাঁ)।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le rôle de l'autorité judiciaire ?", qBn:"বিচার বিভাগের ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্য লোতোরিতে জুদিসিয়ের ?", aFr:"Faire respecter la loi et juger les infractions.", aBn:"আইন প্রয়োগ ও অপরাধের বিচার করা।", aPronounce:"ফেয়ার রেস্পেকতে লা লোয়া এ জ্যুজে লে জাঁফ্রাক্সিওঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel pouvoir détient un juge ? Le pouvoir :", qBn:"একজন বিচারকের কোন ক্ষমতা থাকে?", qPronounce:"কেল পুভোয়ার দেতিয়াঁ আন জ্যুজ ? ল্য পুভোয়ার :", aFr:"Judiciaire.", aBn:"বিচারিক ক্ষমতা।", aPronounce:"জুদিসিয়ের।" },
+        { cat:"🏛️ Institutions", qFr:"L'autorité judiciaire est exercée par :", qBn:"বিচার বিভাগ কাদের দ্বারা পরিচালিত হয়?", qPronounce:"লোতোরিতে জুদিসিয়ের এত এগজের্সে পার :", aFr:"Les juges et les tribunaux.", aBn:"বিচারক ও আদালত।", aPronounce:"লে জ্যুজ এ লে ত্রিব্যুনো।" },
+        { cat:"🏛️ Institutions", qFr:"Que se passe-t-il si un ministre ne respecte pas la loi ?", qBn:"কোনো মন্ত্রী যদি আইন না মানেন তাহলে কী হয়?", qPronounce:"ক্য স্য পাস-তিল সি আন মিনিস্ত্র ন্য রেস্পেক্তে পা লা লোয়া ?", aFr:"Il peut être jugé et sanctionné.", aBn:"তাকে বিচার ও শাস্তি দেওয়া হতে পারে।", aPronounce:"ইল প্যু জেত্র জ্যুজে এ সাঁক্সিওনে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est élu lors des élections législatives ?", qBn:"আইনসভা নির্বাচনে কে নির্বাচিত হন?", qPronounce:"কি এত এলু লোর দেজ এলেক্সিওঁ লেজিস্লাতিভ ?", aFr:"Les députés.", aBn:"সংসদ সদস্য (দেপুতি) নির্বাচিত হন।", aPronounce:"লে দেপ্যুতে।" },
+        { cat:"🏛️ Institutions", qFr:"Combien de députés composent l’Assemblée nationale ?", qBn:"জাতীয় পরিষদে কতজন সংসদ সদস্য থাকেন?", qPronounce:"কোঁবিয়াঁ দ্য দেপ্যুতে কোঁপোজ লাসঁব্লে নাসিওনাল ?", aFr:"577 députés.", aBn:"৫৭৭ জন দেপুতি।", aPronounce:"সাঁক সঁ সোয়াসঁত দিজ সেপ্ত দেপ্যুতে।" },
+        { cat:"🏛️ Institutions", qFr:"Quand sont élus les sénateurs ?", qBn:"সিনেটররা কখন নির্বাচিত হন?", qPronounce:"কাঁ সোঁ এলু লে সেনাতোর ?", aFr:"Tous les 6 ans (renouvellement partiel).", aBn:"প্রতি ৬ বছরে (আংশিক নবায়ন)।", aPronounce:"তু লে সিজ আঁ (র্যুভেল্যমঁ পার্তিয়েল)।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est élu lors des élections municipales ?", qBn:"পৌর নির্বাচনে কে নির্বাচিত হন?", qPronounce:"কি এত এলু লোর দেজ এলেক্সিওঁ মিউনিসিপাল ?", aFr:"Les conseillers municipaux.", aBn:"পৌর কাউন্সিল সদস্যরা।", aPronounce:"লে কোঁসেয়ে মিউনিসিপো।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est élu lors des élections présidentielles ?", qBn:"রাষ্ট্রপতি নির্বাচনে কে নির্বাচিত হন?", qPronounce:"কি এত এলু লোর দেজ এলেক্সিওঁ প্রেজিদাঁসিয়েল ?", aFr:"Le Président de la République.", aBn:"রাষ্ট্রপতি নির্বাচিত হন।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক।" },
+        { cat:"🏛️ Institutions", qFr:"À partir de quel âge a-t-on le droit de voter ?", qBn:"কত বছর বয়স থেকে ভোট দেওয়ার অধিকার পাওয়া যায়?", qPronounce:"আ পার্তির দ্য কেল আজ আ-তোঁ ল্য দ্রোয়া দ্য ভোতে ?", aFr:"18 ans.", aBn:"১৮ বছর থেকে।", aPronounce:"দিজ উইত আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Pour combien de temps est élu le président de la République française ?", qBn:"ফরাসি প্রজাতন্ত্রের রাষ্ট্রপতি কত বছরের জন্য নির্বাচিত হন?", qPronounce:"পুর কোঁবিয়াঁ দ্য তঁ এত এলু ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ ?", aFr:"5 ans.", aBn:"৫ বছরের জন্য।", aPronounce:"সাঁক আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Pour combien de temps sont élus les députés ?", qBn:"সংসদ সদস্যরা (দেপুতি) কত বছরের জন্য নির্বাচিত হন?", qPronounce:"পুর কোঁবিয়াঁ দ্য তঁ সোঁ এলু লে দেপ্যুতে ?", aFr:"5 ans.", aBn:"৫ বছরের জন্য।", aPronounce:"সাঁক আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Pour combien de temps sont élus les sénateurs ?", qBn:"সিনেটররা কত বছরের জন্য নির্বাচিত হন?", qPronounce:"পুর কোঁবিয়াঁ দ্য তঁ সোঁ এলু লে সেনাতোর ?", aFr:"6 ans.", aBn:"৬ বছরের জন্য।", aPronounce:"সিজ আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui possède le pouvoir exécutif ?", qBn:"নির্বাহী ক্ষমতা কার কাছে থাকে?", qPronounce:"কি পোসেদ ল্য পুভোয়ার এগজেক্যুতিফ ?", aFr:"Le Président de la République et le Gouvernement.", aBn:"রাষ্ট্রপতি ও সরকার।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক এ ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quelle condition est nécessaire pour voter aux élections ?", qBn:"নির্বাচনে ভোট দেওয়ার জন্য কী কী শর্ত প্রয়োজন?", qPronounce:"কেল কোঁদিসিওঁ এ নেসেসের পুর ভোতে ও এলেক্সিওঁ ?", aFr:"Être majeur (18 ans) et inscrit sur les listes électorales.", aBn:"প্রাপ্তবয়স্ক ও ভোটার তালিকায় নিবন্ধিত হতে হবে।", aPronounce:"এত্র মাজ্যোর (দিজ উইত আঁ) এ এঁস্ক্রি স্যুর লে লিস্ত এলেক্তোরাল।" },
+        { cat:"🏛️ Institutions", qFr:"Qui peut voter aux élections en France ?", qBn:"ফ্রান্সে নির্বাচনে কারা ভোট দিতে পারেন?", qPronounce:"কি প্যু ভোতে ও এলেক্সিওঁ আ ফ্রঁস ?", aFr:"Les citoyens français majeurs.", aBn:"প্রাপ্তবয়স্ক ফরাসি নাগরিকরা।", aPronounce:"লে সিতোয়েঁ ফ্রঁসে মাজ্যোর।" },
+        { cat:"🏛️ Institutions", qFr:"Que signifie « suffrage universel » ?", qBn:"'সার্বজনীন ভোটাধিকার' বলতে কী বোঝায়?", qPronounce:"কে সিনিফিয়ে 'স্যুফ্রাজ ইউনির্ভার্সেল' ?", aFr:"Le droit de vote pour tous les citoyens majeurs.", aBn:"সকল প্রাপ্তবয়স্ক নাগরিকের ভোটাধিকার।", aPronounce:"ল্য দ্রোয়া দ্য ভোতে পুর তু লে সিতোয়েঁ মাজ্যোর।" },
+        { cat:"🏛️ Institutions", qFr:"Concernant les partis politiques, quelle proposition est correcte ?", qBn:"রাজনৈতিক দল সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লে পার্তি পোলিতিক, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Ils participent à la vie démocratique.", aBn:"তারা গণতান্ত্রিক জীবনে অংশগ্রহণ করে।", aPronounce:"ইল পার্তিসিপ আ লা ভি দেমোক্রাতিক।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le rôle des députés ?", qBn:"সংসদ সদস্যদের (দেপুতি) ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দে দেপ্যুতে ?", aFr:"Voter les lois et contrôler le gouvernement.", aBn:"আইন প্রণয়ন ও সরকারকে নিয়ন্ত্রণ করা।", aPronounce:"ভোতে লে লোয়া এ কোঁত্রোলে ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"La séparation des pouvoirs est un principe fondamental. Quels sont les trois pouvoirs concernés ?", qBn:"ক্ষমতা পৃথকীকরণ একটি মৌলিক নীতি। জড়িত তিনটি ক্ষমতা কী কী?", qPronounce:"লা সেপারাসিওঁ দে পুভোয়ার এত আঁ প্রাঁসিপ ফোঁদামঁতাল। কেল সোঁ লে ত্রোয়া পুভোয়ার কোঁসের্নে ?", aFr:"Exécutif, législatif et judiciaire.", aBn:"নির্বাহী, আইনসভা ও বিচার বিভাগ।", aPronounce:"এগজেক্যুতিফ, লেজিস্লাতিফ এ জুদিসিয়ের।" },
+        { cat:"🏛️ Institutions", qFr:"Qui possède le pouvoir législatif ?", qBn:"আইন প্রণয়ন ক্ষমতা কার কাছে থাকে?", qPronounce:"কি পোসেদ ল্য পুভোয়ার লেজিস্লাতিফ ?", aFr:"Le Parlement.", aBn:"পালামঁ।", aPronounce:"ল্য পার্ল্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui sanctionne l'auteur d'un vol ?", qBn:"চোরকে কে শাস্তি দেন?", qPronounce:"কি সাঁক্সিওন লোতোর দাঁ ভোল ?", aFr:"Le juge.", aBn:"বিচারক শাস্তি দেন।", aPronounce:"ল্য জ্যুজ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui élit les députés ?", qBn:"সংসদ সদস্যদের (দেপুতি) কে নির্বাচিত করেন?", qPronounce:"কি এলি লে দেপ্যুতে ?", aFr:"Les citoyens français.", aBn:"ফরাসি নাগরিকরা।", aPronounce:"লে সিতোয়েঁ ফ্রঁসে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui vote les lois ?", qBn:"আইন কে পাস করেন?", qPronounce:"কি ভোত লে লোয়া ?", aFr:"Le Parlement.", aBn:"পালামঁ আইন পাস করে।", aPronounce:"ল্য পার্ল্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui réside au palais de l'Élysée ?", qBn:"এলিজে প্রাসাদে কে থাকেন?", qPronounce:"কি রেজিদ ও পালে দ্য লেলিজে ?", aFr:"Le Président de la République française.", aBn:"ফ্রান্সের রাষ্ট্রপতি।", aPronounce:"ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক ফ্রঁসেজ।" },
+        { cat:"🏛️ Institutions", qFr:"Combien y a-t-il de départements en France ?", qBn:"ফ্রান্সে কয়টি ডিপার্টমেন্ট আছে?", qPronounce:"কোঁবিয়াঁ ইয়া-তিল দ্য দেপার্ত্যমঁ আ ফ্রঁস ?", aFr:"101 départements.", aBn:"১০১টি বিভাগ।", aPronounce:"সাঁ উন দেপার্ত্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Qui représente l'État dans un département ?", qBn:"একটি ডিপার্টমেন্টে রাষ্ট্রের প্রতিনিধি কে?", qPronounce:"কি রেপ্রেজঁত লেতা দাঁ জাঁ দেপার্ত্যমঁ ?", aFr:"Le préfet.", aBn:"প্রেফ (রাষ্ট্রের প্রতিনিধি)।", aPronounce:"ল্য প্রেফে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui dirige la commune ?", qBn:"কম্যুন কে পরিচালনা করেন?", qPronounce:"কি দিরিজ লা কোম্যুন ?", aFr:"Le maire.", aBn:"মেয়র।", aPronounce:"ল্য মের।" },
+        { cat:"🏛️ Institutions", qFr:"Est-ce que le président de la République a tous les pouvoirs ?", qBn:"প্রজাতন্ত্রের রাষ্ট্রপতির কি সব ক্ষমতা আছে?", qPronounce:"এস-কে ল্য প্রেজিদাঁ দ্য লা রেপ্যুব্লিক আ তু লে পুভোয়ার ?", aFr:"Non, les pouvoirs sont séparés.", aBn:"না, ক্ষমতার বিভাজন আছে।", aPronounce:"নোঁ, লে পুভোয়ার সোঁ সেপারে।" },
+        { cat:"🏛️ Institutions", qFr:"Qui est le préfet ?", qBn:"প্রেফ কে?", qPronounce:"কি এ ল্য প্রেফে ?", aFr:"Le représentant de l’État dans un département.", aBn:"বিভাগে রাষ্ট্রের প্রতিনিধি।", aPronounce:"ল্য রেপ্রেজঁতাঁ দ্য লেতা দাঁ জাঁ দেপার্ত্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le rôle du Parlement ?", qBn:"পালামঁর ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্যু পার্ল্যমঁ ?", aFr:"Voter les lois et contrôler le gouvernement.", aBn:"আইন প্রণয়ন ও সরকার নিয়ন্ত্রণ।", aPronounce:"ভোতে লে লোয়া এ কোঁত্রোলে ল্য গুভার্ন্যমঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel est le régime politique de la France aujourd'hui ?", qBn:"আজ ফ্রান্সের রাজনৈতিক শাসনব্যবস্থা কী?", qPronounce:"কেল এ ল্য রেজিম পোলিতিক দ্য লা ফ্রঁস ওজুরদুই ?", aFr:"Une République démocratique.", aBn:"একটি গণতান্ত্রিক প্রজাতন্ত্র।", aPronounce:"উন রেপ্যুব্লিক দেমোক্রাতিক।" },
+        { cat:"🏛️ Institutions", qFr:"Combien d'États font partie de l'Union européenne au 1er janvier 2025 ?", qBn:"২০২৫ সালের ১ জানুয়ারি পর্যন্ত ইউরোপীয় ইউনিয়নে কয়টি রাষ্ট্র আছে?", qPronounce:"কোঁবিয়াঁ দেতা ফোঁ পার্তি দ্য ল্যুনিওঁ ইয়ুরোপিয়েন ও প্রেমিয়ে জাঁভিয়ে দ্য মিল নেফ সাঁক ভাঁ ?", aFr:"27 États.", aBn:"২৭টি দেশ।", aPronounce:"ভাঁ সেপ্ত এতা।" },
+        { cat:"🏛️ Institutions", qFr:"Quel État n'est pas membre de l'Union européenne ?", qBn:"কোন রাষ্ট্রটি ইউরোপীয় ইউনিয়নের সদস্য নয়?", qPronounce:"কেল এতা নে পা মঁব্র দ্য ল্যুনিওঁ ইয়ুরোপিয়েন ?", aFr:"Suisse.", aBn:"সুইজারল্যান্ড।", aPronounce:"স্যুইস।" },
+        { cat:"🏛️ Institutions", qFr:"Quelle condition est nécessaire pour voter aux élections européennes ?", qBn:"ইউরোপীয় নির্বাচনে ভোট দেওয়ার জন্য কী শর্ত প্রয়োজন?", qPronounce:"কেল কোঁদিসিওঁ এ নেসেসের পুর ভোতে ও এলেক্সিওঁ ইয়ুরোপিয়েন ?", aFr:"Être citoyen européen et inscrit sur les listes électorales.", aBn:"ইউরোপীয় নাগরিক ও ভোটার তালিকায় নিবন্ধিত হতে হবে।", aPronounce:"এত্র সিতোয়েঁ ইয়ুরোপিয়েন এ এঁস্ক্রি স্যুর লে লিস্ত এলেক্তোরাল।" },
+        { cat:"🏛️ Institutions", qFr:"À quelle fréquence les élections européennes sont-elles organisées ?", qBn:"ইউরোপীয় নির্বাচন কত বছর পর পর অনুষ্ঠিত হয়?", qPronounce:"আ কেল ফ্রেকঁস লেজ এলেক্সিওঁ ইয়ুরোপিয়েন সোঁ-তেল অর্গানিজে ?", aFr:"Tous les 5 ans.", aBn:"প্রতি ৫ বছরে।", aPronounce:"তু লে সাঁক আঁ।" },
+        { cat:"🏛️ Institutions", qFr:"Quel pays est un pays fondateur de l'Union européenne ?", qBn:"কোন দেশটি ইউরোপীয় ইউনিয়নের প্রতিষ্ঠাতা দেশ?", qPronounce:"কেল পেই এত আঁ পেই ফোঁদাতোর দ্য ল্যুনিওঁ ইয়ুরোপিয়েন ?", aFr:"France.", aBn:"ফ্রান্স।", aPronounce:"ফ্রঁস।" },
+        { cat:"🏛️ Institutions", qFr:"Quelle est la monnaie utilisée en France ?", qBn:"ফ্রান্সে কোন মুদ্রা ব্যবহার করা হয়?", qPronounce:"কেল এ লা মোনে ইয়ুতিলিজে আ ফ্রঁস ?", aFr:"L’euro (€).", aBn:"ইউরো।", aPronounce:"ল্যুরো।" },
+        { cat:"🏛️ Institutions", qFr:"Qui élit les députés européens ?", qBn:"ইউরোপীয় সংসদ সদস্যদের কে নির্বাচিত করেন?", qPronounce:"কি এলি লে দেপ্যুতে ইয়ুরোপিয়েন ?", aFr:"Les citoyens des États membres de l’Union européenne.", aBn:"ইউরোপীয় ইউনিয়নের নাগরিকরা।", aPronounce:"লে সিতোয়েঁ দে জেতা মঁব্র দ্য ল্যুনিওঁ ইয়ুরোপিয়েন।" },
+        { cat:"🏛️ Institutions", qFr:"Quand célèbre-t-on la journée de l'Europe ?", qBn:"ইউরোপ দিবস কবে পালন করা হয়?", qPronounce:"কাঁ সেলেব্র-তোঁ লা জুর্নে দ্য ল্যুরোপ ?", aFr:"Le 9 mai.", aBn:"৯ মে।", aPronounce:"ল্য ন্যুফ মে।" },
+
+        // DROITS ET DEVOIRS (30 questions officielles)
+        { cat:"⚖️ Droits & devoirs", qFr:"Comment s’appelle la Constitution actuelle de la France ?", qBn:"ফ্রান্সের বর্তমান সংবিধানের নাম কী?", qPronounce:"কোঁমঁ সাপেল লা কোঁস্তিত্যুসিওঁ আক্তুয়েল দ্য লা ফ্রঁস ?", aFr:"La Constitution de la Ve République (1958).", aBn:"পঞ্চম প্রজাতন্ত্রের সংবিধান (১৯৫৮)।", aPronounce:"লা কোঁস্তিত্যুসিওঁ দ্য লা সাঁকিয়েম রেপ্যুব্লিক (মিল নেফ সাঁক সঁকান্ত) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Comment s'appelle le texte qui énonce les droits et devoirs des personnes résidant en France ?", qBn:"ফ্রান্সে বসবাসকারী ব্যক্তিদের অধিকার ও কর্তব্য যে দলিলে উল্লেখ করা হয়েছে তার নাম কী?", qPronounce:"কোঁমঁ সাপেল ল্য তেক্স্ত কি এনোঁস লে দ্রোয়া এ দ্যুভোয়ার দে পের্সোন রেজিদাঁ আ ফ্রঁস ?", aFr:"La Constitution française.", aBn:"ফ্রান্সের সংবিধান।", aPronounce:"লা কোঁস্তিত্যুসিওঁ ফ্রঁসেজ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Concernant les droits individuels, quelle proposition est correcte ?", qBn:"ব্যক্তিগত অধিকার সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লে দ্রোয়া এঁদিভিদুয়েল, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Les droits individuels s’appliquent à toutes les personnes vivant en France.", aBn:"ব্যক্তিগত অধিকার ফ্রান্সে বসবাসকারী সকল মানুষের জন্য প্রযোজ্য।", aPronounce:"লে দ্রোয়া এঁদিভিদুয়েল সাপ্লিক আ তুত লে পের্সোন ভিভাঁ আ ফ্রঁস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"De quelle année date la Déclaration des droits de l’homme et du citoyen ?", qBn:"মানব ও নাগরিক অধিকারের ঘোষণাটি কত সালের?", qPronounce:"দ্য কেল আনে দাত লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ ?", aFr:"1789.", aBn:"১৭৮৯ সালের।", aPronounce:"মিল সেপ সাঁক সঁকান্ত নোঁফ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Lequel de ces droits est un droit fondamental ?", qBn:"এই অধিকারগুলোর মধ্যে কোনটি একটি মৌলিক অধিকার?", qPronounce:"লেকেল দ্য সে দ্রোয়া এত আঁ দ্রোয়া ফোঁদামঁতাল ?", aFr:"La liberté d’expression.", aBn:"মত প্রকাশের স্বাধীনতা একটি মৌলিক অধিকার।", aPronounce:"লা লিবেরতে দেক্সপ্রেসিওঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Parmi ces textes, lequel garantit les droits et libertés en France ?", qBn:"এই দলিলগুলোর মধ্যে কোনটি ফ্রান্সে অধিকার ও স্বাধীনতা নিশ্চিত করে?", qPronounce:"পার্মি সে তেক্স্ত, লেকেল গারঁতি লে দ্রোয়া এ লিবেরতে আ ফ্রঁস ?", aFr:"La Constitution et la Déclaration des droits de l’homme et du citoyen (1789).", aBn:"সংবিধান ও ১৭৮৯ সালের মানবাধিকার ঘোষণা।", aPronounce:"লা কোঁস্তিত্যুসিওঁ এ লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Qu’est-ce que la liberté d’expression ?", qBn:"মত প্রকাশের স্বাধীনতা কী?", qPronounce:"কেস্কে লা লিবেরতে দেক্সপ্রেসিওঁ ?", aFr:"Le droit d’exprimer ses opinions librement dans le respect de la loi.", aBn:"আইনের প্রতি সম্মান রেখে নিজের মত প্রকাশের অধিকার।", aPronounce:"ল্য দ্রোয়া দেক্সপ্রিমে সে জোপিনিওঁ লিব্রেমঁ দাঁ ল্য রেস্পেক দ্য লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel droit permet à une personne de se défendre devant la justice ?", qBn:"কোন অধিকার একজন ব্যক্তিকে আদালতে নিজের পক্ষে যুক্তি উপস্থাপনের অনুমতি দেয়?", qPronounce:"কেল দ্রোয়া পার্মে আ উন পের্সোন দ্য স্য দেফঁদ্র দ্যেভাঁ লা জুস্তিস ?", aFr:"Le droit à la défense.", aBn:"আত্মপক্ষ সমর্থনের অধিকার।", aPronounce:"ল্য দ্রোয়া আ লা দেফঁস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel est le texte fondateur établissant en France les droits et les devoirs de chaque citoyen ?", qBn:"ফ্রান্সে প্রতিটি নাগরিকের অধিকার ও কর্তব্য প্রতিষ্ঠাকারী ভিত্তিমূলক দলিল কোনটি?", qPronounce:"কেল এ ল্য তেক্স্ত ফোঁদাতোর এতাব্লিসঁ আ ফ্রঁস লে দ্রোয়া এ লে দ্যুভোয়ার দ্য শাক সিতোয়েঁ ?", aFr:"La Déclaration des droits de l’homme et du citoyen (1789).", aBn:"১৭৮৯ সালের মানব ও নাগরিক অধিকারের ঘোষণা।", aPronounce:"লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel texte a été adopté pendant la Révolution française ?", qBn:"ফরাসি বিপ্লবের সময় কোন দলিলটি গৃহীত হয়েছিল?", qPronounce:"কেল তেক্স্ত আ এতে আদোপ্তে পঁদা লা রেভোল্যুসিওঁ ফ্রঁসেজ ?", aFr:"La Déclaration des droits de l’homme et du citoyen (1789).", aBn:"১৭৮৯ সালের মানবাধিকার ঘোষণা।", aPronounce:"লা দেক্লারাসিওঁ দে দ্রোয়া দ্য লোম এ দ্যু সিতোয়েঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quelle liberté permet à une personne de ne pas avoir de religion ?", qBn:"কোন স্বাধীনতা একজন ব্যক্তিকে কোনো ধর্ম না থাকার অনুমতি দেয়?", qPronounce:"কেল লিবেরতে পার্মে আ উন পের্সোন দ্য নে পা জাভোয়ার দ্য রেলিজিওঁ ?", aFr:"La liberté de conscience.", aBn:"বিবেকের স্বাধীনতা।", aPronounce:"লা লিবেরতে দ্য কোঁসিয়াস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Une femme peut avorter :", qBn:"একজন নারী কি গর্ভপাত করাতে পারেন?", qPronounce:"উন ফাম প্যু আভোর্তে :", aFr:"Oui, dans le cadre prévu par la loi.", aBn:"হ্যাঁ, আইনের নির্ধারিত সীমার মধ্যে।", aPronounce:"উই, দাঁ ল্য কাদ্র প্রেভ্যু পার লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Est-il toujours possible de divorcer ?", qBn:"কি সবসময়েই ডিভোর্স করা সম্ভব?", qPronounce:"এ-তিল তুজুর পোসিবল দ্য দিভোর্সে ?", aFr:"Oui, le divorce est autorisé par la loi.", aBn:"হ্যাঁ, আইন অনুযায়ী বিবাহ বিচ্ছেদ সম্ভব।", aPronounce:"উই, ল্য দিভোর্স এত ওতোইজে পার লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"La peine de mort est :", qBn:"মৃত্যুদণ্ড:", qPronounce:"লা পেন দ্য মোর এ :", aFr:"Interdite en France.", aBn:"ফ্রান্সে মৃত্যুদণ্ড নিষিদ্ধ।", aPronounce:"এঁতের্দিত আ ফ্রঁস।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Concernant les limites aux libertés individuelles, quelle proposition est correcte ?", qBn:"ব্যক্তিগত স্বাধীনতার সীমাবদ্ধতা সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লে লিমিত ও লিবেরতে এঁদিভিদুয়েল, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Les libertés peuvent être limitées pour protéger l’ordre public et les droits des autres.", aBn:"অন্যদের অধিকার ও জনশৃঙ্খলা রক্ষার জন্য স্বাধীনতা সীমিত হতে পারে।", aPronounce:"লে লিবেরতে প্যুভঁ জেত্র লিমিতে পুর প্রোতেজে লোরদ্র প্যুব্লিক এ লে দ্রোয়া দে জোত্র।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"En France, est-ce légal d'être marié à plusieurs personnes en même temps ?", qBn:"ফ্রান্সে, একই সময়ে একাধিক ব্যক্তির সাথে বিবাহবন্ধনে আবদ্ধ হওয়া কি আইনসম্মত?", qPronounce:"আ ফ্রঁস, এস-কে লেগাল দেত্র মারিয়ে আ প্ল্যুজিয়োর পের্সোন আ মেম তঁ ?", aFr:"Non, c’est interdit (polygamie interdite).", aBn:"না, একাধিক বিয়ে করা অবৈধ।", aPronounce:"নোঁ, সে তাঁতের্দি (পোলিগামি এঁতের্দিত) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Faut-il réduire ses déchets ?", qBn:"নিজের বর্জ্য কি কমানো উচিত?", qPronounce:"ফো-তিল রেদ্যুইর সে দেশে ?", aFr:"Oui, pour protéger l’environnement.", aBn:"হ্যাঁ, পরিবেশ রক্ষার জন্য বর্জ্য কমাতে হবে।", aPronounce:"উই, পুর প্রোতেজে লাঁভিরন্যমঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Jeter une bouteille dans la rue est :", qBn:"রাস্তায় বোতল ফেলা:", qPronounce:"জেতে উন বুতেই দাঁ লা র্যু এ :", aFr:"Interdit et passible d’une amende.", aBn:"নিষিদ্ধ এবং জরিমানা হতে পারে।", aPronounce:"এঁতের্দি এ পাসিবল দ্যুন আমঁদ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Pourquoi les libertés individuelles peuvent-elles être limitées ?", qBn:"কেন ব্যক্তিগত স্বাধীনতা সীমিত করা হতে পারে?", qPronounce:"পুরকোয়া লে লিবেরতে এঁদিভিদুয়েল প্যুভঁ-এল জেত্র লিমিতে ?", aFr:"Pour garantir la sécurité et les droits de tous.", aBn:"সবার নিরাপত্তা ও অধিকার নিশ্চিত করতে।", aPronounce:"পুর গারঁতি লা সেক্যুরিতে এ লে দ্রোয়া দ্য তু।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que doit faire une personne en cas d’accident ?", qBn:"দুর্ঘটনার ক্ষেত্রে একজন ব্যক্তির কী করা উচিত?", qPronounce:"ক্য দোয়া ফেয়ার উন পের্সোন আ কা দাক্সিদাঁ ?", aFr:"Porter assistance et appeler les secours (15, 17, 18, 112).", aBn:"সাহায্য করতে হবে এবং জরুরি নম্বরে ফোন করতে হবে।", aPronounce:"পোর্তে আসিস্তাস এ আপেলে লে সেকুর (কাঁজ, দিজ সেপ্ত, দিজ উইত, সাঁ দুজ) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que permet la citoyenneté française ?", qBn:"ফরাসি নাগরিকত্ব কী করার অনুমতি দেয়?", qPronounce:"কে পার্মে লা সিতোয়েনেতে ফ্রঁসেজ ?", aFr:"Le droit de vote et de participer à la vie démocratique.", aBn:"ভোটাধিকার ও গণতান্ত্রিক অংশগ্রহণের অধিকার।", aPronounce:"ল্য দ্রোয়া দ্য ভোতে এ দ্য পার্তিসিপে আ লা ভি দেমোক্রাতিক।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que risque une personne qui ne respecte pas la loi ?", qBn:"যে ব্যক্তি আইন মানে না তার কী শাস্তি হতে পারে?", qPronounce:"কে রিস্ক উন পের্সোন কি নে রেস্পেক্তে পা লা লোয়া ?", aFr:"Une sanction (amende ou prison).", aBn:"শাস্তি (জরিমানা বা কারাদণ্ড)।", aPronounce:"উন সাঁক্সিওঁ (আমঁদ উ প্রিজ়োঁ) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel est le rôle de la gendarmerie ?", qBn:"জেন্ডারমেরির ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্য লা জাঁদার্মরি ?", aFr:"Assurer la sécurité publique, surtout en zone rurale.", aBn:"বিশেষ করে গ্রামীণ এলাকায় নিরাপত্তা নিশ্চিত করা।", aPronounce:"আস্যুরে লা সেক্যুরিতে প্যুব্লিক, স্যুর্তু আ জোন র্যুরাল।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quel est le rôle de la police ?", qBn:"পুলিশের ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্য লা পোলিস ?", aFr:"Assurer la sécurité et maintenir l’ordre public en ville.", aBn:"শহরে নিরাপত্তা ও শৃঙ্খলা বজায় রাখা।", aPronounce:"আস্যুরে লা সেক্যুরিতে এ মাঁতনির লোরদ্র প্যুব্লিক আ ভিল।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Qu'est-ce qu'une infraction ?", qBn:"অপরাধ (ইনফ্রাক্সিওঁ) কী?", qPronounce:"কেস্ক্যুন এঁফ্রাক্সিওঁ ?", aFr:"Un acte interdit par la loi.", aBn:"আইন দ্বারা নিষিদ্ধ কাজ।", aPronounce:"আঁ নাক্তে এঁতের্দি পার লা লোয়া।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Comment peut-on réduire ses déchets ?", qBn:"কীভাবে বর্জ্য কমানো যায়?", qPronounce:"কোঁমঁ প্যু-তোঁ রেদ্যুইর সে দেশে ?", aFr:"Trier, recycler, réutiliser et consommer moins.", aBn:"বাছাই করা, পুনর্ব্যবহার করা ও কম ব্যবহার করা।", aPronounce:"ত্রিয়ে, রেসিকলে, রেউতিলিজে এ কোঁসোমে মোঁ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Déposer une machine à laver cassée sur le trottoir est :", qBn:"ফুটপাতে ভাঙা ওয়াশিং মেশিন ফেলা:", qPronounce:"দেপোজে উন মাশিন আ লাভে কাসে স্যুর ল্য ত্রোতোয়ার এ :", aFr:"Interdit.", aBn:"অবৈধ।", aPronounce:"এঁতের্দি।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"En quoi consiste la traite des êtres humains ?", qBn:"মানব পাচার বলতে কী বোঝায়?", qPronounce:"আ কোয়া কোঁসিস্ত লা ত্রেত দে জেত্র জ্যুমাঁ ?", aFr:"Exploiter des personnes par la force ou la tromperie.", aBn:"জোর বা প্রতারণার মাধ্যমে মানুষের শোষণ।", aPronounce:"এক্সপ্লোতে দে পের্সোন পার লা ফোর্স উ লা ত্রোম্পরি।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Que doit faire une victime de violences ?", qBn:"সহিংসতার শিকার ব্যক্তির কী করা উচিত?", qPronounce:"ক্য দোয়া ফেয়ার উন ভিক্তিম দ্য ভিওলঁস ?", aFr:"Porter plainte et contacter les autorités (17 ou 3919).", aBn:"অভিযোগ করতে হবে এবং কর্তৃপক্ষের সাথে যোগাযোগ করতে হবে।", aPronounce:"পোর্তে প্ল্যাঁত এ কোঁতাক্তে লে জোতোরিতে (দিজ সেপ্ত উ ত্রোয়া মিল নেফ সাঁক দিজ ন্যুফ) ।" },
+        { cat:"⚖️ Droits & devoirs", qFr:"Quelle est l'infraction la plus grave ?", qBn:"সবচেয়ে গুরুতর অপরাধটি কোনটি?", qPronounce:"কেল এ লাঁফ্রাক্সিওঁ লা প্লু গ্রাভ ?", aFr:"Le crime.", aBn:"ক্রাইম (গুরুতর অপরাধ)।", aPronounce:"ল্য ক্রিম।" },
+
+        // HISTOIRE – GÉOGRAPHIE – CULTURE (47 questions officielles)
+        { cat:"📜 Histoire & culture", qFr:"En quelle année a débuté la Révolution française ?", qBn:"ফরাসি বিপ্লব কোন সালে শুরু হয়?", qPronounce:"আ কেল আনে আ দেব্যুতে লা রেভোল্যুসিওঁ ফ্রঁসেজ ?", aFr:"En 1789.", aBn:"১৭৮৯ সালে।", aPronounce:"আ মিল সেপ সাঁক সঁকান্ত নোঁফ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Napoléon Ier ?", qBn:"নাপোলিয়ন প্রথম কে ছিলেন?", qPronounce:"কি এতে নাপোলেওঁ প্রিমিয়ে ?", aFr:"Napoléon Bonaparte était empereur des Français.", aBn:"নাপোলিয়ন বোনাপার্ট ছিলেন ফরাসিদের সম্রাট।", aPronounce:"নাপোলেওঁ বোনাপার্ত এতে আঁপ্রের দে ফ্রঁসে।" },
+        { cat:"📜 Histoire & culture", qFr:"Lequel de ces personnages historiques est français ?", qBn:"এই ঐতিহাসিক ব্যক্তিত্বদের মধ্যে কে ফরাসি?", qPronounce:"লেকেল দ্য সে পের্সোনাজ ইস্তোরিক এত ফ্রঁসে ?", aFr:"Charles de Gaulle.", aBn:"শার্ল দ্য গোল।", aPronounce:"শার্ল দ্য গোল।" },
+        { cat:"📜 Histoire & culture", qFr:"Dans quelle République est-on aujourd'hui ?", qBn:"এখন আমরা কোন প্রজাতন্ত্রে আছি?", qPronounce:"দাঁ কেল রেপ্যুব্লিক এ-তোঁ ওজুরদুই ?", aFr:"La Ve République.", aBn:"পঞ্চম প্রজাতন্ত্র।", aPronounce:"লা সাঁকিয়েম রেপ্যুব্লিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Qu'est-ce que la Shoah ?", qBn:"শোয়া (হলোকাস্ট) কী?", qPronounce:"কেস্কে লা শোয়া ?", aFr:"L’extermination des Juifs d’Europe par les nazis pendant la Seconde Guerre mondiale.", aBn:"দ্বিতীয় বিশ্বযুদ্ধের সময় নাৎসিদের দ্বারা ইহুদিদের গণহত্যা।", aPronounce:"লেক্সতের্মিনাসিওঁ দে জুইফ দ্যুরোপ পার লে নাজি পঁদা লা সেকোঁদ গের মোঁদিয়াল।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel pays ou région du monde a été colonisé par la France ?", qBn:"বিশ্বের কোন দেশ বা অঞ্চল ফ্রান্স দ্বারা উপনিবেশিত হয়েছিল?", qPronounce:"কেল পেই উ রেজিওঁ দ্যু মোঁদ আ এতে কোলোনিজে পার লা ফ্রঁস ?", aFr:"Algérie.", aBn:"আলজেরিয়া।", aPronounce:"আলজেরি।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui a rendu l’école gratuite, laïque et obligatoire ?", qBn:"কে শিক্ষাকে বিনামূল্যে, ধর্মনিরপেক্ষ ও বাধ্যতামূলক করেন?", qPronounce:"কি আ রঁদু লেকোল গ্রাতুইত, লাইক এ ওব্লিগাতোয়ার ?", aFr:"Jules Ferry.", aBn:"জুল ফেরি।", aPronounce:"জ্যুল ফেরি।" },
+        { cat:"📜 Histoire & culture", qFr:"Quand a eu lieu la Seconde Guerre mondiale ?", qBn:"দ্বিতীয় বিশ্বযুদ্ধ কখন সংঘটিত হয়েছিল?", qPronounce:"কাঁ আ ইু ল্যো লা সেকোঁদ গের মোঁদিয়াল ?", aFr:"De 1939 à 1945.", aBn:"১৯৩৯ থেকে ১৯৪৫ সাল।", aPronounce:"দ্য মিল নেফ সাঁক সঁকান্ত নোঁফ আ মিল নেফ সাঁক সঁকান্ত সাঁক।" },
+        { cat:"📜 Histoire & culture", qFr:"Quand a eu lieu la Première Guerre mondiale ?", qBn:"প্রথম বিশ্বযুদ্ধ কখন সংঘটিত হয়েছিল?", qPronounce:"কাঁ আ ইু ল্যো লা প্রেমিয়ের গের মোঁদিয়াল ?", aFr:"De 1914 à 1918.", aBn:"১৯১৪ থেকে ১৯১৮ সাল।", aPronounce:"দ্য মিল নেফ সাঁক কাতোর্জ আ মিল নেফ সাঁক দিজ উইত।" },
+        { cat:"📜 Histoire & culture", qFr:"En quelle année a été créée la Communauté Économique Européenne (CEE) ?", qBn:"ইউরোপীয় অর্থনৈতিক সম্প্রদায় (ইইসি) কোন সালে প্রতিষ্ঠিত হয়েছিল?", qPronounce:"আ কেল আনে আ এতে ক্রেয়ে লা কোম্যুনতে একোনোমিক ইয়ুরোপিয়েন ?", aFr:"En 1957.", aBn:"১৯৫৭ সালে।", aPronounce:"আ মিল নেফ সাঁক সঁকান্ত সেপ্ত।" },
+        { cat:"📜 Histoire & culture", qFr:"Le 11 novembre est un jour férié. À quoi correspond cette date ?", qBn:"১১ নভেম্বর একটি ছুটির দিন। এই তারিখটি কীসের সাথে সম্পর্কিত?", qPronounce:"ল্য ওঁজ নভঁব্র এত আঁ জুর ফেরিয়ে। আ কোয়া কোরেস্পোঁ সেত দাত ?", aFr:"À l’armistice de 1918 (fin de la Première Guerre mondiale).", aBn:"১৯১৮ সালের যুদ্ধবিরতি দিবস।", aPronounce:"আ লার্মিস্তিস দ্য মিল নেফ সাঁক দিজ উইত (ফাঁ দ্য লা প্রেমিয়ের গের মোঁদিয়াল) ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui a été le premier Président élu sous la Ve République ?", qBn:"পঞ্চম প্রজাতন্ত্রের অধীনে নির্বাচিত প্রথম রাষ্ট্রপতি কে ছিলেন?", qPronounce:"কি আ এতে ল্য প্রেমিয়ে প্রেজিদাঁ এলু সু লা সাঁকিয়েম রেপ্যুব্লিক ?", aFr:"Charles de Gaulle.", aBn:"শার্ল দ্য গোল।", aPronounce:"শার্ল দ্য গোল।" },
+        { cat:"📜 Histoire & culture", qFr:"En quelle année l'esclavage a-t-il été aboli définitivement en France ?", qBn:"ফ্রান্সে দাসপ্রথা চিরতরে কোন সালে বিলুপ্ত করা হয়?", qPronounce:"আ কেল আনে লেস্কলাভাজ আ-তিল এতে আবোলি দেফিনিতিভমঁ আ ফ্রঁস ?", aFr:"En 1848.", aBn:"১৮৪৮ সালে।", aPronounce:"আ মিল উইত সঁক সঁকান্ত কারঁত উইত।" },
+        { cat:"📜 Histoire & culture", qFr:"Depuis quelle année l'école publique est-elle gratuite ?", qBn:"সরকারি স্কুল কত সাল থেকে বিনামূল্যে?", qPronounce:"দ্যাপুই কেল আনে লেকোল প্যুব্লিক এ-তেল গ্রাতুইত ?", aFr:"Depuis 1881.", aBn:"১৮৮১ সাল থেকে।", aPronounce:"দ্যাপুই মিল উইত সাঁক সঁকান্ত কারঁত উন।" },
+        { cat:"📜 Histoire & culture", qFr:"Combien y a-t-il eu de républiques en France ?", qBn:"ফ্রান্সে কয়টি প্রজাতন্ত্র হয়েছে?", qPronounce:"কোঁবিয়াঁ ইয়া-তিল ইু দ্য রেপ্যুব্লিক আ ফ্রঁস ?", aFr:"Cinq républiques.", aBn:"পাঁচটি প্রজাতন্ত্র।", aPronounce:"সাঁক রেপ্যুব্লিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était le roi de France au moment de la Révolution française ?", qBn:"ফরাসি বিপ্লবের সময় ফ্রান্সের রাজা কে ছিলেন?", qPronounce:"কি এতে ল্য রোয়া দ্য ফ্রঁস ও মোমঁ দ্য লা রেভোল্যুসিওঁ ফ্রঁসেজ ?", aFr:"Louis XVI.", aBn:"লুই ষোড়শ।", aPronounce:"লুই সেজ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui a fondé la Ve République ?", qBn:"কে পঞ্চম প্রজাতন্ত্র প্রতিষ্ঠা করেন?", qPronounce:"কি আ ফোঁদে লা সাঁকিয়েম রেপ্যুব্লিক ?", aFr:"Charles de Gaulle.", aBn:"শার্ল দ্য গোল।", aPronounce:"শার্ল দ্য গোল।" },
+        { cat:"📜 Histoire & culture", qFr:"Que célèbre-t-on le 14 juillet ?", qBn:"১৪ জুলাই কী পালন করা হয়?", qPronounce:"ক্য সেলেব্র-তোঁ ল্য কাতোর্জুইয়ে ?", aFr:"La Fête nationale (prise de la Bastille en 1789).", aBn:"জাতীয় দিবস (বাস্তিল দুর্গ দখল)।", aPronounce:"লা ফেত নাসিওনাল (প্রিজ দ্য লা বাস্তিল আঁ মিল সেপ সাঁক সঁকান্ত নোঁফ) ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle guerre a eu lieu entre 1914 et 1918 ?", qBn:"১৯১৪ থেকে ১৯১৮ সালের মধ্যে কোন যুদ্ধ সংঘটিত হয়েছিল?", qPronounce:"কেল গের আ ইু ল্যো আঁত্র মিল নেফ সাঁক কাতোর্জ এ মিল নেফ সাঁক দিজ উইত ?", aFr:"La Première Guerre mondiale.", aBn:"প্রথম বিশ্বযুদ্ধ।", aPronounce:"লা প্রেমিয়ের গের মোঁদিয়াল।" },
+        { cat:"📜 Histoire & culture", qFr:"Pourquoi l’année 1958 est importante pour la France ?", qBn:"কেন ১৯৫৮ সাল ফ্রান্সের জন্য গুরুত্বপূর্ণ?", qPronounce:"পুরকোয়া লানে মিল নেফ সাঁক সঁকান্ত এত অঁপোর্তঁত পুর লা ফ্রঁস ?", aFr:"Création de la Ve République.", aBn:"পঞ্চম প্রজাতন্ত্র প্রতিষ্ঠিত হয়।", aPronounce:"ক্রেয়াসিওঁ দ্য লা সাঁকিয়েম রেপ্যুব্লিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel fleuve coule en France ?", qBn:"ফ্রান্সে কোন নদী প্রবাহিত হয়?", qPronounce:"কেল ফ্ল্যুভ কুল আ ফ্রঁস ?", aFr:"La Seine.", aBn:"সেন নদী।", aPronounce:"লা সেন।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle ville est française ?", qBn:"কোন শহরটি ফরাসি?", qPronounce:"কেল ভিল এত ফ্রঁসেজ ?", aFr:"Lyon.", aBn:"লিওঁ।", aPronounce:"লিওঁ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel océan borde la côte ouest française ?", qBn:"কোন মহাসাগর ফ্রান্সের পশ্চিম উপকূলকে স্পর্শ করেছে?", qPronounce:"কেল ওসেয়াঁ বোর্দ লা কোত উয়েস্ত ফ্রঁসেজ ?", aFr:"L’océan Atlantique.", aBn:"আটলান্টিক মহাসাগর।", aPronounce:"লোসেয়াঁ আতলাঁতিক।" },
+        { cat:"📜 Histoire & culture", qFr:"Qu'est-ce que Paris ?", qBn:"প্যারিস কী?", qPronounce:"কেস্কে পারি ?", aFr:"Paris est la capitale de la France.", aBn:"প্যারিস ফ্রান্সের রাজধানী।", aPronounce:"পারি এ লা কাপিতাল দ্য লা ফ্রঁস।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle est la capitale de la France ?", qBn:"ফ্রান্সের রাজধানীর নাম কী?", qPronounce:"কেল এ লা কাপিতাল দ্য লা ফ্রঁস ?", aFr:"Paris.", aBn:"প্যারিস।", aPronounce:"পারি।" },
+        { cat:"📜 Histoire & culture", qFr:"Sur quel continent se situe la France métropolitaine ?", qBn:"মূল ভূখণ্ড ফ্রান্স কোন মহাদেশে অবস্থিত?", qPronounce:"স্যুর কেল কোঁতিনাঁ স্য সিতু লা ফ্রঁস মেত্রোপোলিতেন ?", aFr:"En Europe.", aBn:"ইউরোপ মহাদেশে।", aPronounce:"আঁ ন্যুরোপ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle île est un département d'outre-mer français ?", qBn:"কোন দ্বীপটি একটি ফরাসি সামুদ্রিক বিভাগ?", qPronounce:"কেল ইল এত আঁ দেপার্ত্যমঁ দুত্র-মের ফ্রঁসে ?", aFr:"La Réunion.", aBn:"লা রেউনিওঁ।", aPronounce:"লা রেউনিওঁ।" },
+        { cat:"📜 Histoire & culture", qFr:"Combien y a-t-il de régions en France métropolitaine ?", qBn:"মূল ভূখণ্ড ফ্রান্সে কয়টি অঞ্চল আছে?", qPronounce:"কোঁবিয়াঁ ইয়া-তিল দ্য রেজিওঁ আ ফ্রঁস মেত্রোপোলিতেন ?", aFr:"13 régions.", aBn:"১৩টি অঞ্চল।", aPronounce:"ত্রেজ রেজিওঁ।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle ville est un grand port maritime ?", qBn:"কোন শহরটি একটি বড় সামুদ্রিক বন্দর?", qPronounce:"কেল ভিল এত আঁ গ্রা পোর মারিতিম ?", aFr:"Marseille.", aBn:"মার্সেই।", aPronounce:"মার্সেই।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle est la mer au sud de la France métropolitaine ?", qBn:"মূল ভূখণ্ড ফ্রান্সের দক্ষিণে কোন সাগর অবস্থিত?", qPronounce:"কেল এ লা মের ও স্যুদ দ্য লা ফ্রঁস মেত্রোপোলিতেন ?", aFr:"La mer Méditerranée.", aBn:"ভূমধ্যসাগর।", aPronounce:"লা মের মেদিতেরানে।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle ville est située au bord de la mer Méditerranée ?", qBn:"ভূমধ্যসাগরের তীরে কোন শহর অবস্থিত?", qPronounce:"কেল ভিল এ সিতুয়ে ও বোর্দ দ্য লা মের মেদিতেরানে ?", aFr:"Nice.", aBn:"নিস।", aPronounce:"নিস।" },
+        { cat:"📜 Histoire & culture", qFr:"Où se situe la Corse ?", qBn:"কোর্স কোথায় অবস্থিত?", qPronounce:"উ স্য সিতু লা কোরস ?", aFr:"Corse se situe en mer Méditerranée.", aBn:"কোর্সিকা ভূমধ্যসাগরে অবস্থিত।", aPronounce:"কোরস স্য সিতু আ মের মেদিতেরানে।" },
+        { cat:"📜 Histoire & culture", qFr:"Quelle chaîne de montagnes est située entre la France et l'Italie ?", qBn:"ফ্রান্স এবং ইতালির মধ্যে কোন পর্বতমালা অবস্থিত?", qPronounce:"কেল শেন দ্য মোঁতান এ সিতুয়ে আঁত্র লা ফ্রঁস এ লিতালি ?", aFr:"Les Alpes.", aBn:"আল্পস পর্বতমালা।", aPronounce:"লে জ়াল্প।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Molière ?", qBn:"মলিয়ের কে ছিলেন?", qPronounce:"কি এতে মোলিয়ের ?", aFr:"Molière était un dramaturge français.", aBn:"মলিয়ের ছিলেন একজন ফরাসি নাট্যকার।", aPronounce:"মোলিয়ের এতে আঁ দ্রামাত্যুর্জ ফ্রঁসে।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Charles Baudelaire ?", qBn:"শার্ল বোদলেয়ার কে ছিলেন?", qPronounce:"কি এতে শার্ল বোদলেয়ার ?", aFr:"Charles Baudelaire était un poète français.", aBn:"শার্ল বোদলেয়ার ছিলেন ফরাসি কবি।", aPronounce:"শার্ল বোদলেয়ার এতে আঁ পোয়েত ফ্রঁসে।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était George Sand ?", qBn:"জর্জ সাঁ কে ছিলেন?", qPronounce:"কি এতে জর্জ সাঁদ ?", aFr:"George Sand était une écrivaine française.", aBn:"জর্জ সাঁ ছিলেন একজন ফরাসি লেখিকা।", aPronounce:"জর্জ সাঁ এতে উন এক্রিভেন ফ্রঁসেজ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Simone de Beauvoir ?", qBn:"সিমোন দ্য বোভোয়ার কে ছিলেন?", qPronounce:"কি এতে সিমোন দ্য বোভোয়ার ?", aFr:"Simone de Beauvoir était philosophe et écrivaine.", aBn:"সিমোন দ্য বোভোয়ার ছিলেন দার্শনিক ও লেখিকা।", aPronounce:"সিমোন দ্য বোভোয়ার এতে ফিলোজ়ফ এ এক্রিভেন।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Albert Camus ?", qBn:"আলবের কাম্যু কে ছিলেন?", qPronounce:"কি এতে আলবের কাম্যু ?", aFr:"Albert Camus était écrivain et philosophe.", aBn:"আলবের কাম্যু ছিলেন লেখক ও দার্শনিক।", aPronounce:"আলবের কাম্যু এতে এক্রিভ্যাঁ এ ফিলোজ়ফ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Paul Cézanne ?", qBn:"পল সেজান কে ছিলেন?", qPronounce:"কি এতে পোল সেজান ?", aFr:"Paul Cézanne était peintre.", aBn:"পল সেজান ছিলেন চিত্রশিল্পী।", aPronounce:"পোল সেজান এতে প্যাঁত্র।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Marc Chagall ?", qBn:"মার্ক শাগাল কে ছিলেন?", qPronounce:"কি এতে মার্ক শাগাল ?", aFr:"Marc Chagall était artiste peintre.", aBn:"মার্ক শাগাল ছিলেন শিল্পী।", aPronounce:"মার্ক শাগাল এতে আর্তিস্ত প্যাঁত্র।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Joséphine Baker ?", qBn:"জোজেফিন বাকের কে ছিলেন?", qPronounce:"কি এতে জোজেফিন বাকের ?", aFr:"Joséphine Baker était chanteuse et résistante.", aBn:"জোজেফিন বাকের ছিলেন গায়িকা ও প্রতিরোধ আন্দোলনের সদস্য।", aPronounce:"জোজেফিন বাকের এতে শাঁতোজ এ রেজিস্তাঁত।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était une chanteuse française célèbre ?", qBn:"কে একজন বিখ্যাত ফরাসি গায়িকা ছিলেন?", qPronounce:"কি এতে উন শঁতোজ ফ্রঁসেজ সেলেব্র ?", aFr:"Édith Piaf.", aBn:"এদিত পিয়াফ।", aPronounce:"এদিত পিয়াফ।" },
+        { cat:"📜 Histoire & culture", qFr:"Qu'est-ce que le Louvre ?", qBn:"লুভ্র কী?", qPronounce:"কেস্কে ল্য লুভ্র ?", aFr:"Musée du Louvre est un grand musée à Paris.", aBn:"লুভ্র মিউজিয়াম প্যারিসের একটি বিখ্যাত জাদুঘর।", aPronounce:"ম্যুযে দ্যু লুভ্র এত আঁ গ্রা ম্যুযে আ পারি।" },
+        { cat:"📜 Histoire & culture", qFr:"Qui était Jean de la Fontaine ?", qBn:"জঁ দ্য লা ফোঁতেন কে ছিলেন?", qPronounce:"কি এতে জঁ দ্য লা ফোঁতেন ?", aFr:"Jean de La Fontaine était écrivain et fabuliste.", aBn:"জঁ দ্য লা ফোঁতেন ছিলেন লেখক।", aPronounce:"জঁ দ্য লা ফোঁতেন এতে এক্রিভ্যাঁ এ ফাব্যুলিস্ত।" },
+        { cat:"📜 Histoire & culture", qFr:"Quel écrivain est français ?", qBn:"কোন লেখক ফরাসি?", qPronounce:"কেল এক্রিভ্যাঁ এ ফ্রঁসে ?", aFr:"Victor Hugo.", aBn:"ভিক্টর হুগো।", aPronounce:"ভিক্তর ইয়ুগো।" },
+        { cat:"📜 Histoire & culture", qFr:"Dans quelle ville se trouve la tour Eiffel ?", qBn:"আইফেল টাওয়ার কোন শহরে অবস্থিত?", qPronounce:"দাঁ কেল ভিল স্য ত্রুভ লা তুর এফেল ?", aFr:"À Paris.", aBn:"প্যারিসে।", aPronounce:"আ পারি।" },
+        { cat:"📜 Histoire & culture", qFr:"Quand célèbre-t-on Noël ?", qBn:"বড়দিন (নোয়েল) কখন পালন করা হয়?", qPronounce:"কাঁ সেলেব্র-তোঁ নোয়েল ?", aFr:"Le 25 décembre.", aBn:"২৫ ডিসেম্বর।", aPronounce:"ল্য ভাঁ সাঁক দেসাম্ব্র।" },
+
+        // VIVRE DANS LA SOCIÉTÉ FRANÇAISE (31 questions officielles)
+        { cat:"🏠 Vivre en France", qFr:"Quel numéro d'urgence permet d'appeler le SAMU ?", qBn:"কোন জরুরি নম্বরে ফোন করলে সামু (SAMU) পাওয়া যায়?", qPronounce:"কেল নুমেরো দ্যুর্জঁস পার্মে দাপেলে ল্য সামু ?", aFr:"Le 15.", aBn:"১৫ নম্বরে ফোন করলে SAMU পাওয়া যায়।", aPronounce:"ল্য কাঁজ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel numéro d'urgence permet d'appeler les pompiers ?", qBn:"কোন জরুরি নম্বরে ফোন করলে দমকল বাহিনী আসে?", qPronounce:"কেল নুমেরো দ্যুর্জঁস পার্মে দাপেলে লে পোঁপিয়ে ?", aFr:"Le 18.", aBn:"১৮ নম্বরে ফোন করলে দমকল বাহিনী আসে।", aPronounce:"ল্য দিজ উইত।" },
+        { cat:"🏠 Vivre en France", qFr:"Après avoir obtenu le permis de conduire, que faut-il faire pour pouvoir conduire sa voiture ?", qBn:"ড্রাইভিং লাইসেন্স পাওয়ার পর, গাড়ি চালানোর জন্য কী করতে হবে?", qPronounce:"আপ্রে জাভোয়ার ওব্তন্যু ল্য পার্মি দ্য কোঁদুইর, ক্য ফো-তিল ফেয়ার পুর পুভোয়ার কোঁদুইর সা ভোয়াত্যুর ?", aFr:"Assurer la voiture (avoir une assurance).", aBn:"গাড়ি চালানোর আগে বীমা করতে হবে।", aPronounce:"আস্যুরে লা ভোয়াত্যুর (আভোয়ার উন আস্যুরাস) ।" },
+        { cat:"🏠 Vivre en France", qFr:"À quelles conditions un mariage est-il reconnu juridiquement ?", qBn:"কোন শর্তে একটি বিবাহ আইনগতভাবে স্বীকৃত হয়?", qPronounce:"আ কেল কোঁদিসিওঁ আঁ মারিয়াজ এ-তিল রেকোন্যু জ্যুরিদিকমঁ ?", aFr:"S’il est célébré à la mairie (mariage civil).", aBn:"মেয়র অফিসে (সিভিল ম্যারেজ) হলে তা আইনগতভাবে স্বীকৃত।", aPronounce:"সিল এ সেলেব্রে আ লা মেরি (মারিয়াজ সিভিল) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quand faut-il déclarer son enfant au service d'état civil de la mairie ?", qBn:"মেয়র অফিসের সিভিল রেজিস্ট্রেশন বিভাগে কখন সন্তানের জন্ম নিবন্ধন করাতে হবে?", qPronounce:"কাঁ ফো-তিল দেক্লারে সোঁ নঁফা ও সের্ভিস দেতা সিভিল দ্য লা মেরি ?", aFr:"Dans les 5 jours après la naissance.", aBn:"জন্মের ৫ দিনের মধ্যে ঘোষণা করতে হবে।", aPronounce:"দাঁ লে সাঁক জুর আপ্রে লা নেসঁস।" },
+        { cat:"🏠 Vivre en France", qFr:"Le travail non déclaré est :", qBn:"অনিবন্ধিত কাজ:", qPronounce:"ল্য ত্রাভাই নোঁ দেক্লারে এ :", aFr:"Interdit et illégal.", aBn:"অবৈধ।", aPronounce:"এঁতের্দি এ ইলেগাল।" },
+        { cat:"🏠 Vivre en France", qFr:"Que doit faire un employeur pour fixer un salaire ?", qBn:"বেতন নির্ধারণের জন্য একজন নিয়োগকর্তার কী করা উচিত?", qPronounce:"ক্য দোয়া ফেয়ার আঁ নঁপ্লোয়ের পুর ফিক্সে আঁ সালের ?", aFr:"Respecter la loi et le SMIC minimum.", aBn:"আইন ও ন্যূনতম মজুরি মানতে হবে।", aPronounce:"রেস্পেকতে লা লোয়া এ ল্য স্মিক মিনিমাম।" },
+        { cat:"🏠 Vivre en France", qFr:"Qu'est-ce que le SMIC ?", qBn:"স্মিক (SMIC) কী?", qPronounce:"কেস্কে ল্য স্মিক ?", aFr:"Le Salaire Minimum Interprofessionnel de Croissance (salaire minimum légal).", aBn:"আইনগত ন্যূনতম বেতন।", aPronounce:"ল্য সালের মিনিমাম এঁতেরপ্রোফেসিওনেল দ্য ক্রোয়াস ( সালের মিনিমাম লেগাল) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quelle est la première démarche à réaliser pour chercher un emploi ?", qBn:"চাকরি খোঁজার জন্য প্রথম পদক্ষেপ কী?", qPronounce:"কেল এ লা প্রেমিয়ের দেমার্শ আ রেয়ালিজে পুর শেরশে আঁ নঁপ্লোয়া ?", aFr:"S’inscrire à France Travail.", aBn:"France Travail-এ নিবন্ধন করা।", aPronounce:"সাঁস্ক্রির আ ফ্রঁস ত্রাভাই।" },
+        { cat:"🏠 Vivre en France", qFr:"Quelle est la durée légale du temps de travail par semaine ?", qBn:"সপ্তাহে কাজের আইনি সময় কত?", qPronounce:"কেল এ লা দ্যুরে লেগাল দ্যু তঁ দ্য ত্রাভাই পার স্যমেন ?", aFr:"35 heures par semaine.", aBn:"সপ্তাহে ৩৫ ঘণ্টা।", aPronounce:"ত্রঁত সাঁক জোর পার স্যমেন।" },
+        { cat:"🏠 Vivre en France", qFr:"Qui est aidé par France Travail ?", qBn:"France Travail কাদের সাহায্য করে?", qPronounce:"কি এত এদে পার ফ্রঁস ত্রাভাই ?", aFr:"Les personnes à la recherche d’un emploi.", aBn:"যারা চাকরি খুঁজছেন।", aPronounce:"লে পের্সোন আ লা রেশেরশ দ্যাঁ নঁপ্লোয়া।" },
+        { cat:"🏠 Vivre en France", qFr:"Une personne étrangère en situation régulière peut créer son entreprise :", qBn:"নিয়মিত অবস্থায় থাকা একজন বিদেশী ব্যক্তি কি তার নিজের ব্যবসা প্রতিষ্ঠা করতে পারেন?", qPronounce:"উন পের্সোনেত্রাঁজের আঁ সিতুয়াসিওঁ রেগ্যুলিয়ের প্যু ক্রেয়ে সোঁ আঁত্রপ্রিজ :", aFr:"Oui, si elle respecte la loi.", aBn:"হ্যাঁ, আইন মেনে চললে পারেন।", aPronounce:"উই, সি এল রেস্পেক্ত লা লোয়া।" },
+        { cat:"🏠 Vivre en France", qFr:"Une femme peut-elle créer son entreprise ?", qBn:"একজন নারী কি তার নিজের ব্যবসা প্রতিষ্ঠা করতে পারেন?", qPronounce:"উন ফাম প্যু-তেল ক্রেয়ে সোঁ আঁত্রপ্রিজ ?", aFr:"Oui, bien sûr.", aBn:"হ্যাঁ, অবশ্যই পারেন।", aPronounce:"উই, বিয়েঁ স্যুর।" },
+        { cat:"🏠 Vivre en France", qFr:"À partir de quel âge un mineur peut-il travailler ?", qBn:"কত বছর বয়স থেকে একজন অপ্রাপ্তবয়স্ক কাজ করতে পারে?", qPronounce:"আ পার্তির দ্য কেল আজ আঁ মিন্যোর প্যু-তিল ত্রাভাইয়ে ?", aFr:"À partir de 16 ans (avec conditions).", aBn:"১৬ বছর থেকে (শর্ত সাপেক্ষে)।", aPronounce:"আ পার্তির দ্য সেজ আঁ (আভেক কোঁদিসিওঁ) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Auprès de quel organisme faut-il demander le remboursement des frais de santé ?", qBn:"স্বাস্থ্য ব্যয়ের ফেরতের জন্য কোন সংস্থার কাছে আবেদন করতে হবে?", qPronounce:"ওপ্রে দ্য কেল অর্গানিজম ফো-তিল দ্যমঁদে ল্য রঁবুর্স্যমঁ দে ফ্রে দ্য সঁতে ?", aFr:"À l’Assurance Maladie.", aBn:"Assurance Maladie-এর কাছে।", aPronounce:"আ লাস্যুরাস মালাদি।" },
+        { cat:"🏠 Vivre en France", qFr:"Qu’est-ce qu’un numéro d’urgence ?", qBn:"জরুরি নম্বর কী?", qPronounce:"কেস্ক্যাঁ নুমেরো দ্যুর্জঁস ?", aFr:"Un numéro gratuit pour appeler les secours rapidement.", aBn:"জরুরি সহায়তার জন্য বিনামূল্যের নম্বর।", aPronounce:"আঁ নুমেরো গ্রাতুই পুর আপেলে লে সেকুর রাপিদমঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Concernant l'accès aux soins, quelle proposition est correcte ?", qBn:"স্বাস্থ্যসেবা প্রাপ্তি সম্পর্কে, কোন প্রস্তাবটি সঠিক?", qPronounce:"কোঁসের্নাঁ লাক্সেস ও সোঁ, কেল প্রোপোজিসিওঁ এ কোরেক্ত ?", aFr:"Toute personne a droit aux soins en France.", aBn:"ফ্রান্সে প্রত্যেকের চিকিৎসার অধিকার আছে।", aPronounce:"তুত পের্সোন আ দ্রোয়া ও সোঁ আ ফ্রঁস।" },
+        { cat:"🏠 Vivre en France", qFr:"En cas de problème de santé non urgent, à qui faut-il s’adresser en premier ?", qBn:"জরুরি না হলে, স্বাস্থ্য সমস্যায় প্রথমে কার সাথে যোগাযোগ করতে হবে?", qPronounce:"আ কা দ্য প্রোব্লেম দ্য সঁতে নোঁ ন্যুর্জঁ, আ কি ফো-তিল সাদ্রেসে আঁ প্রেমিয়ে ?", aFr:"À son médecin traitant.", aBn:"নিজের পারিবারিক ডাক্তারের কাছে যেতে হবে।", aPronounce:"আ সোঁ মেদ্সাঁ ত্রেতাঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel est le rôle du médecin traitant ?", qBn:"পারিবারিক ডাক্তারের ভূমিকা কী?", qPronounce:"কেল এ ল্য রোল দ্যু মেদ্সাঁ ত্রেতাঁ ?", aFr:"Suivre le patient et orienter vers un spécialiste si nécessaire.", aBn:"রোগীর চিকিৎসা তদারকি করা এবং প্রয়োজন হলে বিশেষজ্ঞের কাছে পাঠানো।", aPronounce:"স্যুইভ্র ল্য পাসিয়াঁ এ ওরিয়ঁতে ভের্স জঁ স্পেসিয়ালিস্ত সি নেসেসের।" },
+        { cat:"🏠 Vivre en France", qFr:"Dans quelles situations doit-on se rendre aux urgences de l'hôpital ?", qBn:"কোন পরিস্থিতিতে হাসপাতালের জরুরি বিভাগে যেতে হবে?", qPronounce:"দাঁ কেল সিতুয়াসিওঁ দোয়া-তোঁ স্য রঁদ্র ও জ্যুর্জঁস দ্য লোপিতাল ?", aFr:"En cas de danger grave ou immédiat.", aBn:"গুরুতর বা তাৎক্ষণিক বিপদের ক্ষেত্রে।", aPronounce:"আ কা দ্য দাঞ্জে গ্রাভ উ ইমেদিয়া।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel est l’objectif des vaccinations obligatoires ?", qBn:"বাধ্যতামূলক টিকাদানের উদ্দেশ্য কী?", qPronounce:"কেল এ লব্জেক্তিফ দে ভাক্সিনাসিওঁ ওব্লিগাতোয়ার ?", aFr:"Protéger la santé individuelle et collective.", aBn:"ব্যক্তিগত ও সামষ্টিক স্বাস্থ্য রক্ষা করা।", aPronounce:"প্রোতেজে লা সঁতে এঁদিভিদুয়েল এ কোলেক্তিভ।" },
+        { cat:"🏠 Vivre en France", qFr:"À quoi sert la carte Vitale ?", qBn:"ভিতাল কার্ডের কাজ কী?", qPronounce:"আ কোয়া সের লা কার্ত ভিতাল ?", aFr:"À faciliter le remboursement des soins par l’Assurance Maladie.", aBn:"চিকিৎসা খরচ ফেরত পেতে সাহায্য করে।", aPronounce:"আ ফাসিলিতে ল্য রঁবুর্স্যমঁ দে সোঁ পার লাস্যুরাস মালাদি।" },
+        { cat:"🏠 Vivre en France", qFr:"À quoi sert une mutuelle santé ?", qBn:"মিউচুয়েল (স্বাস্থ্য বীমা) কী কাজে লাগে?", qPronounce:"আ কোয়া সের উন ম্যুত্যুয়েল সঁতে ?", aFr:"À compléter le remboursement des frais de santé.", aBn:"অতিরিক্ত চিকিৎসা ব্যয় কভার করে।", aPronounce:"আ কোঁপ্লেতে ল্য রঁবুর্স্যমঁ দে ফ্রে দ্য সঁতে।" },
+        { cat:"🏠 Vivre en France", qFr:"Jusqu'à quel âge l'école est-elle obligatoire ?", qBn:"কত বছর বয়স পর্যন্ত স্কুল বাধ্যতামূলক?", qPronounce:"জ্যুস্কা কেল আজ লেকোল এ-তেল ওব্লিগাতোয়ার ?", aFr:"Jusqu’à 16 ans.", aBn:"১৬ বছর পর্যন্ত।", aPronounce:"জ্যুস্কা সেজ আঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"L'autorité parentale prévoit l'obligation :", qBn:"অভিভাবকত্ব কর্তব্য নির্ধারণ করে:", qPronounce:"লোতোরিতে পারঁতাল প্রেভোয়া লোব্লিগাসিওঁ :", aFr:"De protéger, éduquer et entretenir l’enfant.", aBn:"সন্তানের সুরক্ষা, শিক্ষা ও লালন-পালনের দায়িত্ব।", aPronounce:"দ্য প্রোতেজে, এদ্যুকে এ আঁত্রনির লঁফা।" },
+        { cat:"🏠 Vivre en France", qFr:"Pour qui l'école est-elle obligatoire ?", qBn:"কার জন্য স্কুল বাধ্যতামূলক?", qPronounce:"পুর কি লেকোল এ-তেল ওব্লিগাতোয়ার ?", aFr:"Pour tous les enfants de 3 à 16 ans vivant en France.", aBn:"ফ্রান্সে বসবাসকারী ৩ থেকে ১৬ বছর বয়সী সকল শিশুর জন্য।", aPronounce:"পুর তু লে জঁফা দ্য ত্রোয়া আ সেজ আঁ ভিভাঁ আ ফ্রঁস।" },
+        { cat:"🏠 Vivre en France", qFr:"Quel diplôme obtient-on à la fin du lycée ?", qBn:"লিসে (উচ্চ মাধ্যমিক) শেষে কোন ডিপ্লোমা পাওয়া যায়?", qPronounce:"কেল দিপ্লোম ওবতিয়ে-তোঁ আ লা ফাঁ দ্যু লিসে ?", aFr:"Le baccalauréat (le bac).", aBn:"ব্যাকালোরিয়া (বাক)।", aPronounce:"ল্য বাকালোরেয়া (ল্য বাক) ।" },
+        { cat:"🏠 Vivre en France", qFr:"Dans quels établissements scolaires vont les élèves après l'école élémentaire ?", qBn:"প্রাথমিক স্কুলের পরে ছাত্ররা কোন শিক্ষাপ্রতিষ্ঠানে যায়?", qPronounce:"দাঁ কেল জেতাব্লিস্মঁ স্কোলের ভোঁ লে জেলেভ আপ্রে লেকোল এলেমঁতের ?", aFr:"Au collège.", aBn:"কলেজ (মাধ্যমিক বিদ্যালয়)।", aPronounce:"ও কোলেজ।" },
+        { cat:"🏠 Vivre en France", qFr:"Pour qui l'école est elle obligatoire ?", qBn:"কার জন্য স্কুল বাধ্যতামূলক?", qPronounce:"পুর কি লেকোল এ-তেল ওব্লিগাতোয়ার ?", aFr:"Pour tous les enfants de 3 à 16 ans.", aBn:"৩ থেকে ১৬ বছর বয়সী সকল শিশুর জন্য।", aPronounce:"পুর তু লে জঁফা দ্য ত্রোয়া আ সেজ আঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Un enfant inscrit à l'école :", qBn:"স্কুলে নিবন্ধিত একটি শিশু:", qPronounce:"আ নঁফা এঁস্ক্রি আ লেকোল :", aFr:"Doit assister aux cours régulièrement.", aBn:"নিয়মিত ক্লাসে উপস্থিত থাকতে হবে।", aPronounce:"দোয়া আসিস্তে ও কুর রেগ্যুলিয়েরমঁ।" },
+        { cat:"🏠 Vivre en France", qFr:"Les enfants qui ne parlent pas français :", qBn:"যে সব শিশু ফরাসি বলে না:", qPronounce:"লে জঁফা কি নে পার্ল পা ফ্রঁসে :", aFr:"Ont droit à un soutien pour apprendre le français.", aBn:"ফরাসি না জানলে শেখার জন্য সহায়তা পায়।", aPronounce:"ওঁ দ্রোয়া আ আঁ সুতিয়াঁ পুর আপ্রঁদ্র ল্য ফ্রঁসে।" }
+    ];
+
+    const STORAGE_KEY = "csp_exam_app_v3";
+    const ANSWER_TYPES = {
+        DATE: "date",
+        NUMBER: "number",
+        BOOLEAN: "boolean",
+        PERSON: "person",
+        SYMBOL: "symbol",
+        PLACE: "place",
+        INSTITUTION: "institution",
+        ACTION: "action",
+        OTHER: "other"
+    };
+
+    const REVIEW_INTERVALS = [1, 3, 7, 14, 30];
+
+    const appState = {
+        mode: "study",
+        soundEnabled: true,
+        slowSpeech: false,
+        theme: "auto",
+        difficultIds: new Set(),
+        favoriteIds: new Set(),
+        studiedIds: new Set(),
+        wrongIds: new Set(),
+        searchTerm: "",
+        selectedCategory: "all",
+        onlyDifficult: false,
+        quiz: null,
+        flashcard: null,
+        progress: {},
+        daily: {
+            target: 32,
+            history: {}
+        },
+        audio: {
+            autoPlay: false,
+            loop: false,
+            sequentialQA: false,
+            syllablePacing: false,
+            repeatAfterMe: false,
+            chunkPlayback: false
+        },
+        language: {
+            autoReduceBengali: true
+        },
+        stats: {
+            quizzesTaken: 0,
+            bestScore: 0,
+            lastScore: 0,
+            avgResponseSec: 0
+        }
+    };
+
+    const refs = {
+        main: document.getElementById("mainContent"),
+        navStudy: document.getElementById("navStudy"),
+        navRandomQuiz: document.getElementById("navRandomQuiz"),
+        navCategoryQuiz: document.getElementById("navCategoryQuiz"),
+        navDailyQuiz: document.getElementById("navDailyQuiz"),
+        navRetryWrong: document.getElementById("navRetryWrong"),
+        soundToggle: document.getElementById("soundToggle"),
+        speedToggle: document.getElementById("speedToggle"),
+        themeToggle: document.getElementById("themeToggle")
+    };
+
+    const speechState = {
+        currentText: "",
+        currentRate: 1,
+        activeBtn: null,
+        manualStop: false,
+        repeatedOnce: false
+    };
+
+    function getTodayKey() {
+        return new Date().toISOString().slice(0, 10);
+    }
+
+    function addDays(dateStr, days) {
+        const d = new Date(dateStr);
+        d.setDate(d.getDate() + days);
+        return d.toISOString().slice(0, 10);
+    }
+
+    function getDaysDiff(fromStr, toStr) {
+        const from = new Date(fromStr);
+        const to = new Date(toStr);
+        return Math.floor((to - from) / (1000 * 60 * 60 * 24));
+    }
+
+    function shuffle(list) {
+        const copy = [...list];
+        for (let i = copy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+    }
+
+    function unique(arr) {
+        return [...new Set(arr)];
+    }
+
+    function escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function classifyAnswerType(answer) {
+        const a = (answer || "").toLowerCase();
+        if (/\b(oui|non)\b/.test(a) && a.length < 36) return ANSWER_TYPES.BOOLEAN;
+        if (/\b\d{4}\b/.test(a) || /janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre/.test(a)) return ANSWER_TYPES.DATE;
+        if (/\b\d+\b/.test(a)) return ANSWER_TYPES.NUMBER;
+        if (/marianne|drapeau|devise|hymne|marseillaise|coq|symbole/.test(a)) return ANSWER_TYPES.SYMBOL;
+        if (/paris|lyon|marseille|nice|corse|algérie|france|union européenne|atlantique|méditerranée|seine|europe/.test(a)) return ANSWER_TYPES.PLACE;
+        if (/président|premier ministre|parlement|sénat|assemblée|juge|tribunal|gouvernement|maire|préfet/.test(a)) return ANSWER_TYPES.INSTITUTION;
+        if (/charles|napoléon|jules|molière|baudelaire|sand|beauvoir|camus|cézanne|chagall|baker|piaf|hugo|louis/.test(a)) return ANSWER_TYPES.PERSON;
+        if (/^à |^le |^la |^les |^une |^un /.test(a) && /er\b|ir\b|re\b|tion\b/.test(a)) return ANSWER_TYPES.ACTION;
+        return ANSWER_TYPES.OTHER;
+    }
+
+    function inferDifficulty(item) {
+        const text = `${item.qFr} ${item.aFr}`;
+        if (text.length > 150) return "hard";
+        if (text.length > 95) return "medium";
+        return "easy";
+    }
+
+    function inferTags(item) {
+        const text = `${item.qFr} ${item.aFr}`.toLowerCase();
+        const tags = [];
+        if (/laïc|religion/.test(text)) tags.push("laicite");
+        if (/république|constitution|parlement|président/.test(text)) tags.push("institutions");
+        if (/droits|liberté|égalité|fraternité|loi/.test(text)) tags.push("droits");
+        if (/guerre|révolution|1789|1914|1939|1945/.test(text)) tags.push("histoire");
+        if (/école|lycée|collège/.test(text)) tags.push("education");
+        if (/santé|médecin|urgence|vitale/.test(text)) tags.push("sante");
+        if (/élections|vote/.test(text)) tags.push("vote");
+        if (!tags.length) tags.push("general");
+        return tags;
+    }
+
+    function normalizeQuestions(legacy) {
+        return legacy.map((q, index) => ({
+            id: `Q${index + 1}`,
+            category: q.cat,
+            questionFr: q.qFr,
+            questionBn: q.qBn,
+            pronunciation: q.qPronounce,
+            correctAnswer: q.aFr,
+            options: [],
+            explanation: q.aBn || "",
+            answerPronunciation: q.aPronounce || "",
+            difficulty: inferDifficulty(q),
+            tags: inferTags(q),
+            answerType: classifyAnswerType(q.aFr)
+        }));
+    }
+
+    const questions = normalizeQuestions(fullQuestions);
+    const byCategory = questions.reduce((acc, q) => {
+        if (!acc[q.category]) acc[q.category] = [];
+        acc[q.category].push(q);
+        return acc;
+    }, {});
+
+    const QUESTION_INTELLIGENCE = {};
+
+    function setIntelByQuestionText(partialText, payload) {
+        const q = questions.find(item => item.questionFr.toLowerCase().includes(partialText.toLowerCase()));
+        if (q) QUESTION_INTELLIGENCE[q.id] = payload;
+    }
+
+    function getQuestionIntel(question) {
+        return QUESTION_INTELLIGENCE[question.id] || null;
+    }
+
+    // High-frequency handcrafted CSP intelligence layer.
+    setIntelByQuestionText("À quoi correspond la date du 14 juillet", {
+        microExplanationFr: "Le 14 juillet commemore la Bastille (1789), repere cle de la Revolution et de la liberte citoyenne.",
+        microExplanationBn: "১৪ জুলাই = ১৭৮৯ বাস্তিল দখল; ফরাসি বিপ্লব ও স্বাধীনতার প্রতীক।",
+        memoryHook: "14 juillet -> Bastille -> Revolution -> Liberte",
+        confusionWarning: "Ne pas confondre avec les dates des guerres mondiales.",
+        fastRecallCue: "1789 = Bastille",
+        weakLearnerHint: "Indice: on parle de fete nationale et d'un evenement de la Revolution.",
+        pronunciationFocus: "Bas-tille, Re-vo-lu-tion",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("'Liberté, égalité, fraternité', c’est", {
+        microExplanationFr: "C'est la devise officielle: 3 valeurs centrales de la Republique francaise.",
+        microExplanationBn: "এটি ফ্রান্সের অফিসিয়াল মূলমন্ত্র: ৩টি প্রজাতান্ত্রিক মূল্যবোধ।",
+        memoryHook: "Devise = 3 mots, 3 valeurs",
+        confusionWarning: "Ne pas confondre devise avec hymne ou drapeau.",
+        fastRecallCue: "Liberte-Egalite-Fraternite = devise",
+        weakLearnerHint: "Question sur un slogan officiel, pas une chanson.",
+        pronunciationFocus: "Li-ber-te, E-ga-li-te, Fra-ter-ni-te",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("Quel est le nom de l'hymne national", {
+        microExplanationFr: "L'hymne national est La Marseillaise, chant officiel de la Nation.",
+        microExplanationBn: "জাতীয় সংগীতের নাম La Marseillaise।",
+        memoryHook: "Hymne = chanson officielle",
+        confusionWarning: "Ne pas confondre hymne, devise et drapeau.",
+        fastRecallCue: "Hymne -> Marseillaise",
+        weakLearnerHint: "Cherchez le nom d'un chant, pas un symbole visuel.",
+        pronunciationFocus: "Mar-sei-llaise",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Quel est l’un des symboles de la République française", {
+        microExplanationFr: "Le drapeau tricolore est un symbole officiel immediatement reconnu de la Republique.",
+        microExplanationBn: "ত্রিবর্ণ পতাকা ফরাসি প্রজাতন্ত্রের অফিসিয়াল প্রতীক।",
+        memoryHook: "Bleu-Blanc-Rouge = Republique visible",
+        confusionWarning: "Ne pas melanger symbole visuel et symbole humain (Marianne).",
+        fastRecallCue: "BBR = drapeau",
+        weakLearnerHint: "Le mot 'symbole' ici renvoie a un element national officiel.",
+        pronunciationFocus: "Tri-co-lore",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Lequel de ces symboles représente officiellement la République française", {
+        microExplanationFr: "Marianne incarne la Republique: figure feminine officielle dans les mairies et institutions.",
+        microExplanationBn: "Marianne হলো প্রজাতন্ত্রের নারীমূর্তি প্রতীক।",
+        memoryHook: "Marianne = visage de la Republique",
+        confusionWarning: "Ne pas confondre Marianne (personnification) avec drapeau (embleme).",
+        fastRecallCue: "Marianne = Republique",
+        weakLearnerHint: "Cherchez une personne-symbole, pas un objet.",
+        pronunciationFocus: "Ma-ri-anne",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("De quand date la Constitution de la Ve République", {
+        microExplanationFr: "La Ve Republique commence avec la Constitution de 1958.",
+        microExplanationBn: "পঞ্চম প্রজাতন্ত্রের সংবিধান: ১৯৫৮।",
+        memoryHook: "Ve Republique -> 1958",
+        confusionWarning: "Ne pas confondre 1958 (Constitution) avec 1905 (laicite).",
+        fastRecallCue: "Ve = 1958",
+        weakLearnerHint: "Question chronologique institutionnelle.",
+        pronunciationFocus: "Cons-ti-tu-tion",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("En quelle année la loi de séparation des Églises et de l'État", {
+        microExplanationFr: "La loi de 1905 fixe la separation entre Etat et religions: base de la laicite.",
+        microExplanationBn: "১৯০৫ সালের আইন রাষ্ট্র ও ধর্মকে আলাদা করে।",
+        memoryHook: "1905 = separation Etat/Religions",
+        confusionWarning: "Ne pas confondre avec 1958 (Constitution).",
+        fastRecallCue: "1905 = laicite",
+        weakLearnerHint: "Pensez a la neutralite de l'Etat.",
+        pronunciationFocus: "La-i-ci-te",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Que permet le principe de laïcité", {
+        microExplanationFr: "La laicite garantit la liberte de conscience et la neutralite de l'Etat.",
+        microExplanationBn: "লাসিতে বিবেকের স্বাধীনতা ও রাষ্ট্রের নিরপেক্ষতা নিশ্চিত করে।",
+        memoryHook: "Laicite = liberte + neutralite",
+        confusionWarning: "La laicite n'interdit pas de croire; elle protege tous les choix.",
+        fastRecallCue: "Conscience + neutralite",
+        weakLearnerHint: "Question de principe republicain, pas de pratique religieuse.",
+        pronunciationFocus: "Neu-tra-li-te",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Le Parlement est composé", {
+        microExplanationFr: "Le Parlement reunit Assemblee nationale et Senat: les deux chambres legislatives.",
+        microExplanationBn: "সংসদ = জাতীয় পরিষদ + সিনেট।",
+        memoryHook: "Parlement = 2 chambres",
+        confusionWarning: "Ne pas confondre Parlement (legislatif) et Gouvernement (executif).",
+        fastRecallCue: "AN + Senat",
+        weakLearnerHint: "Question sur la structure du pouvoir legislatif.",
+        pronunciationFocus: "Par-le-ment, Se-nat",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("Qui vote les lois", {
+        microExplanationFr: "C'est le Parlement qui vote les lois, role central du pouvoir legislatif.",
+        microExplanationBn: "আইন পাস করে সংসদ (Parlement)।",
+        memoryHook: "Vote des lois = Parlement",
+        confusionWarning: "Le Gouvernement applique les lois, il ne les vote pas seul.",
+        fastRecallCue: "Lois -> Parlement",
+        weakLearnerHint: "Pensez separation des pouvoirs.",
+        pronunciationFocus: "Le-gis-la-tif",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("À partir de quel âge a-t-on le droit de voter", {
+        microExplanationFr: "Le droit de vote en France commence a 18 ans pour les citoyens inscrits.",
+        microExplanationBn: "ফ্রান্সে ভোটাধিকার ১৮ বছর থেকে।",
+        memoryHook: "Vote = 18 ans",
+        confusionWarning: "Ne pas oublier la condition d'inscription electorale.",
+        fastRecallCue: "18 = voter",
+        weakLearnerHint: "Question simple age + citoyennete.",
+        pronunciationFocus: "E-lec-to-ral",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("Que signifie « suffrage universel »", {
+        microExplanationFr: "Le suffrage universel signifie que tous les citoyens majeurs peuvent voter.",
+        microExplanationBn: "সার্বজনীন ভোটাধিকার = সব প্রাপ্তবয়স্ক নাগরিক ভোট দিতে পারে।",
+        memoryHook: "Universel = tous les majeurs",
+        confusionWarning: "Ne pas confondre avec droit reserve a une categorie.",
+        fastRecallCue: "Universel = tous",
+        weakLearnerHint: "Le mot-cle est 'tous'.",
+        pronunciationFocus: "Suf-frage u-ni-ver-sel",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("En quelle année a débuté la Révolution française", {
+        microExplanationFr: "La Revolution francaise debute en 1789, repere fondamental de l'histoire civique.",
+        microExplanationBn: "ফরাসি বিপ্লব শুরু ১৭৮৯ সালে।",
+        memoryHook: "1789 = Revolution",
+        confusionWarning: "Ne pas confondre avec 1848 (abolition esclavage) ou 1958.",
+        fastRecallCue: "Revolution = 1789",
+        weakLearnerHint: "Timeline historique CSP.",
+        pronunciationFocus: "Re-vo-lu-tion",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Quelle est la langue officielle de la République française", {
+        microExplanationFr: "La langue officielle de la Republique est le francais, mention constitutionnelle.",
+        microExplanationBn: "ফরাসি প্রজাতন্ত্রের সরকারি ভাষা: ফরাসি।",
+        memoryHook: "Langue officielle -> francais",
+        confusionWarning: "Ne pas confondre langue officielle et langues parlees a la maison.",
+        fastRecallCue: "Officielle = francais",
+        weakLearnerHint: "Question de base identitaire de l'Etat.",
+        pronunciationFocus: "Fran-cais",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("La France est une République indivisible", {
+        microExplanationFr: "La formule constitutionnelle inclut 'laique': neutralite religieuse de l'Etat.",
+        microExplanationBn: "সংবিধানের বাক্যে শূন্যস্থান: laïque।",
+        memoryHook: "Indivisible + laique + democratique + sociale",
+        confusionWarning: "Ne pas remplacer 'laique' par 'religieuse'.",
+        fastRecallCue: "Article 1 -> laique",
+        weakLearnerHint: "Rappelez la formule exacte de l'article 1.",
+        pronunciationFocus: "In-di-vi-sible, la-ique",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Quelle est la devise de la République française", {
+        microExplanationFr: "La devise officielle est Liberte, Egalite, Fraternite: triptyque des valeurs republicaines.",
+        microExplanationBn: "ফরাসি প্রজাতন্ত্রের মূলমন্ত্র: Liberté, Égalité, Fraternité।",
+        memoryHook: "3 valeurs = devise",
+        confusionWarning: "Ne pas confondre devise et hymne national.",
+        fastRecallCue: "LEF = devise",
+        weakLearnerHint: "Pensez aux 3 mots appris a l'ecole republicaine.",
+        pronunciationFocus: "Fra-ter-ni-te",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Quelles sont les couleurs du drapeau français", {
+        microExplanationFr: "Le drapeau national est bleu, blanc, rouge, symbole visuel central de la Nation.",
+        microExplanationBn: "ফরাসি পতাকার রং: নীল, সাদা, লাল।",
+        memoryHook: "BBR = drapeau",
+        confusionWarning: "Ne pas inverser avec d'autres drapeaux europeens.",
+        fastRecallCue: "Bleu-Blanc-Rouge",
+        weakLearnerHint: "Question couleur pure, tres frequente.",
+        pronunciationFocus: "Bleu, blanc, rouge",
+        examTrap: "High-frequency CSP topic"
+    });
+    setIntelByQuestionText("Que permet la citoyenneté française", {
+        microExplanationFr: "La citoyennete francaise donne le droit de vote et la participation democratique.",
+        microExplanationBn: "ফরাসি নাগরিকত্ব ভোটাধিকার ও গণতান্ত্রিক অংশগ্রহণ দেয়।",
+        memoryHook: "Citoyennete = vote + participation",
+        confusionWarning: "Ne pas reduire la citoyennete a un simple papier administratif.",
+        fastRecallCue: "Citoyennete -> voter",
+        weakLearnerHint: "Cherchez un droit politique fondamental.",
+        pronunciationFocus: "Ci-to-yen-ne-te",
+        examTrap: "Very important"
+    });
+    setIntelByQuestionText("Le principe d’égalité signifie que", {
+        microExplanationFr: "L'egalite signifie que la loi s'applique de la meme facon a tous les citoyens.",
+        microExplanationBn: "সাম্য মানে আইনের কাছে সবাই সমান।",
+        memoryHook: "Egalite = meme loi pour tous",
+        confusionWarning: "Egalite ne veut pas dire identite des situations, mais egalite devant la loi.",
+        fastRecallCue: "Meme loi",
+        weakLearnerHint: "Reperez l'expression 'devant la loi'.",
+        pronunciationFocus: "E-ga-li-te",
+        examTrap: "Frequently confused"
+    });
+    setIntelByQuestionText("Que signifie la liberté", {
+        microExplanationFr: "La liberte permet de choisir et d'agir dans le respect de la loi et d'autrui.",
+        microExplanationBn: "স্বাধীনতা মানে আইন মেনে নিজের সিদ্ধান্ত নেওয়া।",
+        memoryHook: "Liberte = choix + respect",
+        confusionWarning: "La liberte n'autorise pas d'enfreindre la loi.",
+        fastRecallCue: "Choisir dans la loi",
+        weakLearnerHint: "Cherchez l'equilibre entre droit individuel et regle commune.",
+        pronunciationFocus: "Li-ber-te",
+        examTrap: "Classic exam trap"
+    });
+    setIntelByQuestionText("Quel est le rôle des députés", {
+        microExplanationFr: "Les deputes votent les lois et controlent l'action du gouvernement.",
+        microExplanationBn: "দেপুতিরা আইন পাস করে এবং সরকারকে তদারকি করে।",
+        memoryHook: "Deputes = vote + controle",
+        confusionWarning: "Ne pas confondre deputes (AN) et senateurs (Senat).",
+        fastRecallCue: "Vote + controle",
+        weakLearnerHint: "Question role du legislatif.",
+        pronunciationFocus: "De-pu-te",
+        examTrap: "High-frequency CSP topic"
+    });
+
+    function defaultProgress() {
+        const today = getTodayKey();
+        return {
+            successCount: 0,
+            failCount: 0,
+            unsureCount: 0,
+            highConfidenceFailCount: 0,
+            slowRecallCount: 0,
+            confusionTrapCount: 0,
+            lastReviewed: "",
+            nextReview: today,
+            masteryScore: 0,
+            masteryLevel: "New",
+            avgSec: 0,
+            reviewCount: 0,
+            lastFailedAt: ""
+        };
+    }
+
+    function getProgress(questionId) {
+        if (!appState.progress[questionId]) appState.progress[questionId] = defaultProgress();
+        appState.progress[questionId] = { ...defaultProgress(), ...appState.progress[questionId] };
+        return appState.progress[questionId];
+    }
+
+    function masteryLevel(score) {
+        if (score >= 85) return "Mastered";
+        if (score >= 65) return "Strong";
+        if (score >= 45) return "Familiar";
+        if (score >= 20) return "Learning";
+        return "New";
+    }
+
+    function intervalFromMastery(score, isFail, confidence = "confident") {
+        if (isFail) return 1;
+        if (confidence === "unsure") {
+            if (score >= 85) return REVIEW_INTERVALS[2];
+            if (score >= 65) return REVIEW_INTERVALS[1];
+            return REVIEW_INTERVALS[0];
+        }
+        if (score >= 85) return REVIEW_INTERVALS[4];
+        if (score >= 65) return REVIEW_INTERVALS[3];
+        if (score >= 45) return REVIEW_INTERVALS[2];
+        if (score >= 20) return REVIEW_INTERVALS[1];
+        return REVIEW_INTERVALS[0];
+    }
+
+    function updateProgress(question, ok, responseSec, confidence = "confident") {
+        const p = getProgress(question.id);
+        const today = getTodayKey();
+        const intel = getQuestionIntel(question);
+        p.reviewCount += 1;
+        p.lastReviewed = today;
+        p.avgSec = p.avgSec ? Math.round(((p.avgSec * (p.reviewCount - 1)) + responseSec) / p.reviewCount) : Math.round(responseSec);
+        if (responseSec >= 12) p.slowRecallCount += 1;
+
+        if (ok) {
+            p.successCount += 1;
+            const gain = confidence === "unsure" ? 5 : (question.difficulty === "hard" ? 9 : 11);
+            p.masteryScore = Math.min(100, p.masteryScore + gain);
+            if (confidence === "unsure") p.unsureCount += 1;
+        } else {
+            p.failCount += 1;
+            p.lastFailedAt = today;
+            p.masteryScore = Math.max(0, p.masteryScore - 17);
+            if (confidence === "confident") p.highConfidenceFailCount += 1;
+            if (intel && /trap|confused|important/i.test(intel.examTrap || "")) p.confusionTrapCount += 1;
+        }
+
+        p.masteryLevel = masteryLevel(p.masteryScore);
+        const nextInterval = intervalFromMastery(p.masteryScore, !ok, confidence);
+        p.nextReview = addDays(today, nextInterval);
+    }
+
+    function getQuestionPriority(question) {
+        const p = getProgress(question.id);
+        const today = getTodayKey();
+        const daysUntilDue = getDaysDiff(today, p.nextReview || today);
+        let score = 0;
+
+        if (!p.lastReviewed) score += 22;
+        if (daysUntilDue <= 0) score += 34;
+        if (daysUntilDue > 0) score += Math.max(0, 8 - daysUntilDue);
+        score += p.failCount * 6;
+        score += p.unsureCount * 4;
+        score += appState.wrongIds.has(question.id) ? 15 : 0;
+        score += appState.difficultIds.has(question.id) ? 9 : 0;
+        score += question.difficulty === "hard" ? 5 : 0;
+        if (p.masteryScore >= 85) score -= 26;
+
+        const cat = categoryMetrics()[question.category];
+        if (cat && cat.mastery < 55) score += 8;
+
+        return score + Math.random() * 1.5;
+    }
+
+    function categoryMetrics() {
+        const out = {};
+        Object.keys(byCategory).forEach(cat => {
+            const items = byCategory[cat];
+            const reviewed = items.filter(q => !!getProgress(q.id).lastReviewed).length;
+            const masteryAvg = Math.round(items.reduce((sum, q) => sum + getProgress(q.id).masteryScore, 0) / items.length);
+            const weak = items.filter(q => getProgress(q.id).masteryScore < 45).length;
+            out[cat] = {
+                completion: Math.round((reviewed / items.length) * 100),
+                mastery: masteryAvg,
+                weak
+            };
+        });
+        return out;
+    }
+
+    function recordDailyActivity(questionsDelta, xpDelta, secondsDelta) {
+        const today = getTodayKey();
+        if (!appState.daily.history[today]) {
+            appState.daily.history[today] = { questions: 0, xp: 0, seconds: 0 };
+        }
+        appState.daily.history[today].questions += questionsDelta;
+        appState.daily.history[today].xp += xpDelta;
+        appState.daily.history[today].seconds += secondsDelta;
+    }
+
+    function streakCount() {
+        const keys = Object.keys(appState.daily.history).sort().reverse();
+        if (!keys.length) return 0;
+        let streak = 0;
+        let cursor = getTodayKey();
+        for (let i = 0; i < 365; i++) {
+            const entry = appState.daily.history[cursor];
+            if (entry && entry.questions > 0) {
+                streak += 1;
+                cursor = addDays(cursor, -1);
+            } else {
+                break;
+            }
+        }
+        return streak;
+    }
+
+    function getTodaySummary() {
+        const today = appState.daily.history[getTodayKey()] || { questions: 0, xp: 0, seconds: 0 };
+        const catStats = categoryMetrics();
+        const weakTopic = Object.entries(catStats).sort((a, b) => a[1].mastery - b[1].mastery)[0];
+        return {
+            ...today,
+            minutes: Math.round(today.seconds / 60),
+            streak: streakCount(),
+            weakTopic: weakTopic ? weakTopic[0] : "-"
+        };
+    }
+
+    function languageVisibility(context, question = null, strictFlashcard = false) {
+        if (context === "study") {
+            if (!question || !appState.language.autoReduceBengali) return { fr: true, bn: true };
+            const mastery = getProgress(question.id).masteryScore;
+            return { fr: true, bn: mastery < 70 };
+        }
+
+        if (context === "flashcard") {
+            if (strictFlashcard) return { fr: true, bn: false };
+            if (!question || !appState.language.autoReduceBengali) return { fr: true, bn: true };
+            const mastery = getProgress(question.id).masteryScore;
+            return { fr: true, bn: mastery < 80 };
+        }
+
+        // quiz / exam / conditioning / recall
+        return { fr: true, bn: false };
+    }
+
+    function keywordHighlights(text) {
+        const source = escapeHtml(text || "");
+        return source.replace(/(République|Constitution|laïcité|laicite|14 juillet|Marseillaise|Marianne|Parlement|Président|égalité|liberté|fraternité|élections|vote|école|Union européenne|UE|drapeau|Bastille)/gi, "<strong>$1</strong>");
+    }
+
+    function isWeakCategory(category) {
+        const metrics = categoryMetrics()[category];
+        return metrics ? metrics.mastery < 55 : false;
+    }
+
+    function explanationDepth(question) {
+        const p = getProgress(question.id);
+        if (p.failCount >= 2 || p.unsureCount >= 2 || isWeakCategory(question.category)) return "rich";
+        if (p.masteryScore >= 70) return "short";
+        return "medium";
+    }
+
+    const MICRO_PATTERNS = [
+        {
+            test: /14 juillet/i,
+            reasonFr: "Le 14 juillet commemore la prise de la Bastille (1789), symbole de la Revolution et de la liberte citoyenne.",
+            memoFr: "Memo: 14/07 = Bastille = debut symbolique de la Republique moderne.",
+            warnFr: "Ne pas confondre avec les dates des guerres mondiales.",
+            hookFr: "Image mentale: foule devant la Bastille, drapeau tricolore leve.",
+            reasonBn: "১৪ জুলাই = ১৭৮৯ সালের বাস্তিল দুর্গ দখল, বিপ্লব ও স্বাধীনতার প্রতীক।",
+            memoBn: "মনে রাখুন: 14/07 = Bastille = liberté.",
+            warnBn: "বিশ্বযুদ্ধের তারিখের সাথে গুলিয়ে ফেলবেন না।"
+        },
+        {
+            test: /devise|Liberté,?\s*Égalité,?\s*Fraternité/i,
+            reasonFr: "Cette formule est la devise officielle qui resume les valeurs cardinales de la Republique francaise.",
+            memoFr: "Memo 3 mots: Liberte (choisir), Egalite (meme loi), Fraternite (solidarite).",
+            warnFr: "Ne pas confondre la devise avec l'hymne national.",
+            hookFr: "Association 3-3: trois mots, trois valeurs, trois couleurs du drapeau.",
+            reasonBn: "এটি ফরাসি প্রজাতন্ত্রের অফিসিয়াল মূলমন্ত্র: স্বাধীনতা, সাম্য, ভ্রাতৃত্ব।",
+            memoBn: "৩ শব্দ = ৩ মূল্যবোধ।",
+            warnBn: "এটিকে জাতীয় সংগীতের সাথে মিলাবেন না।"
+        },
+        {
+            test: /Marseillaise|hymne national/i,
+            reasonFr: "La Marseillaise est l'hymne national: c'est le chant officiel de la Nation.",
+            memoFr: "Memo: Hymne = chanson officielle ; devise = formule de valeurs.",
+            warnFr: "Ne pas confondre avec la devise ou le drapeau.",
+            hookFr: "Indice sonore: imaginez une ceremonie officielle et l'hymne joue.",
+            reasonBn: "লা মার্সেইয়েজ হলো ফ্রান্সের জাতীয় সংগীত।",
+            memoBn: "Hymne = গান, Devise = মূলমন্ত্র।",
+            warnBn: "পতাকা বা মূলমন্ত্রের সাথে গুলিয়ে ফেলবেন না।"
+        },
+        {
+            test: /laïcité|laicite|1905|Églises et de l'État/i,
+            reasonFr: "La laicite separe l'Etat des religions et garantit la liberte de conscience de tous.",
+            memoFr: "Memo: 1905 = separation Etat/Religions.",
+            warnFr: "La laicite n'est pas anti-religion: elle garantit la neutralite publique.",
+            hookFr: "Comparaison: chacun croit librement, l'Etat reste neutre.",
+            reasonBn: "লাসিতে মানে রাষ্ট্র ও ধর্ম আলাদা; সবার বিবেকের স্বাধীনতা নিশ্চিত।",
+            memoBn: "মনে রাখুন: 1905 = séparation Etat/Religion.",
+            warnBn: "এটি ধর্মবিরোধী নয়; এটি রাষ্ট্রীয় নিরপেক্ষতা।"
+        },
+        {
+            test: /Président|Premier ministre|Parlement|Sénat|Assemblée/i,
+            reasonFr: "La bonne reponse depend de la separation des pouvoirs: qui decide, qui vote la loi, qui execute.",
+            memoFr: "Memo institutionnel: Parlement vote, Gouvernement execute, Justice juge.",
+            warnFr: "Ne pas melanger roles President/Premier ministre/Parlement.",
+            hookFr: "Schema mental en 3 blocs: legislatif, executif, judiciaire.",
+            reasonBn: "সঠিক উত্তরটি ক্ষমতার বিভাজনের ভিত্তিতে: কে আইন করে, কে কার্যকর করে, কে বিচার করে।",
+            memoBn: "Parlement=vote, Gouvernement=execute, Justice=juge.",
+            warnBn: "রাষ্ট্রপতি, প্রধানমন্ত্রী ও সংসদের কাজ এক নয়।"
+        },
+        {
+            test: /élections|vote|suffrage/i,
+            reasonFr: "Le droit de vote suit des conditions legales precises (age, inscription, citoyennete selon le scrutin).",
+            memoFr: "Memo vote: 18 ans + inscrit sur liste electorale.",
+            warnFr: "Ne pas oublier l'inscription electorale, condition frequemment piege.",
+            hookFr: "Question reflexe: Qui vote? A quel age? Pour quelle election?",
+            reasonBn: "ভোটাধিকার আইনি শর্তের উপর নির্ভর করে (বয়স, তালিকাভুক্তি, নাগরিকত্ব)।",
+            memoBn: "১৮ বছর + ভোটার তালিকা।",
+            warnBn: "ভোটার তালিকায় নিবন্ধন ভুলবেন না।"
+        }
+    ];
+
+    function microPatternFor(question) {
+        const text = `${question.questionFr} ${question.correctAnswer}`;
+        return MICRO_PATTERNS.find(p => p.test.test(text));
+    }
+
+    function generateHint(question) {
+        const intel = getQuestionIntel(question);
+        if (intel) {
+            return {
+                fr: intel.weakLearnerHint || `Indice: ${intel.fastRecallCue}`,
+                bn: `ইঙ্গিত: ${intel.fastRecallCue}`
+            };
+        }
+
+        const pat = microPatternFor(question);
+        if (pat) {
+            return {
+                fr: pat.warnFr.includes("Ne pas") ? pat.warnFr.replace("Ne pas confondre", "Indice") : `Indice: ${pat.hookFr}`,
+                bn: `ইঙ্গিত: ${pat.memoBn}`
+            };
+        }
+
+        const genericByTag = {
+            institutions: "Indice: cette question teste le role d'une institution precise.",
+            histoire: "Indice: cherchez un repere historique (date ou personnage).",
+            droits: "Indice: pensez au principe republicain protege par la loi.",
+            vote: "Indice: verifiez age, citoyennete et inscription.",
+            education: "Indice: reperez le niveau scolaire ou l'obligation legale.",
+            sante: "Indice: pensez au parcours de soin et aux services officiels."
+        };
+        const primaryTag = question.tags[0] || "general";
+        return {
+            fr: genericByTag[primaryTag] || "Indice: reliez la question a la categorie officielle.",
+            bn: "ইঙ্গিত: প্রশ্নের বিভাগের মূল ধারণা মনে করুন, সরাসরি উত্তর নয়।"
+        };
+    }
+
+    function explainQuestion(question, options = [], userAnswer = "") {
+        const depth = explanationDepth(question);
+        const intel = getQuestionIntel(question);
+        if (intel) {
+            const p = getProgress(question.id);
+            const weakMode = p.failCount >= 2 || p.unsureCount >= 2;
+            const wrongReasonsIntel = options
+                .filter(opt => opt !== question.correctAnswer)
+                .map(opt => {
+                    let reason = intel.confusionWarning || "Cette option est un piege frequent pour cette notion.";
+                    if (opt === userAnswer) {
+                        reason = `${reason} C'est le piege principal de cette question.`;
+                    }
+                    return { option: opt, reason };
+                });
+
+            return {
+                frShort: weakMode
+                    ? `${intel.microExplanationFr} | Indice simple: ${intel.weakLearnerHint}`
+                    : `${intel.microExplanationFr} 👉 ${intel.memoryHook} ⚠️ ${intel.confusionWarning}`,
+                bnShort: weakMode
+                    ? `${intel.microExplanationBn} | সহজ ইঙ্গিত: ${intel.weakLearnerHint}`
+                    : `${intel.microExplanationBn} 👉 ${intel.fastRecallCue} ⚠️ ${intel.confusionWarning}`,
+                wrongReasons: wrongReasonsIntel,
+                structure: {
+                    reasonFr: intel.microExplanationFr,
+                    memoFr: intel.memoryHook,
+                    warnFr: intel.confusionWarning,
+                    hookFr: intel.fastRecallCue,
+                    reasonBn: intel.microExplanationBn,
+                    memoBn: `মেমো: ${intel.fastRecallCue}`,
+                    warnBn: `সতর্কতা: ${intel.confusionWarning}`,
+                    trap: intel.examTrap || ""
+                }
+            };
+        }
+
+        const pat = microPatternFor(question);
+        const type = question.answerType;
+        const fallbackReasonFr = {
+            date: "La bonne reponse est le repere chronologique officiel attendu.",
+            person: "La bonne reponse est le personnage directement associe au fait demande.",
+            symbol: "La bonne reponse est un symbole institutionnel reconnu.",
+            institution: "La bonne reponse correspond a l'acteur institutionnel legalement competent.",
+            place: "La bonne reponse est le lieu exact attendu au programme.",
+            boolean: "La bonne reponse est conforme au droit et aux valeurs republicaines.",
+            number: "La bonne reponse est la valeur officielle attendue.",
+            action: "La bonne reponse decrit l'action legalement correcte.",
+            other: "La bonne reponse est celle de reference dans le corpus officiel CSP."
+        };
+
+        const reasonFr = pat ? pat.reasonFr : fallbackReasonFr[type] || fallbackReasonFr.other;
+        const memoFr = pat ? pat.memoFr : `Memo: ${question.category.replace(/🇫🇷|🏛️|⚖️|📜|🏠/g, "").trim()} -> ${question.correctAnswer}`;
+        const warnFr = pat ? pat.warnFr : "Attention au piege: l'option proche n'est pas toujours legalement exacte.";
+        const hookFr = pat ? pat.hookFr : "Hook memoire: associez la question a un mot-cle de sa categorie.";
+
+        const reasonBn = pat ? pat.reasonBn : `${question.explanation || "এই উত্তরটি অফিসিয়াল সিভিক তথ্য অনুযায়ী সঠিক।"}`;
+        const memoBn = pat ? pat.memoBn : `মেমো: ${question.correctAnswer}`;
+        const warnBn = pat ? pat.warnBn : "সতর্কতা: কাছাকাছি অপশনগুলো অনেক সময় ভুল হয়।";
+
+        const frShort = depth === "short"
+            ? `${reasonFr} Memo: ${question.correctAnswer}`
+            : `${reasonFr} 👉 ${memoFr} ⚠️ ${warnFr}`;
+        const bnShort = depth === "short"
+            ? `${reasonBn}`
+            : `${reasonBn} 👉 ${memoBn} ⚠️ ${warnBn}`;
+
+        const wrongReasons = options
+            .filter(opt => opt !== question.correctAnswer)
+            .map(opt => {
+                let reason = "Cette proposition ne correspond pas precisement a la question posee.";
+                if (type === ANSWER_TYPES.DATE && !/\d{4}|juillet|mai|novembre|décembre|decembre/.test(opt.toLowerCase())) {
+                    reason = "La question demande une date; cette option n'est pas une date historique attendue.";
+                } else if (type === ANSWER_TYPES.PERSON && !/^[A-ZÉÈÊÂÎÔÛÀÙÇ]/.test(opt)) {
+                    reason = "La question vise une personne; cette option est d'une autre nature.";
+                } else if (type === ANSWER_TYPES.SYMBOL && !/drapeau|marianne|devise|hymne|coq|marseillaise/i.test(opt)) {
+                    reason = "La question porte sur un symbole officiel; cette option ne correspond pas a ce type.";
+                }
+                if (opt === userAnswer) {
+                    reason = `${reason} C'est pourquoi votre choix etait incorrect ici.`;
+                }
+                return { option: opt, reason };
+            });
+
+        return {
+            frShort,
+            bnShort,
+            wrongReasons,
+            structure: {
+                reasonFr,
+                memoFr,
+                warnFr,
+                hookFr,
+                reasonBn,
+                memoBn,
+                warnBn
+            }
+        };
+    }
+
+    function buildSmartOptions(question, pool, prefilled = []) {
+        if (prefilled.length === 4 && prefilled.includes(question.correctAnswer)) {
+            return prefilled;
+        }
+
+        const correct = question.correctAnswer;
+        const sameCategorySameType = pool
+            .filter(q => q.id !== question.id && q.category === question.category && q.answerType === question.answerType)
+            .map(q => q.correctAnswer);
+
+        const sameType = pool
+            .filter(q => q.id !== question.id && q.answerType === question.answerType)
+            .map(q => q.correctAnswer);
+
+        const sameCategory = pool
+            .filter(q => q.id !== question.id && q.category === question.category)
+            .map(q => q.correctAnswer);
+
+        let distractors = unique([...shuffle(sameCategorySameType), ...shuffle(sameType), ...shuffle(sameCategory)])
+            .filter(a => a !== correct)
+            .slice(0, 3);
+
+        if (question.answerType === ANSWER_TYPES.DATE && distractors.length < 3) {
+            const yearMatch = correct.match(/\b(\d{4})\b/);
+            if (yearMatch) {
+                const year = Number(yearMatch[1]);
+                const synthetic = [year - 2, year + 3, year + 9, year - 11]
+                    .filter(y => y > 1500 && y < 2100)
+                    .map(y => String(y));
+                distractors = unique([...distractors, ...synthetic]).slice(0, 3);
+            }
+        }
+
+        if (distractors.length < 3) {
+            const fallback = unique(pool.map(q => q.correctAnswer).filter(a => a !== correct));
+            distractors = unique([...distractors, ...shuffle(fallback)]).slice(0, 3);
+        }
+
+        return shuffle([correct, ...distractors]);
+    }
+
+    function serializeState() {
+        return {
+            soundEnabled: appState.soundEnabled,
+            slowSpeech: appState.slowSpeech,
+            theme: appState.theme,
+            difficultIds: [...appState.difficultIds],
+            favoriteIds: [...appState.favoriteIds],
+            studiedIds: [...appState.studiedIds],
+            wrongIds: [...appState.wrongIds],
+            progress: appState.progress,
+            daily: appState.daily,
+            audio: appState.audio,
+            language: appState.language,
+            stats: appState.stats
+        };
+    }
+
+    function loadState() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            const parsed = JSON.parse(raw);
+            appState.soundEnabled = parsed.soundEnabled ?? true;
+            appState.slowSpeech = parsed.slowSpeech ?? false;
+            appState.theme = parsed.theme ?? "auto";
+            appState.difficultIds = new Set(parsed.difficultIds || []);
+            appState.favoriteIds = new Set(parsed.favoriteIds || []);
+            appState.studiedIds = new Set(parsed.studiedIds || []);
+            appState.wrongIds = new Set(parsed.wrongIds || []);
+            appState.progress = parsed.progress || {};
+            appState.daily = { ...appState.daily, ...(parsed.daily || {}) };
+            appState.audio = { ...appState.audio, ...(parsed.audio || {}) };
+            appState.language = { ...appState.language, ...(parsed.language || {}) };
+            appState.stats = parsed.stats || appState.stats;
+        } catch (_e) {
+            // ignore corrupted state
+        }
+    }
+
+    function saveState() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(serializeState()));
+    }
+
+    function applyTheme() {
+        document.body.setAttribute("data-theme", appState.theme === "auto" ? "" : appState.theme);
+        refs.themeToggle.textContent = `Theme ${appState.theme}`;
+    }
+
+    function updateTopButtons(active) {
+        [refs.navStudy, refs.navRandomQuiz, refs.navCategoryQuiz, refs.navDailyQuiz, refs.navRetryWrong].forEach(btn => {
+            btn.classList.remove("active");
+        });
+        if (active) active.classList.add("active");
+        refs.soundToggle.textContent = appState.soundEnabled ? "Son ON" : "Son OFF";
+        refs.soundToggle.setAttribute("aria-pressed", String(appState.soundEnabled));
+        refs.speedToggle.textContent = appState.slowSpeech ? "Prononciation lente ON" : "Prononciation lente OFF";
+        refs.speedToggle.setAttribute("aria-pressed", String(appState.slowSpeech));
+    }
+
+    function getFrenchVoice() {
+        const voices = speechSynthesis.getVoices();
+        return voices.find(v => v.lang && v.lang.toLowerCase().startsWith("fr")) || null;
+    }
+
+    function stopSpeech() {
+        speechState.manualStop = true;
+        speechSynthesis.cancel();
+        if (speechState.activeBtn) {
+            speechState.activeBtn.textContent = "🔊";
+            speechState.activeBtn = null;
+        }
+    }
+
+    function applySyllablePacing(text) {
+        if (!appState.audio.syllablePacing) return text;
+        return text
+            .replace(/tion/gi, "ti-on")
+            .replace(/ique/gi, "i-que")
+            .replace(/eau/gi, "e-au")
+            .replace(/eux/gi, "eux")
+            .replace(/\s+/g, " ");
+    }
+
+    function chunkPhrase(text) {
+        if (!appState.audio.chunkPlayback) return text;
+        return text
+            .replace(/,\s*/g, ", ... ")
+            .replace(/\s+et\s+/gi, " ... et ")
+            .replace(/\s+ou\s+/gi, " ... ou ");
+    }
+
+    function speakText(text, btn, onEnd, allowRepeat = true) {
+        if (!appState.soundEnabled || !text) return;
+        const baseRate = appState.slowSpeech ? 0.72 : 1;
+        const rate = appState.audio.syllablePacing ? Math.min(baseRate, 0.62) : baseRate;
+        const processedText = chunkPhrase(applySyllablePacing(text));
+
+        if (speechSynthesis.speaking && speechState.currentText === processedText && speechState.currentRate === rate) {
+            if (speechSynthesis.paused) {
+                speechSynthesis.resume();
+                if (btn) btn.textContent = "⏸";
+            } else {
+                speechSynthesis.pause();
+                if (btn) btn.textContent = "▶";
+            }
+            return;
+        }
+
+        stopSpeech();
+        speechState.manualStop = false;
+        speechState.repeatedOnce = false;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "fr-FR";
+        utterance.rate = rate;
+        const voice = getFrenchVoice();
+        if (voice) utterance.voice = voice;
+
+        speechState.currentText = processedText;
+        speechState.currentRate = rate;
+        speechState.activeBtn = btn || null;
+        if (btn) btn.textContent = "⏸";
+
+        utterance.text = processedText;
+
+        utterance.onend = () => {
+            if (btn) btn.textContent = "🔊";
+            speechState.activeBtn = null;
+            speechState.currentText = "";
+            if (allowRepeat && appState.audio.repeatAfterMe && !speechState.manualStop && !speechState.repeatedOnce) {
+                speechState.repeatedOnce = true;
+                setTimeout(() => speakText(text, btn, onEnd, false), 500);
+                return;
+            }
+            speechState.repeatedOnce = false;
+            if (onEnd) onEnd();
+            if (appState.audio.loop && !speechState.manualStop) {
+                setTimeout(() => speakText(text, btn, onEnd), 160);
+            }
+        };
+
+        speechSynthesis.speak(utterance);
+    }
+
+    function maybeVibrateWrong() {
+        if (navigator.vibrate) navigator.vibrate([30, 35, 30]);
+    }
+
+    function launchConfetti() {
+        const colors = ["#14b8a6", "#2457f5", "#f59e0b", "#22c55e", "#ec4899"];
+        for (let i = 0; i < 72; i++) {
+            const node = document.createElement("span");
+            node.className = "confetti";
+            node.style.left = `${Math.random() * 100}vw`;
+            node.style.background = colors[Math.floor(Math.random() * colors.length)];
+            node.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
+            node.style.animationDelay = `${Math.random() * 0.45}s`;
+            document.body.appendChild(node);
+            setTimeout(() => node.remove(), 2600);
+        }
+    }
+
+    function renderStudyView() {
+        appState.mode = "study";
+        clearInterval(appState.quiz?.timer || null);
+        stopSpeech();
+        appState.quiz = null;
+        appState.flashcard = null;
+        updateTopButtons(refs.navStudy);
+
+        const categories = ["all", ...Object.keys(byCategory)];
+        const filtered = questions.filter(q => {
+            const text = `${q.questionFr} ${q.questionBn} ${q.correctAnswer}`.toLowerCase();
+            const matchSearch = !appState.searchTerm || text.includes(appState.searchTerm.toLowerCase());
+            const matchCategory = appState.selectedCategory === "all" || q.category === appState.selectedCategory;
+            const matchDifficult = !appState.onlyDifficult || appState.difficultIds.has(q.id);
+            return matchSearch && matchCategory && matchDifficult;
+        });
+
+        refs.main.innerHTML = `
+            <section class="study-shell">
+                <div class="study-compact-toolbar">
+                    <div class="study-compact-row">
+                        <input id="searchInput" type="search" placeholder="Rechercher" value="${escapeHtml(appState.searchTerm)}" aria-label="Recherche" style="min-height:32px; padding:6px 8px; font-size:0.8rem;">
+                        <select id="categoryFilter" aria-label="Filtrer par categorie" style="max-width:124px; min-height:32px; padding:6px 8px; font-size:0.78rem;">
+                            ${categories.map(c => `<option value="${escapeHtml(c)}" ${c === appState.selectedCategory ? "selected" : ""}>${escapeHtml(c === "all" ? "Toutes" : c)}</option>`).join("")}
+                        </select>
+                        <button id="studyAdvancedToggle" class="study-chip" type="button" aria-expanded="false">Filtres</button>
+                    </div>
+                    <div class="study-chip-row">
+                        <button id="toggleDifficultOnly" class="study-chip ${appState.onlyDifficult ? "active" : ""}" type="button">Difficiles</button>
+                        <button id="quickDifficult" class="study-chip" type="button">Quiz diff.</button>
+                        <button id="quickWrong" class="study-chip" type="button">Erreurs</button>
+                        <button id="quickRecall" class="study-chip" type="button">Recall 8s</button>
+                    </div>
+                    <div id="studyAdvancedPanel" class="study-advanced">
+                        <div class="study-chip-row">
+                            <button id="modeStressFree" class="study-chip" type="button">Pratique</button>
+                            <button id="modeExam" class="study-chip" type="button">Examen</button>
+                            <button id="modeFlashcard" class="study-chip" type="button">Flashcards</button>
+                            <button id="modeListen" class="study-chip" type="button">Audio</button>
+                            <button id="modeQuick" class="study-chip" type="button">20s</button>
+                            <button id="modeConditioning" class="study-chip" type="button">Condition</button>
+                        </div>
+                    </div>
+                </div>
+                <p class="study-count">${filtered.length} questions</p>
+            </section>
+            <section class="study-list compact" id="studyList"></section>
+        `;
+
+        const list = refs.main.querySelector("#studyList");
+        if (!filtered.length) {
+            list.innerHTML = `<div class="card">Aucune question pour ce filtre.</div>`;
+        } else {
+            list.innerHTML = filtered.map(q => {
+                const exp = explainQuestion(q);
+                const lang = languageVisibility("study", q);
+                const bnMeaning = lang.bn && q.questionBn ? `<div class="study-bn-line">🇧🇩 ${escapeHtml(q.questionBn)}</div>` : "";
+                const warningFr = exp.structure.warnFr || exp.structure.reasonFr;
+                return `
+                <article class="study-compact-card" data-id="${q.id}">
+                    <div class="study-q">🇫🇷 ${keywordHighlights(q.questionFr)}</div>
+                    ${bnMeaning}
+                    <div class="study-a">✔ ${escapeHtml(q.correctAnswer)}</div>
+                    <div class="study-cue">🧠 ${escapeHtml(exp.structure.memoFr)}</div>
+                    <div class="study-warn">⚠ ${escapeHtml(warningFr)}</div>
+                </article>`;
+            }).join("");
+        }
+
+        refs.main.querySelector("#searchInput").addEventListener("input", e => {
+            appState.searchTerm = e.target.value.trim();
+            renderStudyView();
+        });
+
+        refs.main.querySelector("#categoryFilter").addEventListener("change", e => {
+            appState.selectedCategory = e.target.value;
+            renderStudyView();
+        });
+
+        refs.main.querySelector("#toggleDifficultOnly").addEventListener("click", () => {
+            appState.onlyDifficult = !appState.onlyDifficult;
+            renderStudyView();
+        });
+
+        refs.main.querySelector("#quickDifficult").addEventListener("click", () => {
+            startQuizSession("difficult");
+        });
+
+        refs.main.querySelector("#quickWrong").addEventListener("click", () => {
+            startQuizSession("retryWrong");
+        });
+
+        refs.main.querySelector("#quickRecall").addEventListener("click", () => {
+            startQuizSession("recall");
+        });
+
+        refs.main.querySelector("#studyAdvancedToggle").addEventListener("click", (e) => {
+            const panel = refs.main.querySelector("#studyAdvancedPanel");
+            panel.classList.toggle("open");
+            e.currentTarget.setAttribute("aria-expanded", panel.classList.contains("open") ? "true" : "false");
+        });
+
+        refs.main.querySelector("#modeStressFree")?.addEventListener("click", () => startQuizSession("random"));
+        refs.main.querySelector("#modeExam")?.addEventListener("click", () => startQuizSession("exam"));
+        refs.main.querySelector("#modeQuick")?.addEventListener("click", () => startQuizSession("quick"));
+        refs.main.querySelector("#modeConditioning")?.addEventListener("click", () => startQuizSession("conditioning"));
+        refs.main.querySelector("#modeFlashcard")?.addEventListener("click", () => startFlashcardMode(false));
+        refs.main.querySelector("#modeListen")?.addEventListener("click", startListenMode);
+
+        list.addEventListener("click", e => {
+            const card = e.target.closest(".study-compact-card");
+            if (!card) return;
+            appState.studiedIds.add(card.dataset.id);
+            recordDailyActivity(1, 1, 10);
+            saveState();
+        });
+    }
+
+    function pickQuizPool(mode, category) {
+        const source = [...questions].sort((a, b) => getQuestionPriority(b) - getQuestionPriority(a));
+        const todaySeed = new Date().toISOString().slice(0, 10).split("-").join("");
+        const seededOrder = [...source].sort((a, b) => (`${a.id}${todaySeed}` > `${b.id}${todaySeed}` ? 1 : -1));
+
+        if (mode === "category") return shuffle((byCategory[category] || []).slice());
+        if (mode === "daily") return seededOrder.slice(0, 25).sort((a, b) => getQuestionPriority(b) - getQuestionPriority(a));
+        if (mode === "retryWrong") return shuffle(source.filter(q => appState.wrongIds.has(q.id)));
+        if (mode === "difficult") return shuffle(source.filter(q => appState.difficultIds.has(q.id)));
+        if (mode === "favorites") return shuffle(source.filter(q => appState.favoriteIds.has(q.id)));
+        if (mode === "exam") return shuffle(source);
+        if (mode === "quick") return source;
+        if (mode === "recall") {
+            const weak = source.filter(q => getProgress(q.id).masteryScore < 50 || appState.wrongIds.has(q.id));
+            return [...weak, ...source];
+        }
+        if (mode === "conditioning") {
+            return source;
+        }
+        return [...source.slice(0, 55), ...shuffle(source.slice(55))];
+    }
+
+    function startQuizSession(mode, category = "") {
+        const pool = pickQuizPool(mode, category);
+        const size = Math.min(mode === "daily" ? 25 : 40, pool.length || 40);
+        const chosen = pool.slice(0, size);
+        if (!chosen.length) {
+            refs.main.innerHTML = `<div class="card">Aucune question disponible pour ce mode.</div>`;
+            return;
+        }
+
+        const config = {
+            allowChange: !["exam", "conditioning"].includes(mode),
+            noReveal: ["exam", "conditioning"].includes(mode),
+            strict: ["exam", "conditioning"].includes(mode),
+            quickSecondsPerQuestion: mode === "quick" ? 20 : mode === "recall" ? 8 : 0,
+            totalSeconds: mode === "exam" ? 600 : mode === "daily" ? 480 : mode === "quick" ? 400 : mode === "recall" ? 320 : mode === "conditioning" ? 600 : 600,
+            review: !["exam", "conditioning"].includes(mode),
+            showHints: !["exam", "conditioning"].includes(mode),
+            askConfidence: true,
+            minimalUi: mode === "conditioning"
+        };
+
+        appState.mode = "quiz";
+        appState.quiz = {
+            mode,
+            category,
+            config,
+            questions: chosen,
+            index: 0,
+            answers: {},
+            optionMap: {},
+            answerMeta: {},
+            secondsLeft: config.totalSeconds,
+            questionSecondsLeft: config.quickSecondsPerQuestion || 0,
+            reviewOpen: false,
+            questionStartAt: Date.now(),
+            timer: null
+        };
+
+        updateTopButtons(
+            mode === "category" ? refs.navCategoryQuiz :
+            mode === "daily" ? refs.navDailyQuiz :
+            mode === "retryWrong" ? refs.navRetryWrong :
+            refs.navRandomQuiz
+        );
+
+        renderQuizShell();
+        startQuizTimer();
+    }
+
+    function startQuizTimer() {
+        clearInterval(appState.quiz?.timer || null);
+        if (!appState.quiz) return;
+        appState.quiz.timer = setInterval(() => {
+            if (!appState.quiz) return;
+            appState.quiz.secondsLeft -= 1;
+            if (appState.quiz.config.quickSecondsPerQuestion) {
+                appState.quiz.questionSecondsLeft -= 1;
+                if (appState.quiz.questionSecondsLeft <= 0) {
+                    if (appState.quiz.index < appState.quiz.questions.length - 1) {
+                        appState.quiz.index += 1;
+                        appState.quiz.questionSecondsLeft = appState.quiz.config.quickSecondsPerQuestion;
+                        appState.quiz.questionStartAt = Date.now();
+                        updateQuizQuestion();
+                    }
+                }
+            }
+            updateQuizTopBar();
+            if (appState.quiz.secondsLeft <= 0) {
+                clearInterval(appState.quiz.timer);
+                submitQuiz();
+            }
+        }, 1000);
+    }
+
+    function renderQuizShell() {
+        const lang = languageVisibility("quiz");
+        refs.main.innerHTML = `
+            <section class="quiz-top">
+                <div class="progress-track" aria-label="Progression">
+                    <div class="progress-fill" id="quizProgressFill"></div>
+                </div>
+                <div class="quiz-meta">
+                    <span id="quizMetaIndex"></span>
+                    <span id="quizMetaTimer"></span>
+                </div>
+            </section>
+            <section class="card" id="quizCard">
+                <div class="question-line">
+                    <span id="quizQuestionText"></span>
+                    <button id="speakQuizQuestion" class="icon-btn" type="button" aria-label="Ecouter la question" ${appState.quiz.config.minimalUi ? "style='display:none;'" : ""}>🔊</button>
+                </div>
+                <div class="bn" id="quizQuestionBn" ${lang.bn ? "" : "style='display:none;'"}></div>
+                <div id="quizHintBox" class="card" style="margin-top:8px; ${appState.quiz.config.showHints ? "" : "display:none;"}">
+                    <p id="quizHintText">Indice contextuel pour activer le rappel.</p>
+                    <p class="bn" id="quizHintBn" ${lang.bn ? "" : "style='display:none;'"}></p>
+                </div>
+                <div class="quiz-actions" style="margin-top:8px; ${appState.quiz.config.showHints ? "" : "display:none;"}">
+                    <button id="showHintBtn" class="btn" type="button">Voir indice</button>
+                </div>
+                <div class="options" id="quizOptions" role="radiogroup" aria-label="Options de reponse"></div>
+                <div class="quiz-actions" id="confidencePanel" style="display:none; margin-top:8px;">
+                    <span>Etiez-vous sur ?</span>
+                    <button id="confidentBtn" class="btn" type="button">Confident</button>
+                    <button id="unsureBtn" class="btn" type="button">Unsure</button>
+                </div>
+                <div class="quiz-actions">
+                    <button id="quizPrev" class="btn" type="button" ${appState.quiz.config.minimalUi ? "style='display:none;'" : ""}>Precedent</button>
+                    <button id="quizNext" class="btn btn-primary" type="button">Suivant</button>
+                    <button id="quizReview" class="btn" type="button" ${appState.quiz.config.review ? "" : "style='display:none;'"}>Revoir avant envoi</button>
+                    <button id="quizSubmit" class="btn" type="button">Terminer</button>
+                </div>
+                <section id="quizReviewPanel" style="display:none; margin-top:12px;">
+                    <h3>Revue rapide</h3>
+                    <div class="review-grid" id="reviewGrid"></div>
+                </section>
+            </section>
+        `;
+
+        refs.main.querySelector("#quizPrev").addEventListener("click", () => {
+            if (!appState.quiz) return;
+            if (appState.quiz.index > 0) {
+                appState.quiz.index -= 1;
+                updateQuizQuestion();
+            }
+        });
+
+        refs.main.querySelector("#quizNext").addEventListener("click", () => {
+            if (!appState.quiz) return;
+            if (appState.quiz.index < appState.quiz.questions.length - 1) {
+                appState.quiz.index += 1;
+                updateQuizQuestion();
+            }
+        });
+
+        refs.main.querySelector("#quizSubmit").addEventListener("click", submitQuiz);
+        refs.main.querySelector("#quizReview").addEventListener("click", toggleReviewPanel);
+        refs.main.querySelector("#showHintBtn")?.addEventListener("click", () => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            const lang = languageVisibility("quiz", q);
+            const hint = generateHint(q);
+            refs.main.querySelector("#quizHintText").textContent = hint.fr;
+            refs.main.querySelector("#quizHintBn").textContent = lang.bn ? hint.bn : "";
+        });
+        refs.main.querySelector("#speakQuizQuestion").addEventListener("click", (e) => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            speakText(q.questionFr, e.currentTarget);
+        });
+
+        refs.main.querySelector("#quizOptions").addEventListener("click", (e) => {
+            const optionBtn = e.target.closest(".option");
+            if (!optionBtn || !appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            if (!appState.quiz.config.allowChange && appState.quiz.answers[q.id]) return;
+            const value = optionBtn.dataset.value;
+            const responseSec = Math.max(1, Math.round((Date.now() - appState.quiz.questionStartAt) / 1000));
+            appState.quiz.answers[q.id] = value;
+            appState.quiz.answerMeta[q.id] = { responseSec, confidence: "unsure" };
+            markOptionsSelection(q.id);
+            const confidencePanel = refs.main.querySelector("#confidencePanel");
+            if (appState.quiz.config.askConfidence && confidencePanel) {
+                confidencePanel.style.display = "flex";
+            }
+            saveState();
+            if (value !== q.correctAnswer) maybeVibrateWrong();
+        });
+
+        refs.main.querySelector("#confidentBtn")?.addEventListener("click", () => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            if (!appState.quiz.answerMeta[q.id]) appState.quiz.answerMeta[q.id] = { responseSec: 10, confidence: "confident" };
+            appState.quiz.answerMeta[q.id].confidence = "confident";
+            saveState();
+            refs.main.querySelector("#confidencePanel").style.display = "none";
+        });
+
+        refs.main.querySelector("#unsureBtn")?.addEventListener("click", () => {
+            if (!appState.quiz) return;
+            const q = appState.quiz.questions[appState.quiz.index];
+            if (!appState.quiz.answerMeta[q.id]) appState.quiz.answerMeta[q.id] = { responseSec: 10, confidence: "unsure" };
+            appState.quiz.answerMeta[q.id].confidence = "unsure";
+            saveState();
+            refs.main.querySelector("#confidencePanel").style.display = "none";
+        });
+
+        refs.main.querySelector("#quizOptions").addEventListener("keydown", (e) => {
+            if (["Enter", " "].includes(e.key) && e.target.classList.contains("option")) {
+                e.preventDefault();
+                e.target.click();
+                return;
+            }
+            if (!["ArrowDown", "ArrowUp"].includes(e.key)) return;
+            e.preventDefault();
+            const options = Array.from(refs.main.querySelectorAll("#quizOptions .option"));
+            if (!options.length) return;
+            const activeIndex = options.indexOf(document.activeElement);
+            const step = e.key === "ArrowDown" ? 1 : -1;
+            const next = (activeIndex + step + options.length) % options.length;
+            options[next].focus();
+        });
+
+        updateQuizQuestion();
+    }
+
+    function toggleReviewPanel() {
+        if (!appState.quiz) return;
+        appState.quiz.reviewOpen = !appState.quiz.reviewOpen;
+        const panel = refs.main.querySelector("#quizReviewPanel");
+        panel.style.display = appState.quiz.reviewOpen ? "block" : "none";
+        if (!appState.quiz.reviewOpen) return;
+        const grid = refs.main.querySelector("#reviewGrid");
+        grid.innerHTML = appState.quiz.questions.map((q, idx) => `
+            <button class="review-pill ${appState.quiz.answers[q.id] ? "done" : ""}" type="button" data-index="${idx}">${idx + 1}</button>
+        `).join("");
+        grid.querySelectorAll("button").forEach(btn => {
+            btn.addEventListener("click", () => {
+                appState.quiz.index = Number(btn.dataset.index);
+                updateQuizQuestion();
+            });
+        });
+    }
+
+    function formatTimer(seconds) {
+        const m = Math.floor(seconds / 60).toString().padStart(2, "0");
+        const s = Math.max(0, seconds % 60).toString().padStart(2, "0");
+        return `${m}:${s}`;
+    }
+
+    function updateQuizTopBar() {
+        if (!appState.quiz) return;
+        const total = appState.quiz.questions.length;
+        const current = appState.quiz.index + 1;
+        const answeredCount = appState.quiz.questions.filter(q => appState.quiz.answers[q.id]).length;
+        const quickPart = appState.quiz.config.quickSecondsPerQuestion ? ` | ${appState.quiz.config.quickSecondsPerQuestion}s: ${String(Math.max(0, appState.quiz.questionSecondsLeft)).padStart(2, "0")}` : "";
+        const modeLabel = appState.quiz.mode === "conditioning" ? "Conditionnement" : appState.quiz.mode === "exam" ? "Examen reel" : appState.quiz.mode === "recall" ? "Fast Recall" : "Pratique";
+        refs.main.querySelector("#quizMetaIndex").textContent = `${modeLabel} | Question ${current}/${total} - Repondues ${answeredCount}/${total}`;
+        refs.main.querySelector("#quizMetaTimer").textContent = `Temps ${formatTimer(appState.quiz.secondsLeft)}${quickPart}`;
+        refs.main.querySelector("#quizProgressFill").style.width = `${(current / total) * 100}%`;
+    }
+
+    function markOptionsSelection(questionId) {
+        const selected = appState.quiz?.answers?.[questionId];
+        const optionNodes = refs.main.querySelectorAll("#quizOptions .option");
+        optionNodes.forEach(node => {
+            const isSelected = node.dataset.value === selected;
+            node.classList.toggle("selected", isSelected);
+            node.setAttribute("aria-checked", isSelected ? "true" : "false");
+        });
+    }
+
+    function updateQuizQuestion() {
+        if (!appState.quiz) return;
+        const q = appState.quiz.questions[appState.quiz.index];
+        const lang = languageVisibility("quiz", q);
+        const options = buildSmartOptions(q, questions, appState.quiz.optionMap[q.id]);
+        const intel = getQuestionIntel(q);
+        appState.quiz.optionMap[q.id] = options;
+        appState.quiz.questionStartAt = Date.now();
+        if (appState.quiz.config.quickSecondsPerQuestion) appState.quiz.questionSecondsLeft = appState.quiz.config.quickSecondsPerQuestion;
+
+        refs.main.querySelector("#quizQuestionText").innerHTML = keywordHighlights(q.questionFr);
+        refs.main.querySelector("#quizQuestionBn").textContent = lang.bn ? (q.questionBn || "") : "";
+        const hint = generateHint(q);
+        refs.main.querySelector("#quizHintText").textContent = appState.quiz.config.showHints ? "Indice contextuel pour activer le rappel." : "";
+        refs.main.querySelector("#quizHintBn").textContent = lang.bn && appState.quiz.config.showHints ? hint.bn : "";
+
+        const confidencePanel = refs.main.querySelector("#confidencePanel");
+        if (confidencePanel) confidencePanel.style.display = "none";
+
+        const p = getProgress(q.id);
+        if (appState.quiz.config.showHints && (p.failCount >= 2 || p.unsureCount >= 2 || isWeakCategory(q.category))) {
+            refs.main.querySelector("#quizHintText").textContent = hint.fr;
+        }
+
+        if (appState.quiz.mode === "recall" || appState.quiz.mode === "retryWrong") {
+            const cue = intel ? intel.fastRecallCue : (hint.fr || "Indice de rappel");
+            refs.main.querySelector("#quizHintText").textContent = `Cue: ${cue}`;
+            refs.main.querySelector("#quizHintBn").textContent = "";
+        }
+
+        if (intel && intel.pronunciationFocus && !appState.quiz.config.minimalUi) {
+            refs.main.querySelector("#quizHintText").textContent = `${refs.main.querySelector("#quizHintText").textContent} | Prononciation: ${intel.pronunciationFocus}`.trim();
+        }
+
+        const optionsRoot = refs.main.querySelector("#quizOptions");
+        optionsRoot.innerHTML = options.map(opt => `
+            <div class="option" role="radio" tabindex="0" aria-checked="false" data-value="${escapeHtml(opt)}">
+                <span>${escapeHtml(opt)}</span>
+                <button class="icon-btn speak-option" type="button" data-opt="${escapeHtml(opt)}" aria-label="Ecouter option">🔊</button>
+            </div>
+        `).join("");
+
+        optionsRoot.querySelectorAll(".speak-option").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                speakText(btn.dataset.opt, btn);
+            });
+        });
+
+        if (appState.audio.autoPlay) {
+            if (appState.audio.sequentialQA) {
+                speakText(q.questionFr, null, () => speakText(q.correctAnswer, null));
+            } else {
+                speakText(q.questionFr);
+            }
+        }
+
+        markOptionsSelection(q.id);
+        updateQuizTopBar();
+        if (appState.quiz.reviewOpen) toggleReviewPanel();
+    }
+
+    function submitQuiz() {
+        if (!appState.quiz) return;
+        clearInterval(appState.quiz.timer);
+        stopSpeech();
+
+        const result = appState.quiz.questions.map(q => {
+            const userAnswer = appState.quiz.answers[q.id] || "(pas de reponse)";
+            const ok = userAnswer === q.correctAnswer;
+            const options = appState.quiz.optionMap[q.id] || [];
+            const exp = explainQuestion(q, options, userAnswer);
+            const responseSec = appState.quiz.answerMeta[q.id]?.responseSec || 12;
+            const confidence = appState.quiz.answerMeta[q.id]?.confidence || "unsure";
+            updateProgress(q, ok, responseSec, confidence);
+            recordDailyActivity(1, ok ? 4 : 2, responseSec);
+            return {
+                id: q.id,
+                category: q.category,
+                question: q.questionFr,
+                correct: q.correctAnswer,
+                user: userAnswer,
+                ok,
+                responseSec,
+                confidence,
+                explainFr: exp.frShort,
+                explainBn: exp.bnShort,
+                explainStruct: exp.structure,
+                wrongReasons: exp.wrongReasons
+            };
+        });
+
+        const score = result.filter(r => r.ok).length;
+        const total = result.length;
+        const percent = Math.round((score / total) * 100);
+
+        appState.wrongIds.clear();
+        result.filter(r => !r.ok).forEach(r => appState.wrongIds.add(r.id));
+
+        const categoryAgg = {};
+        result.forEach(r => {
+            if (!categoryAgg[r.category]) categoryAgg[r.category] = { total: 0, errors: 0 };
+            categoryAgg[r.category].total += 1;
+            if (!r.ok) categoryAgg[r.category].errors += 1;
+        });
+
+        const weakCategories = Object.entries(categoryAgg)
+            .map(([category, stats]) => ({ category, errorRate: stats.errors / stats.total, errors: stats.errors }))
+            .filter(v => v.errors > 0)
+            .sort((a, b) => b.errorRate - a.errorRate)
+            .slice(0, 3);
+
+        appState.stats.quizzesTaken += 1;
+        appState.stats.lastScore = percent;
+        appState.stats.bestScore = Math.max(appState.stats.bestScore, percent);
+        appState.stats.avgResponseSec = Math.round(result.reduce((s, r) => s + r.responseSec, 0) / result.length);
+        saveState();
+
+        if (percent >= 80) launchConfetti();
+
+        refs.main.innerHTML = `
+            <section class="analytics">
+                <h2>Resultat final</h2>
+                <div class="stats">
+                    <div class="stat"><strong>${score}/${total}</strong><span>Score</span></div>
+                    <div class="stat"><strong>${percent}%</strong><span>Pourcentage</span></div>
+                    <div class="stat"><strong>${weakCategories.length}</strong><span>Categories faibles</span></div>
+                    <div class="stat"><strong>${appState.stats.avgResponseSec}s</strong><span>Vitesse reponse</span></div>
+                </div>
+                <div class="card">
+                    <p>${percent >= 85 ? "Excellent progress! Votre niveau est proche des conditions d'examen." : percent >= 65 ? "Vous progressez clairement. Continuez la repetition espacee sur les faiblesses." : "Base solide en cours. Priorisez les erreurs recentes et les categories faibles."}</p>
+                    <p>Reponses "unsure": ${result.filter(r => r.confidence === "unsure").length}. Elles seront revues plus tot.</p>
+                </div>
+                <div class="card">
+                    <h3>Categories a renforcer</h3>
+                    ${weakCategories.length ? weakCategories.map(w => `<p><strong>${escapeHtml(w.category)}</strong> - ${Math.round(w.errorRate * 100)}% d'erreurs</p>`).join("") : "<p>Aucune faiblesse evidente.</p>"}
+                </div>
+                <div class="card">
+                    <h3>Revision des erreurs</h3>
+                    ${result.filter(r => !r.ok).map(r => `
+                        <div style="padding:8px 0; border-bottom:1px solid var(--border);">
+                            <p><strong>Q:</strong> ${escapeHtml(r.question)}</p>
+                            <p><strong>Bonne reponse:</strong> ${escapeHtml(r.correct)}</p>
+                            <p><strong>Votre reponse:</strong> ${escapeHtml(r.user)}</p>
+                            <p><strong>Pourquoi:</strong> ${escapeHtml(r.explainStruct.reasonFr)}</p>
+                            <p><strong>Memo:</strong> ${escapeHtml(r.explainStruct.memoFr)}</p>
+                            <p><strong>Attention:</strong> ${escapeHtml(r.explainStruct.warnFr)}</p>
+                            ${r.wrongReasons.slice(0, 3).map(w => `<p>- ${escapeHtml(w.option)}: ${escapeHtml(w.reason)}</p>`).join("")}
+                        </div>
+                    `).join("") || "<p>Aucune erreur.</p>"}
+                </div>
+                <div class="quiz-actions">
+                    <button id="redoWrongNow" class="btn btn-primary" type="button">Reessayer erreurs</button>
+                    <button id="showAnalytics" class="btn" type="button">Voir analytics</button>
+                    <button id="goStudy" class="btn" type="button">Retour etude</button>
+                </div>
+            </section>
+        `;
+
+        refs.main.querySelector("#redoWrongNow").addEventListener("click", () => startQuizSession("retryWrong"));
+        refs.main.querySelector("#showAnalytics").addEventListener("click", renderAnalyticsDashboard);
+        refs.main.querySelector("#goStudy").addEventListener("click", renderStudyView);
+        appState.quiz = null;
+    }
+
+    function startFlashcardMode(strict = false) {
+        const queue = [...questions].sort((a, b) => getQuestionPriority(b) - getQuestionPriority(a)).slice(0, 40);
+        if (!queue.length) return;
+        appState.mode = "flashcard";
+        appState.flashcard = { queue, index: 0, reveal: false, strict };
+        renderFlashcard();
+    }
+
+    function renderFlashcard() {
+        if (!appState.flashcard) return;
+        const item = appState.flashcard.queue[appState.flashcard.index];
+        const intel = getQuestionIntel(item);
+        const exp = explainQuestion(item);
+        const lang = languageVisibility("flashcard", item, !!appState.flashcard.strict);
+        const p = getProgress(item.id);
+        refs.main.innerHTML = `
+            <section class="card">
+                <h2>Flashcard ${appState.flashcard.index + 1}/${appState.flashcard.queue.length}</h2>
+                <p><strong>Memory hook:</strong> ${escapeHtml(intel ? intel.memoryHook : exp.structure.memoFr)}</p>
+                <p><strong>Question:</strong> ${escapeHtml(item.questionFr)}</p>
+                ${lang.bn ? `<p class="bn">${escapeHtml(item.questionBn || "")}</p>` : ""}
+                <p><strong>Fast recall cue:</strong> ${escapeHtml(intel ? intel.fastRecallCue : exp.structure.hookFr)}</p>
+                ${appState.flashcard.reveal ? `<div style="margin-top:12px;"><p><strong>Reponse:</strong> ${escapeHtml(item.correctAnswer)}</p><p>${escapeHtml(exp.structure.reasonFr)}</p><p><strong>Attention:</strong> ${escapeHtml(exp.structure.warnFr)}</p>${lang.bn ? `<p class="bn">${escapeHtml(exp.structure.reasonBn)}</p>` : ""}</div>` : ""}
+                <div class="quiz-actions" style="margin-top:12px;">
+                    <button id="flashReveal" class="btn btn-primary" type="button">${appState.flashcard.reveal ? "Masquer" : "Montrer reponse"}</button>
+                    <button id="flashSpeak" class="btn" type="button">Ecouter</button>
+                    <button id="flashKnow" class="btn" type="button">Je maitrise</button>
+                    <button id="flashAgain" class="btn" type="button">A revoir</button>
+                    <button id="flashExit" class="btn" type="button">Quitter</button>
+                </div>
+                <p style="margin-top:8px;">Niveau actuel: ${p.masteryLevel} (${p.masteryScore}%)</p>
+            </section>
+        `;
+
+        refs.main.querySelector("#flashReveal").addEventListener("click", () => {
+            appState.flashcard.reveal = !appState.flashcard.reveal;
+            renderFlashcard();
+        });
+        refs.main.querySelector("#flashSpeak").addEventListener("click", () => {
+            speakText(item.questionFr, null, () => speakText(item.correctAnswer));
+        });
+        refs.main.querySelector("#flashKnow").addEventListener("click", () => {
+            updateProgress(item, true, 8);
+            recordDailyActivity(1, 3, 8);
+            nextFlash();
+        });
+        refs.main.querySelector("#flashAgain").addEventListener("click", () => {
+            updateProgress(item, false, 10);
+            appState.wrongIds.add(item.id);
+            recordDailyActivity(1, 2, 10);
+            nextFlash();
+        });
+        refs.main.querySelector("#flashExit").addEventListener("click", () => {
+            appState.flashcard = null;
+            saveState();
+            renderStudyView();
+        });
+    }
+
+    function nextFlash() {
+        if (!appState.flashcard) return;
+        appState.flashcard.index += 1;
+        appState.flashcard.reveal = false;
+        if (appState.flashcard.index >= appState.flashcard.queue.length) {
+            saveState();
+            renderStudyView();
+            return;
+        }
+        saveState();
+        renderFlashcard();
+    }
+
+    function startListenMode() {
+        const queue = [...questions]
+            .sort((a, b) => {
+                const ai = getQuestionIntel(a);
+                const bi = getQuestionIntel(b);
+                const pa = getProgress(a.id);
+                const pb = getProgress(b.id);
+                const aBoost = (ai?.pronunciationFocus ? 12 : 0) + pa.failCount * 3;
+                const bBoost = (bi?.pronunciationFocus ? 12 : 0) + pb.failCount * 3;
+                return (getQuestionPriority(b) + bBoost) - (getQuestionPriority(a) + aBoost);
+            })
+            .slice(0, 25);
+        refs.main.innerHTML = `
+            <section class="card">
+                <h2>Listen and repeat</h2>
+                <p>Mode audio sequentiel question + reponse. Ideal pour memoire auditive.</p>
+                <div class="quiz-actions">
+                    <button id="listenStart" class="btn btn-primary" type="button">Demarrer</button>
+                    <button id="listenStop" class="btn" type="button">Arreter</button>
+                    <button id="listenBack" class="btn" type="button">Retour</button>
+                </div>
+                <div id="listenNow" style="margin-top:10px;"></div>
+            </section>
+        `;
+
+        let idx = 0;
+        let running = false;
+        const next = () => {
+            if (!running || idx >= queue.length) return;
+            const q = queue[idx];
+            refs.main.querySelector("#listenNow").innerHTML = `<p><strong>${idx + 1}/${queue.length}</strong> ${escapeHtml(q.questionFr)}</p><p>${escapeHtml(q.correctAnswer)}</p>`;
+            speakText(q.questionFr, null, () => {
+                speakText(q.correctAnswer, null, () => {
+                    updateProgress(q, true, 9);
+                    recordDailyActivity(1, 2, 9);
+                    idx += 1;
+                    setTimeout(next, 500);
+                });
+            });
+        };
+
+        refs.main.querySelector("#listenStart").addEventListener("click", () => {
+            running = true;
+            next();
+        });
+        refs.main.querySelector("#listenStop").addEventListener("click", () => {
+            running = false;
+            stopSpeech();
+        });
+        refs.main.querySelector("#listenBack").addEventListener("click", () => {
+            running = false;
+            stopSpeech();
+            saveState();
+            renderStudyView();
+        });
+    }
+
+    function renderAnalyticsDashboard() {
+        const cat = categoryMetrics();
+        const entries = Object.entries(cat);
+        const strongest = entries.sort((a, b) => b[1].mastery - a[1].mastery).slice(0, 3);
+        const weakest = [...entries].sort((a, b) => a[1].mastery - b[1].mastery).slice(0, 3);
+        const reviewed = questions.filter(q => !!getProgress(q.id).lastReviewed);
+        const totalSuccess = reviewed.reduce((s, q) => s + getProgress(q.id).successCount, 0);
+        const totalFail = reviewed.reduce((s, q) => s + getProgress(q.id).failCount, 0);
+        const totalUnsure = reviewed.reduce((s, q) => s + getProgress(q.id).unsureCount, 0);
+        const accuracy = totalSuccess + totalFail ? Math.round((totalSuccess / (totalSuccess + totalFail)) * 100) : 0;
+        const avgSpeed = reviewed.length ? Math.round(reviewed.reduce((s, q) => s + getProgress(q.id).avgSec, 0) / reviewed.length) : 0;
+        const mastery = Math.round(questions.reduce((s, q) => s + getProgress(q.id).masteryScore, 0) / questions.length);
+        const readiness = Math.min(100, Math.round(accuracy * 0.45 + mastery * 0.4 + Math.max(0, 100 - questions.filter(q => getProgress(q.id).masteryScore < 45).length) * 0.15));
+        const likelyFail = weakest.map(([name, val]) => ({ name, risk: Math.min(95, 100 - val.mastery + val.weak * 2) }));
+        const passProbability = Math.max(5, Math.min(99, Math.round(readiness * 0.88 + (100 - totalUnsure) * 0.12)));
+
+        const intelQuestions = questions.filter(q => !!getQuestionIntel(q));
+        const confusionTopics = intelQuestions
+            .map(q => ({
+                id: q.id,
+                q: q.questionFr,
+                trap: getQuestionIntel(q)?.examTrap || "",
+                confusion: getProgress(q.id).confusionTrapCount
+            }))
+            .sort((a, b) => b.confusion - a.confusion)
+            .slice(0, 5);
+        const slowRecallConcepts = questions
+            .map(q => ({ q: q.questionFr, slow: getProgress(q.id).slowRecallCount, avg: getProgress(q.id).avgSec }))
+            .sort((a, b) => (b.slow * 10 + b.avg) - (a.slow * 10 + a.avg))
+            .slice(0, 5);
+        const highConfidenceFails = questions
+            .map(q => ({ q: q.questionFr, c: getProgress(q.id).highConfidenceFailCount }))
+            .filter(x => x.c > 0)
+            .sort((a, b) => b.c - a.c)
+            .slice(0, 5);
+        const strongestAnchors = intelQuestions
+            .map(q => ({
+                q: q.questionFr,
+                anchor: getQuestionIntel(q)?.memoryHook || "",
+                mastery: getProgress(q.id).masteryScore
+            }))
+            .sort((a, b) => b.mastery - a.mastery)
+            .slice(0, 5);
+
+        const todayKey = getTodayKey();
+        const yesterdayKey = addDays(todayKey, -1);
+        const todayXp = appState.daily.history[todayKey]?.xp || 0;
+        const yesterdayXp = appState.daily.history[yesterdayKey]?.xp || 0;
+        const last7Days = Array.from({ length: 7 }).map((_, i) => addDays(todayKey, -i)).reverse();
+        const firstHalf = last7Days.slice(0, 3).map(d => appState.daily.history[d]?.seconds || 0);
+        const secondHalf = last7Days.slice(3).map(d => appState.daily.history[d]?.seconds || 0);
+        const firstAvg = firstHalf.length ? Math.round(firstHalf.reduce((a, b) => a + b, 0) / firstHalf.length) : 0;
+        const secondAvg = secondHalf.length ? Math.round(secondHalf.reduce((a, b) => a + b, 0) / secondHalf.length) : 0;
+        const speedImprovement = firstAvg && secondAvg ? Math.round(((secondAvg - firstAvg) / Math.max(1, firstAvg)) * 100) : 0;
+
+        refs.main.innerHTML = `
+            <section class="analytics">
+                <h2>Tableau analytique</h2>
+                <div class="stats">
+                    <div class="stat"><strong>${accuracy}%</strong><span>Accuracy</span></div>
+                    <div class="stat"><strong>${avgSpeed}s</strong><span>Vitesse reponse</span></div>
+                    <div class="stat"><strong>${mastery}%</strong><span>Maitrise</span></div>
+                    <div class="stat"><strong>${readiness}%</strong><span>Preparation examen predite</span></div>
+                    <div class="stat"><strong>${passProbability}%</strong><span>Probabilite de reussite estimee</span></div>
+                    <div class="stat"><strong>${totalUnsure}</strong><span>Reponses "unsure"</span></div>
+                </div>
+                <div class="card">
+                    <h3>Categories les plus fortes</h3>
+                    ${strongest.map(([name, val]) => `<p>${escapeHtml(name)} - ${val.mastery}%</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>Categories les plus faibles</h3>
+                    ${weakest.map(([name, val]) => `<p>${escapeHtml(name)} - ${val.mastery}% | ${val.weak} questions faibles</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>Categories les plus a risque a l'examen</h3>
+                    ${likelyFail.map(item => `<p>${escapeHtml(item.name)} - risque estime ${item.risk}%</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>Progression recente</h3>
+                    <p>XP aujourd'hui: ${todayXp}</p>
+                    <p>XP hier: ${yesterdayXp}</p>
+                    <p>${todayXp > yesterdayXp ? "Vous avez progresse par rapport a hier." : "Continuez: la progression peut accelerer avec la repetition espacee."}</p>
+                    <p>Questions faibles restantes: ${questions.filter(q => getProgress(q.id).masteryScore < 45).length}</p>
+                    <p>Amelioration vitesse de rappel (7 jours): ${speedImprovement >= 0 ? `+${speedImprovement}%` : `${speedImprovement}%`}</p>
+                </div>
+                <div class="card">
+                    <h3>Confusion-prone topics</h3>
+                    ${confusionTopics.length ? confusionTopics.map(t => `<p>${escapeHtml(t.q)} - ${escapeHtml(t.trap)} (${t.confusion})</p>`).join("") : "<p>Aucun signal fort pour le moment.</p>"}
+                </div>
+                <div class="card">
+                    <h3>Slow recall concepts</h3>
+                    ${slowRecallConcepts.map(t => `<p>${escapeHtml(t.q)} - lenteur: ${t.slow}, moyenne: ${t.avg}s</p>`).join("")}
+                </div>
+                <div class="card">
+                    <h3>High-confidence failures</h3>
+                    ${highConfidenceFails.length ? highConfidenceFails.map(t => `<p>${escapeHtml(t.q)} - ${t.c}</p>`).join("") : "<p>Aucune erreur en confiance elevee actuellement.</p>"}
+                </div>
+                <div class="card">
+                    <h3>Strongest memory anchors</h3>
+                    ${strongestAnchors.length ? strongestAnchors.map(t => `<p>${escapeHtml(t.anchor)} - maitrise ${t.mastery}%</p>`).join("") : "<p>En cours de construction.</p>"}
+                </div>
+                <div class="quiz-actions">
+                    <button id="analyticsBack" class="btn" type="button">Retour etude</button>
+                </div>
+            </section>
+        `;
+
+        refs.main.querySelector("#analyticsBack").addEventListener("click", renderStudyView);
+    }
+
+    function showCategoryPickerAndStart() {
+        const categories = Object.keys(byCategory);
+        refs.main.innerHTML = `
+            <section class="view-head">
+                <h2>Quiz par categorie</h2>
+                <select id="quizCategorySelect">
+                    ${categories.map(cat => `<option value="${escapeHtml(cat)}">${escapeHtml(cat)}</option>`).join("")}
+                </select>
+                <button id="startCategoryQuiz" class="btn btn-primary" type="button">Demarrer</button>
+            </section>
+        `;
+        refs.main.querySelector("#startCategoryQuiz").addEventListener("click", () => {
+            const cat = refs.main.querySelector("#quizCategorySelect").value;
+            startQuizSession("category", cat);
+        });
+    }
+
+    function wireGlobalActions() {
+        refs.navStudy.addEventListener("click", renderStudyView);
+        refs.navRandomQuiz.addEventListener("click", () => startQuizSession("random"));
+        refs.navCategoryQuiz.addEventListener("click", showCategoryPickerAndStart);
+        refs.navDailyQuiz.addEventListener("click", () => startQuizSession("daily"));
+        refs.navRetryWrong.addEventListener("click", () => startQuizSession("retryWrong"));
+
+        refs.soundToggle.addEventListener("click", () => {
+            appState.soundEnabled = !appState.soundEnabled;
+            if (!appState.soundEnabled) stopSpeech();
+            saveState();
+            updateTopButtons(null);
+        });
+
+        refs.speedToggle.addEventListener("click", () => {
+            appState.slowSpeech = !appState.slowSpeech;
+            saveState();
+            updateTopButtons(null);
+        });
+
+        refs.themeToggle.addEventListener("click", () => {
+            appState.theme = appState.theme === "auto" ? "light" : appState.theme === "light" ? "dark" : "auto";
+            applyTheme();
+            saveState();
+        });
+    }
+
+    let deferredInstallPrompt = null;
+
+    async function registerServiceWorker() {
+        if (!("serviceWorker" in navigator)) return;
+        try {
+            const registration = await navigator.serviceWorker.register("sw.js", { scope: "./" });
+            if (registration && "navigationPreload" in registration) {
+                try {
+                    await registration.navigationPreload.enable();
+                } catch (_e) {
+                    // keep boot resilient across browser versions
+                }
+            }
+        } catch (_e) {
+            // app remains functional without SW
+        }
+    }
+
+    function wireInstallPrompt() {
+        const installBtn = document.getElementById("installAppBtn");
+        if (!installBtn) return;
+
+        window.addEventListener("beforeinstallprompt", (event) => {
+            event.preventDefault();
+            deferredInstallPrompt = event;
+            installBtn.classList.add("show");
+        });
+
+        installBtn.addEventListener("click", async () => {
+            if (!deferredInstallPrompt) return;
+            deferredInstallPrompt.prompt();
+            try {
+                await deferredInstallPrompt.userChoice;
+            } finally {
+                deferredInstallPrompt = null;
+                installBtn.classList.remove("show");
+            }
+        });
+
+        window.addEventListener("appinstalled", () => {
+            deferredInstallPrompt = null;
+            installBtn.classList.remove("show");
+        });
+    }
+
+    loadState();
+    questions.forEach(q => getProgress(q.id));
+    applyTheme();
+    wireGlobalActions();
+    wireInstallPrompt();
+    registerServiceWorker();
+    renderStudyView();
+</script>
+</body>
+</html>

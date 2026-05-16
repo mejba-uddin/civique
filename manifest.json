@@ -1,0 +1,26 @@
+{
+  "name": "CSP Revision Officiel",
+  "short_name": "CSP Revision",
+  "description": "Application mobile hors ligne pour la preparation de l'examen civique CSP.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f8fd",
+  "theme_color": "#2457f5",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
